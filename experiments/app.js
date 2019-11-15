@@ -95,6 +95,7 @@ io.on('connection', function (client) {
     }
     if(valid_id(id)) {
       initialize(query, client, id);
+      console.log('hello world'); // just testing this out to see if it comes up
     }
   }
 });
