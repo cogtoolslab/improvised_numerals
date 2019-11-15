@@ -95,7 +95,6 @@ io.on('connection', function (client) {
     }
     if(valid_id(id)) {
       initialize(query, client, id);
-      console.log('hello world'); // just testing this out to see if it comes up
     }
   }
 });
@@ -109,6 +108,8 @@ var initialize = function(query, client, id) {
   client.userid = id;
   client.workerid = query.workerId ? query.workerId : '';
   client.assignmentid = query.assignmentId ? query.assignmentId : '';
+
+  console.log('hello world'); // just testing this out to see if it comes up
 
   // Make contact with client
   client.emit('onconnected', { id: client.userid } );
