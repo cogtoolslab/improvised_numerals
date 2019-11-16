@@ -441,8 +441,8 @@ ALOT...don't understand how to adjust that.*/
 }
 
 #sketchpad {
-    height: 100px !important;
-    width: 300px !important;
+    height: 300px;
+    width: 300px;
     position: absolute;
     top: 12vh;
     right:0;left:0;
@@ -453,8 +453,8 @@ ALOT...don't understand how to adjust that.*/
 }
 
 #loading {
-    height: 100px !important;
-    width: 300px !important;
+    height: 300px;
+    width: 300px;
     position: absolute;
     top: 12vh;
     right:0;left:0;
