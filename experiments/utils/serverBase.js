@@ -63,9 +63,7 @@ class ReferenceGameServer {
 	// Add game to player
 	player.game = game;
 	player.role = game.playerRoleNames.role2;
-  player.send('s.join.' + game.players.length + '.' + player.role);
-  
-  console.log("THIS IS A TEST, please print") // testing, from sebholt
+	player.send('s.join.' + game.players.length + '.' + player.role);
 
 	// notify existing players that someone new is joining
 	_.map(game.get_others(player.userid), function(p){
