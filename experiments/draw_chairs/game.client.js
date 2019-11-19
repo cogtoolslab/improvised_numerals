@@ -198,8 +198,6 @@ var client_onMessage = function(data) {
       $('#startbutton').hide();
       $('#confirmbutton').hide();
       var num_players = commanddata;
-      console.log("THIS DOES PRINT SOMETHING")     // sebholt trying to figure something out
-      console.log(commands[3])     // sebholt trying to figure something out
       client_onjoingame(num_players, commands[3]); break;
 
     case 'add_player' : // New player joined... Need to add them to our list.
