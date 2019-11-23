@@ -45,6 +45,7 @@ class ReferenceGameServer {
 
   findGame (player) {
     this.log('looking for a game. We have : ' + this.game_count);
+    console.log('hello world'); // just testing this out to see if it comes up
     var joined_a_game = false;
     for (var gameid in this.games) {
       var game = this.games[gameid];

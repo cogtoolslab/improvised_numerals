@@ -109,8 +109,6 @@ var initialize = function(query, client, id) {
   client.workerid = query.workerId ? query.workerId : '';
   client.assignmentid = query.assignmentId ? query.assignmentId : '';
 
-  console.log('hello world'); // just testing this out to see if it comes up
-
   // Make contact with client
   client.emit('onconnected', { id: client.userid } );
   if(gameServer.setCustomEvents) {gameServer.setCustomEvents(client);};
