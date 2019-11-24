@@ -76,7 +76,8 @@ var writeDataToMongo = function(game, line) {
     { json: postData },
     (error, res, body) => {
       if (!error && res.statusCode === 200) {
-        console.log(`DOES THIS EVEN EDIT??`);
+        console.log(`sent data to store`);
+        console.log(`TESTTING`); // maybe I can find it on the server
       } else {
 	       console.log(`error sending data to store: ${error} ${body}`);
       }
