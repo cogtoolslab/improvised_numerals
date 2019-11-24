@@ -198,6 +198,7 @@ var client_onMessage = function(data) {
       $('#startbutton').hide();
       $('#confirmbutton').hide();
       var num_players = commanddata;
+      console.log("HEY DOES THIS DO ANYTHING AT ALL???")
       console.log(commands[3]); // does this work? sebholt
       client_onjoingame(num_players, commands[3]); break;
 
