@@ -442,7 +442,7 @@ ALOT...don't understand how to adjust that.*/
 
 #sketchpad {
     height: 300px;
-    width: 300px;
+    width: 200px !important;
     position: absolute;
     top: 12vh;
     right:0;left:0;
