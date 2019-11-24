@@ -77,6 +77,7 @@ var writeDataToMongo = function(game, line) {
     (error, res, body) => {
       if (!error && res.statusCode === 200) {
         console.log(`sent data to store`);
+        console.log(`TRY THIS OUT`); // testing testing
       } else {
 	       console.log(`error sending data to store: ${error} ${body}`);
       }
