@@ -1,0 +1,3 @@
+iterationName	gameid	time	trialNum	intendedName	svgData	currStrokeNum	shiftKeyUsed	previous_score	previous_bonus_score	startStrokeTime	endStrokeTime	eventType
+testing	9526-13780a44-c5dd-44e3-9e81-96aa64cb592d	1574665190783	1	waiting_05	M89,107c0,4.28081 -2.90495,31.06336 0,33c10.40223,6.93482 52.93592,-35.08544 65,-19c12.77018,17.02691 -10,84.7417 -10,112	1	0	0	0	1574665189568	1574665190153	stroke
+testing	9526-13780a44-c5dd-44e3-9e81-96aa64cb592d	1574665191941	1	waiting_05	M196,102c0,28.8859 9.92782,98.21654 1,125	2	0	0	0	1574665190932	1574665191316	stroke

@@ -277,6 +277,16 @@ var customSetup = function(game) {
   // Set up new round on client's browsers after submit round button is pressed.
   // This means clear the canvas, update round number, and update score on screen
   game.socket.on('newRoundUpdate', function(data){
+
+    // sebholt trying to switch roles
+    if(globalGame.my_role === globalGame.playerRoleNames.role2) {
+      globalGame.my_role = globalGame.playerRoleNames.role1;
+      globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+    } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+      globalGame.my_role = globalGame.playerRoleNames.role2;
+      globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+    } // end of this edit
+
     // Reset sketchpad each round
     project.activeLayer.removeChildren();
     // reset drawing stuff
@@ -284,14 +294,6 @@ var customSetup = function(game) {
     game.strokeMade = false;
     globalGame.path = [];
     submitted = false;
-
-    // sebholt trying to switch roles
-    if(globalGame.my_role === globalGame.playerRoleNames.role2) {
-      globalGame.my_role = globalGame.playerRoleNames.role1
-    } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-      globalGame.my_role = globalGame.playerRoleNames.role2
-    }
-    // end of this edit
 
     // reset clicked obj flag
     objClicked = false;
