@@ -285,6 +285,14 @@ var customSetup = function(game) {
     globalGame.path = [];
     submitted = false;
 
+    // sebholt trying to switch roles
+    if(globalGame.my_role === globalGame.playerRoleNames.role2) {
+      globalGame.my_role = globalGame.playerRoleNames.role1
+    } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+      globalGame.my_role = globalGame.playerRoleNames.role2
+    }
+    // end of this edit
+
     // reset clicked obj flag
     objClicked = false;
     if(globalGame.my_role === globalGame.playerRoleNames.role2) {
