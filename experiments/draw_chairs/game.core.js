@@ -235,7 +235,8 @@ game_core.prototype.newRound = function() {
       p.player.role = game.playerRoleNames.role2
     } else if(p.player.role === game.playerRoleNames.role2){
       p.player.role === game.playerRoleNames.role1
-    } // end of edit
+    } // end of edit. Note: changing this seems to have done nothing
+    
     // console.log('got to newRound in game.core.js and not the final round');
     // Otherwise, get the preset list of objects for the new round
     this.roundNum += 1;
