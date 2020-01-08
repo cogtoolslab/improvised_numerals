@@ -234,6 +234,11 @@ game_core.prototype.newRound = function() {
   else {
     // sebholt edit begin
     _.map(this.get_active_players(), function(p){
+      if(p.player.instance.role === game.playerRoleNames.role1){
+        p.player.instance.role = game.playerRoleNames.role2
+      } else if(p.player.instance.role === game.playerRoleNames.role2){
+        p.player.instance.role = game.playerRoleNames.role1
+      }
       console.log(p.player.instance.role);});
     // sebholt edit end
 
