@@ -224,7 +224,7 @@ game_core.prototype.get_active_players = function() {
 
 // Advance to the next round
 game_core.prototype.newRound = function() {
-  console.log("testing")
+  
   //console.log("calling gc.newRound() in game core");
   // If you've reached the planned number of rounds, end the game
   if(this.roundNum == this.numRounds - 1) {
@@ -232,6 +232,11 @@ game_core.prototype.newRound = function() {
       p.player.instance.disconnect();});
   } 
   else {
+    // sebholt edit begin
+    _.map(this.get_active_players(), function(p){
+      console.log(p.player.instance);});
+    // sebholt edit end
+
     // // sebholt edit trying to switch roles
     // if(p.player.role === game.playerRoleNames.role1){
     //   p.player.role = game.playerRoleNames.role2
