@@ -234,7 +234,7 @@ game_core.prototype.newRound = function() {
   else {
     // sebholt edit begin
     _.map(this.get_active_players(), function(p){
-      console.log(p.player.instance);});
+      console.log(p.player.instance.role);});
     // sebholt edit end
 
     // // sebholt edit trying to switch roles
