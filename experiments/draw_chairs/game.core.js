@@ -235,8 +235,8 @@ game_core.prototype.newRound = function() {
     // sebholt edit begin
     _.map(this.get_active_players(), function(p){
       if(p.player.instance.role === 'sketcher'){
-        p.player.instance.role = 'guesser'
-      } else if(p.player.instance.role === 'guesser'){
+        p.player.instance.role = 'viewer'
+      } else if(p.player.instance.role === 'viewer'){
         p.player.instance.role = 'sketcher'
       }
       console.log(p.player.instance.role);});
