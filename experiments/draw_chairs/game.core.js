@@ -239,9 +239,9 @@ game_core.prototype.newRound = function() {
       } else if(p.player.instance.role === 'viewer'){
         p.player.instance.role = 'sketcher'
       }
-      console.log(globalGame.playerRoleNames.role1);}); //try it
+      console.log(p.player.instance.role);});
     // sebholt edit end
-
+        
     // console.log('got to newRound in game.core.js and not the final round');
     // Otherwise, get the preset list of objects for the new round
     this.roundNum += 1;
