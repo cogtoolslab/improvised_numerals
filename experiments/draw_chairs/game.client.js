@@ -284,7 +284,8 @@ var customSetup = function(game) {
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
       $("#submitbutton").show(); // adding this to show the submit button
       drawScreen(globalGame, globalGame.get_player(globalGame.my_id))
-      
+      globalGame.sketchpad.setupTool();
+
     } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
       globalGame.my_role = globalGame.playerRoleNames.role2;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
