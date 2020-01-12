@@ -292,6 +292,20 @@ var customSetup = function(game) {
       $('#submitbutton').hide();
       $("#loading").show();
       $("#loading-message").html(""); // this doesn't *take away* the submit button. Gotta find where to do that
+      $('#confirmbutton').click(function start() {
+        if(globalGame.packet) {
+          if (globalGame.strokeMade || globalGame.doneDrawing) { // change
+            if (!globalGame.useSubmitButton || submitted) {
+              $('#confirmbutton').hide();
+              globalGame.socket.send(globalGame.packet.join('.'));
+            }
+          }
+        }
+      });
+      globalGame.viewport.addEventListener("click", responseListener, false);
+      globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
+      drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
+
     } // end of sebholt edit
 
     // Reset sketchpad each round
