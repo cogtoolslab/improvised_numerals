@@ -282,13 +282,14 @@ var customSetup = function(game) {
     if(globalGame.my_role === globalGame.playerRoleNames.role2) {
       globalGame.my_role = globalGame.playerRoleNames.role1;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
-      $("#submitbutton").show();
+      $("#submitbutton").show(); // adding this to show the submit button
     } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
       globalGame.my_role = globalGame.playerRoleNames.role2;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+      $('#submitbutton').hide();
       $("#loading").show();
-      $("#loading-message").html("");
-    } // end of this edit
+      $("#loading-message").html(""); // this doesn't *take away* the submit button. Gotta find where to do that
+    } // end of sebholt edit
 
     // Reset sketchpad each round
     project.activeLayer.removeChildren();
