@@ -282,9 +282,12 @@ var customSetup = function(game) {
     if(globalGame.my_role === globalGame.playerRoleNames.role2) {
       globalGame.my_role = globalGame.playerRoleNames.role1;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+      $("#submitbutton").show();
     } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
       globalGame.my_role = globalGame.playerRoleNames.role2;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+      $("#loading").show();
+      $("#loading-message").html("");
     } // end of this edit
 
     // Reset sketchpad each round
