@@ -238,7 +238,6 @@ game_core.prototype.newRound = function() {
         p.player.instance.role = 'viewer'
       } else if(p.player.instance.role === 'viewer'){
         p.player.instance.role = 'sketcher'
-        $("#submitbutton").show()
       }
       console.log(p.player.instance.role);});
     // sebholt edit end
