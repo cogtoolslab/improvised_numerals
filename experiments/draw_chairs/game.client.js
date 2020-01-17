@@ -307,7 +307,7 @@ var customSetup = function(game) {
     //   globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
     //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
 
-    } // end of sebholt edit
+    // } // end of sebholt edit
 
     // Reset sketchpad each round
     project.activeLayer.removeChildren();
