@@ -291,10 +291,10 @@ var customSetup = function(game) {
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
       $('#submitbutton').hide();
       $("#loading").show();
-      $("#loading-message").html(""); // this doesn't *take away* the submit button. Gotta find where to do that
+      $("#loading-message").html("");
       $('#confirmbutton').click(function start() {
         if(globalGame.packet) {
-          if (globalGame.strokeMade || globalGame.doneDrawing) { // change
+          if (globalGame.strokeMade || globalGame.doneDrawing) {
             if (!globalGame.useSubmitButton || submitted) {
               $('#confirmbutton').hide();
               globalGame.socket.send(globalGame.packet.join('.'));
