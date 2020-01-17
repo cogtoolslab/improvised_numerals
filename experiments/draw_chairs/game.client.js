@@ -279,33 +279,33 @@ var customSetup = function(game) {
   game.socket.on('newRoundUpdate', function(data){
 
     // sebholt trying to switch roles
-    console.log(globalGame.my_role)
-    if(globalGame.my_role === globalGame.playerRoleNames.role2) {
-      globalGame.my_role = globalGame.playerRoleNames.role1;
-      globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
-      $("#submitbutton").show(); // adding this to show the submit button
-      drawScreen(globalGame, globalGame.get_player(globalGame.my_id))
-      globalGame.sketchpad.setupTool();
+    // console.log(globalGame.my_role)
+    // if(globalGame.my_role === globalGame.playerRoleNames.role2) {
+    //   globalGame.my_role = globalGame.playerRoleNames.role1;
+    //   globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+    //   $("#submitbutton").show(); // adding this to show the submit button
+    //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id))
+    //   globalGame.sketchpad.setupTool();
 
-    } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-      globalGame.my_role = globalGame.playerRoleNames.role2;
-      globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
-      $('#submitbutton').hide();
-      $("#loading").show();
-      $("#loading-message").html("");
-      $('#confirmbutton').click(function start() {
-        if(globalGame.packet) {
-          if (globalGame.strokeMade || globalGame.doneDrawing) {
-            if (!globalGame.useSubmitButton || submitted) {
-              $('#confirmbutton').hide();
-              globalGame.socket.send(globalGame.packet.join('.'));
-            }
-          }
-        }
-      });
-      globalGame.viewport.addEventListener("click", responseListener, false);
-      globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
-      drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
+    // } else if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+    //   globalGame.my_role = globalGame.playerRoleNames.role2;
+    //   globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
+    //   $('#submitbutton').hide();
+    //   $("#loading").show();
+    //   $("#loading-message").html("");
+    //   $('#confirmbutton').click(function start() {
+    //     if(globalGame.packet) {
+    //       if (globalGame.strokeMade || globalGame.doneDrawing) {
+    //         if (!globalGame.useSubmitButton || submitted) {
+    //           $('#confirmbutton').hide();
+    //           globalGame.socket.send(globalGame.packet.join('.'));
+    //         }
+    //       }
+    //     }
+    //   });
+    //   globalGame.viewport.addEventListener("click", responseListener, false);
+    //   globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
+    //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
 
     } // end of sebholt edit
 
