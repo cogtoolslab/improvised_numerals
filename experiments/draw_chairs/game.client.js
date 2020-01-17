@@ -279,6 +279,7 @@ var customSetup = function(game) {
   game.socket.on('newRoundUpdate', function(data){
 
     // sebholt trying to switch roles
+    console.log(globalGame.my_role)
     if(globalGame.my_role === globalGame.playerRoleNames.role2) {
       globalGame.my_role = globalGame.playerRoleNames.role1;
       globalGame.get_player(globalGame.my_id).role = globalGame.my_role;

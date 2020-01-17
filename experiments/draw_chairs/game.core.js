@@ -239,7 +239,7 @@ game_core.prototype.newRound = function() {
       } else if(p.player.instance.role === 'viewer'){
         p.player.instance.role = 'sketcher'
       }
-    //   console.log(p.player.instance.role);});
+      console.log(p.player.instance.role);});
     // sebholt edit end
         
     // console.log('got to newRound in game.core.js and not the final round');
