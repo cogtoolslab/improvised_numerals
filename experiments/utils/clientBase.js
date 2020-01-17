@@ -138,7 +138,7 @@ var sharedSetup = function(game) {
   game.socket.on('onconnected', onconnect.bind(game));
   //On message from the server, we parse the commands and send it to the handlers
   game.socket.on('message', client_onMessage.bind(game));
-  game.socket.on('message',console.log('message heard, client_onMessage activated')) // sebholt tryna fio
+  game.socket.on('message',console.log('message heard, client_onMessage activated')); // sebholt tryna fio
 };
 
 // When loading the page, we store references to our
