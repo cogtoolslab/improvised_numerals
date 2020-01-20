@@ -40,16 +40,16 @@ if(argv.expname) {
 }
 
 try {
-  var privateKey  = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.key'),
-      certificate = fs.readFileSync('/etc/apache2/ssl/stanford-cogsci.org.crt'),
-      intermed    = fs.readFileSync('/etc/apache2/ssl/intermediate.crt'),
-      options     = {key: privateKey, cert: certificate, ca: intermed},
-      server      = require('https').createServer(options,app).listen(gameport),
-      io          = require('socket.io')(server);
+  var privateKey = fs.readFileSync('/etc/letsencrypt/live/cogtoolslab.org/privkey.pem'),
+    certificate = fs.readFileSync('/etc/letsencrypt/live/cogtoolslab.org/cert.pem'),
+    intermed = fs.readFileSync('/etc/letsencrypt/live/cogtoolslab.org/chain.pem'),
+    options = { key: privateKey, cert: certificate, ca: intermed },
+    server = require('https').createServer(options, app).listen(gameport),
+    io = require('socket.io')(server);
 } catch (err) {
   console.log("cannot find SSL certificates; falling back to http");
-  var server      = app.listen(gameport),
-      io          = require('socket.io')(server);
+  var server = app.listen(gameport),
+    io = require('socket.io')(server);
 }
 
 var utils = require('./utils/sharedUtils.js');
