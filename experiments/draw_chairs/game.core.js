@@ -313,6 +313,8 @@ game_core.prototype.getRandomizedConditions = function() {
     var controlObjs = shuffledObjs.slice(setSize,setSize*2);
     var sampledSubsetRepeated = "N"; // null placeholder
     var sampledSubsetControl = "N"; // null placeholder   
+
+    console.log("NOT augmentedstimlist") // sebholt print statement
   } else { // define repeatedObj on basis of hard subsetting within cluster into contexts
     // independent random sampling to decide whether to use subset "A" or subset "B" within each cluster
     var sampledSubsetRepeated = _.sample(["A","A"]);
@@ -321,6 +323,7 @@ game_core.prototype.getRandomizedConditions = function() {
     var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
     _c = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetControl && basic == controlCat);
     var controlObjs = _.values(_.mapValues(_c, ({object}) => object));    
+    console.log("YES augmentedstimlist") // sebholt print statement
   }
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
