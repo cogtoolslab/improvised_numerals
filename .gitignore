@@ -13,6 +13,19 @@ __pycache__/
 *.json
 node_modules/
 
+.DS_Store
+*.aux
+*.bbl
+*.fls
+*.pdf
+*.blg
+*.fdb_latexmk
+*.synctex.gz
+*.key
+*.toc
+*.lof
+*.lot
+
 # Distribution / packaging
 .Python
 build/
