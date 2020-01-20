@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.DS_Store
 # C extensions
 *.so
 
@@ -12,6 +12,19 @@ __pycache__/
 *.png
 *.json
 node_modules/
+
+.DS_Store
+*.aux
+*.bbl
+*.fls
+*.pdf
+*.blg
+*.fdb_latexmk
+*.synctex.gz
+*.key
+*.toc
+*.lof
+*.lot
 
 # Distribution / packaging
 .Python
