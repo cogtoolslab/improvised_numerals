@@ -321,7 +321,6 @@ game_core.prototype.getRandomizedConditions = function() {
     var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
     _c = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetControl && basic == controlCat);
     var controlObjs = _.values(_.mapValues(_c, ({object}) => object));    
-    console.log("TEST PRINT:", _r) // sebholt print statement
   }
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
@@ -367,6 +366,7 @@ game_core.prototype.getRandomizedConditions = function() {
 
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
+  console.log("TEST PRINT:", pre) // sebholt print statement
 
   // this is the design dictionary
   return session;
