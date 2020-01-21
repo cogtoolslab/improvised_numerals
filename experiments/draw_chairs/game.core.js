@@ -366,7 +366,8 @@ game_core.prototype.getRandomizedConditions = function() {
 
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
-  console.log("TEST PRINT:", pre) // sebholt print statement
+  console.log("TEST PRINT WHERE IS IT:") // sebholt print statement
+  console.log(pre) // sebholt print statement
 
   // this is the design dictionary
   return session;
