@@ -372,7 +372,7 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("END OF REPEATED") // sebholt print statement
   // console.log(post) // sebholt print statement
   // console.log("END OF POST") // sebholt print statement
-  console.log(session.getOwnPropertyNames()) // sebholt print statement
+  console.log(getOwnPropertyNames(session)) // sebholt print statement
   console.log("END OF SESSION") // sebholt print statement
 
   // this is the design dictionary
