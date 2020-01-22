@@ -283,7 +283,7 @@ game_core.prototype.getRandomizedConditions = function() {
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-
+  console.log(repeatedColor) // sebholt edit
   var repeatedCat;
   var controlCat;
 
@@ -293,12 +293,12 @@ game_core.prototype.getRandomizedConditions = function() {
     controlCat = shuffledCat[1];
 
   } else { // if waitingDining is true, so only chairs from waiting and dining clusters are used
-    if (this.deer) { // waiting is repeated, dining is control
-      repeatedCat = "deer"; 
-      controlCat = "bears";
+    if (this.deer) { // waiting is repeated, dining is control   // sebholt edit
+      repeatedCat = "deer";   // sebholt edit
+      controlCat = "bears";  // sebholt edit
     } else {            // dining is repeated, waiting is control
-      repeatedCat = "bears";
-      controlCat = "deer";
+      repeatedCat = "bears";  // sebholt edit
+      controlCat = "deer";  // sebholt edit
     }  
   }
 
