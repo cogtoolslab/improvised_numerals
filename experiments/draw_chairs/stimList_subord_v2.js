@@ -130,7 +130,7 @@ var shapenet_309674bdec2d24d7597976c675750537 = {filename: "309674bdec2d24d75979
 // shapenet_2eaab78d6e4c4f2d7b0c85d2effc7e09,shapenet_309674bdec2d24d7597976c675750537
 // ];
 
-
+console.log(typeof(bears_1_0))
 // sebholt adding this stimlist for animals
 var stimList = [
     bears_1_0, bears_2_0, bears_3_0, bears_4_0, bears_5_0, bears_6_0,
