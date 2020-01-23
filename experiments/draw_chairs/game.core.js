@@ -276,7 +276,8 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 }
 
 game_core.prototype.getRandomizedConditions = function() {
-
+  console.log(this) // sebholt print
+  console.log(setSize) // sebholt print
   var numCats = 2;
   var numObjs = this.setSize * 2;
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
