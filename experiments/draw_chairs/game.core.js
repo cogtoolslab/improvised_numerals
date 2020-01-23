@@ -276,15 +276,13 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 }
 
 game_core.prototype.getRandomizedConditions = function() {
-  console.log(this) // sebholt print
-  console.log(setSize) // sebholt print
+  // console.log(this) // sebholt print
   var numCats = 2;
-  var numObjs = this.setSize * 2;
+  var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-  console.log(repeatedColor) // sebholt edit
   var repeatedCat;
   var controlCat;
 
@@ -294,12 +292,12 @@ game_core.prototype.getRandomizedConditions = function() {
     controlCat = shuffledCat[1];
 
   } else { // if waitingDining is true, so only chairs from waiting and dining clusters are used
-    if (this.waiting) { // waiting is repeated, dining is control   // sebholt edit
-      repeatedCat = "dining";   // sebholt edit
-      controlCat = "waiting";  // sebholt edit
+    if (this.waiting) { // waiting is repeated, dining is control   // sebholt edit. Was 'waiting', leaving it as-is because that's the variable name
+      repeatedCat = "bears";   // sebholt edit. Was 'dining'
+      controlCat = "deer";  // sebholt edit. Was 'waiting'
     } else {            // dining is repeated, waiting is control
-      repeatedCat = "waiting";  // sebholt edit
-      controlCat = "dining";  // sebholt edit
+      repeatedCat = "deer";  // sebholt edit
+      controlCat = "bears";  // sebholt edit
     }  
   }
 
@@ -373,8 +371,8 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("END OF REPEATED") // sebholt print statement
   // console.log(post) // sebholt print statement
   // console.log("END OF POST") // sebholt print statement
-  console.log(session) // sebholt print statement
-  console.log("END OF SESSION") // sebholt print statement
+  // console.log(session) // sebholt print statement
+  // console.log("END OF SESSION") // sebholt print statement
 
   // this is the design dictionary
   return session;
