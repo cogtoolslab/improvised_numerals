@@ -317,15 +317,15 @@ game_core.prototype.getRandomizedConditions = function() {
     var sampledSubsetRepeated = _.sample(["A","A"]);
     var sampledSubsetControl = _.sample(["B","B"]);    
     _r = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetRepeated && basic == repeatedCat);
-    console.log("_r: ", _r ,"\n") // sebholt print statement
-    console.log("_.mapValues(_r, ({object}) => object): ", _.mapValues(_r, ({object}) => object) ,"\n") // sebholt print statement
+    // console.log("_r: ", _r ,"\n") // sebholt print statement
+    // console.log("_.mapValues(_r, ({object}) => object): ", _.mapValues(_r, ({object}) => object) ,"\n") // sebholt print statement
 
     var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
-    console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
+    // console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
     _c = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetControl && basic == controlCat);
-    console.log("_c: ", _c ,"\n") // sebholt print statement
+    // console.log("_c: ", _c ,"\n") // sebholt print statement
     var controlObjs = _.values(_.mapValues(_c, ({object}) => object));    
-    console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
+    // console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
   }
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
@@ -345,8 +345,8 @@ game_core.prototype.getRandomizedConditions = function() {
                             'condition':'control',
                             'repeatedColor':repeatedColor
                             }
-console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
-console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
+// console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
+// console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
   // pre phase 
   var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
@@ -354,7 +354,7 @@ console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt
                                _.map(controlObjs, curObj => {
                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
                     })));
-console.log("pre: ", pre ,"\n") // sebholt print statement
+// console.log("pre: ", pre ,"\n") // sebholt print statement
   // repeated phase
   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
@@ -439,6 +439,7 @@ game_core.prototype.makeTrialList = function () {
     var locs = this.sampleStimulusLocs();
     // construct trial list (in sets of complete rounds)
     trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener), function(tuple) {
+      console.log("tuple: ", tuple ,"\n") // sebholt print statement
       var object = _.clone(tuple[0]);
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
