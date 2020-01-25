@@ -308,11 +308,8 @@ game_core.prototype.getRandomizedConditions = function() {
   if (!this.useAugmentedStimlist) { // NOT useAugmentedStimlist means old refgame version 1.0-1.2
     // split these 8 chairs up into 2 sets of 4, one of them will be repeated, the other will be control
     var shuffledObjs = _.shuffle(_.range(0,numObjs));
-    console.log("shuffledObjs: ", shuffledObjs ,"\n") // sebholt print statement
     var repeatedObjs = shuffledObjs.slice(0,setSize);
-    console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
     var controlObjs = shuffledObjs.slice(setSize,setSize*2);
-    console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
     var sampledSubsetRepeated = "N"; // null placeholder
     var sampledSubsetControl = "N"; // null placeholder   
   } else { // define repeatedObj on basis of hard subsetting within cluster into contexts
