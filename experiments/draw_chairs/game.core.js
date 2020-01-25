@@ -278,7 +278,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   // console.log(this) // sebholt print
   var numCats = 2;
-  var numObjs = this.setSize * 3; // sebholt edit. What is now 3 was 2
+  var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
@@ -293,11 +293,11 @@ game_core.prototype.getRandomizedConditions = function() {
 
   } else { // if waitingDining is true, so only chairs from waiting and dining clusters are used
     if (this.waiting) { // waiting is repeated, dining is control   // sebholt edit. Was 'waiting', leaving it as-is because that's the variable name
-      repeatedCat = "bears";   // sebholt edit. Was 'dining'
-      controlCat = "deer";  // sebholt edit. Was 'waiting'
+      repeatedCat = "dining";   // sebholt edit. Was 'dining'
+      controlCat = "waiting";  // sebholt edit. Was 'waiting'
     } else {            // dining is repeated, waiting is control
-      repeatedCat = "deer";  // sebholt edit
-      controlCat = "bears";  // sebholt edit
+      repeatedCat = "waiting";  // sebholt edit
+      controlCat = "dining";  // sebholt edit
     }  
   }
 
@@ -308,8 +308,11 @@ game_core.prototype.getRandomizedConditions = function() {
   if (!this.useAugmentedStimlist) { // NOT useAugmentedStimlist means old refgame version 1.0-1.2
     // split these 8 chairs up into 2 sets of 4, one of them will be repeated, the other will be control
     var shuffledObjs = _.shuffle(_.range(0,numObjs));
+    console.log("shuffledObjs: ", shuffledObjs ,"\n") // sebholt print statement
     var repeatedObjs = shuffledObjs.slice(0,setSize);
+    console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
     var controlObjs = shuffledObjs.slice(setSize,setSize*2);
+    console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
     var sampledSubsetRepeated = "N"; // null placeholder
     var sampledSubsetControl = "N"; // null placeholder   
   } else { // define repeatedObj on basis of hard subsetting within cluster into contexts
@@ -317,9 +320,13 @@ game_core.prototype.getRandomizedConditions = function() {
     var sampledSubsetRepeated = _.sample(["A","A"]);
     var sampledSubsetControl = _.sample(["B","B"]);    
     _r = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetRepeated && basic == repeatedCat);
+    console.log("_r: ", _r ,"\n") // sebholt print statement
     var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
+    console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
     _c = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetControl && basic == controlCat);
+    console.log("_c: ", _c ,"\n") // sebholt print statement
     var controlObjs = _.values(_.mapValues(_c, ({object}) => object));    
+    console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
   }
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
@@ -339,7 +346,8 @@ game_core.prototype.getRandomizedConditions = function() {
                             'condition':'control',
                             'repeatedColor':repeatedColor
                             }
-
+console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
+console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
   // pre phase 
   var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
@@ -347,7 +355,7 @@ game_core.prototype.getRandomizedConditions = function() {
                                _.map(controlObjs, curObj => {
                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
                     })));
-
+console.log("pre: ", pre ,"\n") // sebholt print statement
   // repeated phase
   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
@@ -371,7 +379,7 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("END OF REPEATED") // sebholt print statement
   // console.log(post) // sebholt print statement
   // console.log("END OF POST") // sebholt print statement
-  console.log(session) // sebholt print statement
+  // console.log(session) // sebholt print statement
   // console.log("END OF SESSION") // sebholt print statement
 
   // this is the design dictionary
