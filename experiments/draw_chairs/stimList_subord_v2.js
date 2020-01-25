@@ -20,31 +20,31 @@
 
 // sebholt getting our different stimuli for the animals
 // get rid of the stuff in game.core getRandomizedConditions that depends on 'subset', 'cluster', 'object', or 'pose' because we're not going to use it
-var bears_1_0 = {filename: "1_0_bear.png" , basic: "bears" , subordinate: "bears_1" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/1_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_2_0 = {filename: "2_0_bear.png" , basic: "bears" , subordinate: "bears_2" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/2_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_3_0 = {filename: "3_0_bear.png" , basic: "bears" , subordinate: "bears_3" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/3_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_4_0 = {filename: "4_0_bear.png" , basic: "bears" , subordinate: "bears_4" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/4_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_5_0 = {filename: "5_0_bear.png" , basic: "bears" , subordinate: "bears_5" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/5_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_6_0 = {filename: "6_0_bear.png" , basic: "bears" , subordinate: "bears_6" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/6_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_7_0 = {filename: "7_0_bear.png" , basic: "bears" , subordinate: "bears_7" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/7_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_8_0 = {filename: "8_0_bear.png" , basic: "bears" , subordinate: "bears_8" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/8_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_9_0 = {filename: "9_0_bear.png" , basic: "bears" , subordinate: "bears_9" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/9_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_10_0 = {filename: "10_0_bear.png" , basic: "bears" , subordinate: "bears_10" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/10_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_11_0 = {filename: "11_0_bear.png" , basic: "bears" , subordinate: "bears_11" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/11_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var bears_12_0 = {filename: "12_0_bear.png" , basic: "bears" , subordinate: "bears_12" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/12_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_1_0 = {filename: "1_0_bear.png" , basic: "bears" , subordinate: "bears_1" , subset:"A", object: 0, url: "https://iterated-number.s3.amazonaws.com/1_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_2_0 = {filename: "2_0_bear.png" , basic: "bears" , subordinate: "bears_2" , subset:"A", object: 1, url: "https://iterated-number.s3.amazonaws.com/2_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_3_0 = {filename: "3_0_bear.png" , basic: "bears" , subordinate: "bears_3" , subset:"A", object: 2, url: "https://iterated-number.s3.amazonaws.com/3_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_4_0 = {filename: "4_0_bear.png" , basic: "bears" , subordinate: "bears_4" , subset:"A", object: 3, url: "https://iterated-number.s3.amazonaws.com/4_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_5_0 = {filename: "5_0_bear.png" , basic: "bears" , subordinate: "bears_5" , subset:"A", object: 4, url: "https://iterated-number.s3.amazonaws.com/5_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_6_0 = {filename: "6_0_bear.png" , basic: "bears" , subordinate: "bears_6" , subset:"A", object: 5, url: "https://iterated-number.s3.amazonaws.com/6_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_7_0 = {filename: "7_0_bear.png" , basic: "bears" , subordinate: "bears_7" , subset:"B", object: 6, url: "https://iterated-number.s3.amazonaws.com/7_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_8_0 = {filename: "8_0_bear.png" , basic: "bears" , subordinate: "bears_8" , subset:"B", object: 7, url: "https://iterated-number.s3.amazonaws.com/8_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_9_0 = {filename: "9_0_bear.png" , basic: "bears" , subordinate: "bears_9" , subset:"B", object: 8, url: "https://iterated-number.s3.amazonaws.com/9_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_10_0 = {filename: "10_0_bear.png" , basic: "bears" , subordinate: "bears_10" , subset:"B", object: 9, url: "https://iterated-number.s3.amazonaws.com/10_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_11_0 = {filename: "11_0_bear.png" , basic: "bears" , subordinate: "bears_11" , subset:"B", object: 10, url: "https://iterated-number.s3.amazonaws.com/11_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_12_0 = {filename: "12_0_bear.png" , basic: "bears" , subordinate: "bears_12" , subset:"B", object: 11, url: "https://iterated-number.s3.amazonaws.com/12_0_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 
-var deer_1_0 = {filename: "1_0_deer.png" , basic: "deer" , subordinate: "deer_1" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/1_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_2_0 = {filename: "2_0_deer.png" , basic: "deer" , subordinate: "deer_2" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/2_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_3_0 = {filename: "3_0_deer.png" , basic: "deer" , subordinate: "deer_3" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/3_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_4_0 = {filename: "4_0_deer.png" , basic: "deer" , subordinate: "deer_4" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/4_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_5_0 = {filename: "5_0_deer.png" , basic: "deer" , subordinate: "deer_5" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/5_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_6_0 = {filename: "6_0_deer.png" , basic: "deer" , subordinate: "deer_6" , subset:"A", url: "https://iterated-number.s3.amazonaws.com/6_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_7_0 = {filename: "7_0_deer.png" , basic: "deer" , subordinate: "deer_7" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/7_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_8_0 = {filename: "8_0_deer.png" , basic: "deer" , subordinate: "deer_8" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/8_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_9_0 = {filename: "9_0_deer.png" , basic: "deer" , subordinate: "deer_9" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/9_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_10_0 = {filename: "10_0_deer.png" , basic: "deer" , subordinate: "deer_10" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/10_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_11_0 = {filename: "11_0_deer.png" , basic: "deer" , subordinate: "deer_11" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/11_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
-var deer_12_0 = {filename: "12_0_deer.png" , basic: "deer" , subordinate: "deer_12" , subset:"B", url: "https://iterated-number.s3.amazonaws.com/12_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_1_0 = {filename: "1_0_deer.png" , basic: "deer" , subordinate: "deer_1" , subset:"A", object: 0, url: "https://iterated-number.s3.amazonaws.com/1_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_2_0 = {filename: "2_0_deer.png" , basic: "deer" , subordinate: "deer_2" , subset:"A", object: 1, url: "https://iterated-number.s3.amazonaws.com/2_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_3_0 = {filename: "3_0_deer.png" , basic: "deer" , subordinate: "deer_3" , subset:"A", object: 2, url: "https://iterated-number.s3.amazonaws.com/3_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_4_0 = {filename: "4_0_deer.png" , basic: "deer" , subordinate: "deer_4" , subset:"A", object: 3, url: "https://iterated-number.s3.amazonaws.com/4_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_5_0 = {filename: "5_0_deer.png" , basic: "deer" , subordinate: "deer_5" , subset:"A", object: 4, url: "https://iterated-number.s3.amazonaws.com/5_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_6_0 = {filename: "6_0_deer.png" , basic: "deer" , subordinate: "deer_6" , subset:"A", object: 5, url: "https://iterated-number.s3.amazonaws.com/6_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_7_0 = {filename: "7_0_deer.png" , basic: "deer" , subordinate: "deer_7" , subset:"B", object: 6, url: "https://iterated-number.s3.amazonaws.com/7_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_8_0 = {filename: "8_0_deer.png" , basic: "deer" , subordinate: "deer_8" , subset:"B", object: 7, url: "https://iterated-number.s3.amazonaws.com/8_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_9_0 = {filename: "9_0_deer.png" , basic: "deer" , subordinate: "deer_9" , subset:"B", object: 8, url: "https://iterated-number.s3.amazonaws.com/9_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_10_0 = {filename: "10_0_deer.png" , basic: "deer" , subordinate: "deer_10" , subset:"B", object: 9, url: "https://iterated-number.s3.amazonaws.com/10_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_11_0 = {filename: "11_0_deer.png" , basic: "deer" , subordinate: "deer_11" , subset:"B", object: 10, url: "https://iterated-number.s3.amazonaws.com/11_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_12_0 = {filename: "12_0_deer.png" , basic: "deer" , subordinate: "deer_12" , subset:"B", object: 11, url: "https://iterated-number.s3.amazonaws.com/12_0_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 
 var owls_1_0 = {filename: "1_0_owl.png" , basic: "owls" , subordinate: "owls_1" , url: "https://iterated-number.s3.amazonaws.com/1_0_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 var owls_2_0 = {filename: "2_0_owl.png" , basic: "owls" , subordinate: "owls_2" , url: "https://iterated-number.s3.amazonaws.com/2_0_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
@@ -121,23 +121,23 @@ var shapenet_309674bdec2d24d7597976c675750537 = {filename: "309674bdec2d24d75979
 
 var stimList = [
 // label 2 - dining
-shapenet_30afd2ef2ed30238aa3d0a2f00b54836,shapenet_30dc9d9cfbc01e19950c1f85d919ebc2,shapenet_4c1777173111f2e380a88936375f2ef4,
-shapenet_3466b6ecd040e252c215f685ba622927,shapenet_38f87e02e850d3bd1d5ccc40b510e4bd,shapenet_3cf6db91f872d26c222659d33fd79709,
-shapenet_3d7ebe5de86294b3f6bcd046624c43c9,shapenet_56262eebe592b085d319c38340319ae4,
-// label 38 - waiting
-shapenet_1d1641362ad5a34ac3bd24f986301745,shapenet_1da9942b2ab7082b2ba1fdc12ecb5c9e,shapenet_2448d9aeda5bb9b0f4b6538438a0b930,
-shapenet_23b0da45f23e5fb4f4b6538438a0b930,shapenet_2b5953c986dd08f2f91663a74ccd2338,shapenet_2e291f35746e94fa62762c7262e78952,
-shapenet_2eaab78d6e4c4f2d7b0c85d2effc7e09,shapenet_309674bdec2d24d7597976c675750537
+// shapenet_30afd2ef2ed30238aa3d0a2f00b54836,shapenet_30dc9d9cfbc01e19950c1f85d919ebc2,shapenet_4c1777173111f2e380a88936375f2ef4,
+// shapenet_3466b6ecd040e252c215f685ba622927,shapenet_38f87e02e850d3bd1d5ccc40b510e4bd,shapenet_3cf6db91f872d26c222659d33fd79709,
+// shapenet_3d7ebe5de86294b3f6bcd046624c43c9,shapenet_56262eebe592b085d319c38340319ae4,
+// // label 38 - waiting
+// shapenet_1d1641362ad5a34ac3bd24f986301745,shapenet_1da9942b2ab7082b2ba1fdc12ecb5c9e,shapenet_2448d9aeda5bb9b0f4b6538438a0b930,
+// shapenet_23b0da45f23e5fb4f4b6538438a0b930,shapenet_2b5953c986dd08f2f91663a74ccd2338,shapenet_2e291f35746e94fa62762c7262e78952,
+// shapenet_2eaab78d6e4c4f2d7b0c85d2effc7e09,shapenet_309674bdec2d24d7597976c675750537
 // ];
 
 
 // sebholt adding this stimlist for animals
 // var stimList = [
-    // bears_1_0, bears_2_0, bears_3_0, bears_4_0, bears_5_0, bears_6_0,
-    // bears_7_0, bears_8_0, bears_9_0, bears_10_0, bears_11_0, bears_12_0,
+    bears_1_0, bears_2_0, bears_3_0, bears_4_0, bears_5_0, bears_6_0,
+    bears_7_0, bears_8_0, bears_9_0, bears_10_0, bears_11_0, bears_12_0,
 
-    // deer_1_0, deer_2_0, deer_3_0, deer_4_0, deer_5_0, deer_6_0,
-    // deer_7_0, deer_8_0, deer_9_0, deer_10_0, deer_11_0, deer_12_0//,
+    deer_1_0, deer_2_0, deer_3_0, deer_4_0, deer_5_0, deer_6_0,
+    deer_7_0, deer_8_0, deer_9_0, deer_10_0, deer_11_0, deer_12_0//,
 
 //     owls_1_0, owls_2_0, owls_3_0, owls_4_0, owls_5_0, owls_6_0,
 //     owls_7_0, owls_8_0, owls_9_0, owls_10_0, wls_11_0, owls_12_0,
