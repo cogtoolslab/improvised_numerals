@@ -440,6 +440,7 @@ game_core.prototype.makeTrialList = function () {
     // construct trial list (in sets of complete rounds)
     trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener), function(tuple) {
       console.log("tuple: ", tuple ,"\n") // sebholt print statement
+      console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
       var object = _.clone(tuple[0]);
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
