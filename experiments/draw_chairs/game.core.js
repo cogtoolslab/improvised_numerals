@@ -318,7 +318,6 @@ game_core.prototype.getRandomizedConditions = function() {
     var sampledSubsetControl = _.sample(["B","B"]);    
     _r = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetRepeated && basic == repeatedCat);
     console.log("_r: ", _r ,"\n") // sebholt print statement
-    console.log("object: ", object ,"\n") // sebholt print statement
     console.log("_.mapValues(_r, ({object}) => object): ", _.mapValues(_r, ({object}) => object) ,"\n") // sebholt print statement
 
     var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
