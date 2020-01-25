@@ -121,23 +121,23 @@ var shapenet_309674bdec2d24d7597976c675750537 = {filename: "309674bdec2d24d75979
 
 var stimList = [
 // label 2 - dining
-// shapenet_30afd2ef2ed30238aa3d0a2f00b54836,shapenet_30dc9d9cfbc01e19950c1f85d919ebc2,shapenet_4c1777173111f2e380a88936375f2ef4,
-// shapenet_3466b6ecd040e252c215f685ba622927,shapenet_38f87e02e850d3bd1d5ccc40b510e4bd,shapenet_3cf6db91f872d26c222659d33fd79709,
-// shapenet_3d7ebe5de86294b3f6bcd046624c43c9,shapenet_56262eebe592b085d319c38340319ae4,
-// // label 38 - waiting
-// shapenet_1d1641362ad5a34ac3bd24f986301745,shapenet_1da9942b2ab7082b2ba1fdc12ecb5c9e,shapenet_2448d9aeda5bb9b0f4b6538438a0b930,
-// shapenet_23b0da45f23e5fb4f4b6538438a0b930,shapenet_2b5953c986dd08f2f91663a74ccd2338,shapenet_2e291f35746e94fa62762c7262e78952,
-// shapenet_2eaab78d6e4c4f2d7b0c85d2effc7e09,shapenet_309674bdec2d24d7597976c675750537
+shapenet_30afd2ef2ed30238aa3d0a2f00b54836,shapenet_30dc9d9cfbc01e19950c1f85d919ebc2,shapenet_4c1777173111f2e380a88936375f2ef4,
+shapenet_3466b6ecd040e252c215f685ba622927,shapenet_38f87e02e850d3bd1d5ccc40b510e4bd,shapenet_3cf6db91f872d26c222659d33fd79709,
+shapenet_3d7ebe5de86294b3f6bcd046624c43c9,shapenet_56262eebe592b085d319c38340319ae4,
+// label 38 - waiting
+shapenet_1d1641362ad5a34ac3bd24f986301745,shapenet_1da9942b2ab7082b2ba1fdc12ecb5c9e,shapenet_2448d9aeda5bb9b0f4b6538438a0b930,
+shapenet_23b0da45f23e5fb4f4b6538438a0b930,shapenet_2b5953c986dd08f2f91663a74ccd2338,shapenet_2e291f35746e94fa62762c7262e78952,
+shapenet_2eaab78d6e4c4f2d7b0c85d2effc7e09,shapenet_309674bdec2d24d7597976c675750537
 // ];
 
 
 // sebholt adding this stimlist for animals
 // var stimList = [
-    bears_1_0, bears_2_0, bears_3_0, bears_4_0, bears_5_0, bears_6_0,
-    bears_7_0, bears_8_0, bears_9_0, bears_10_0, bears_11_0, bears_12_0,
+    // bears_1_0, bears_2_0, bears_3_0, bears_4_0, bears_5_0, bears_6_0,
+    // bears_7_0, bears_8_0, bears_9_0, bears_10_0, bears_11_0, bears_12_0,
 
-    deer_1_0, deer_2_0, deer_3_0, deer_4_0, deer_5_0, deer_6_0,
-    deer_7_0, deer_8_0, deer_9_0, deer_10_0, deer_11_0, deer_12_0//,
+    // deer_1_0, deer_2_0, deer_3_0, deer_4_0, deer_5_0, deer_6_0,
+    // deer_7_0, deer_8_0, deer_9_0, deer_10_0, deer_11_0, deer_12_0//,
 
 //     owls_1_0, owls_2_0, owls_3_0, owls_4_0, owls_5_0, owls_6_0,
 //     owls_7_0, owls_8_0, owls_9_0, owls_10_0, wls_11_0, owls_12_0,
