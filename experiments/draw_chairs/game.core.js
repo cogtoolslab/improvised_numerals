@@ -245,19 +245,13 @@ game_core.prototype.newRound = function() {
     // console.log('got to newRound in game.core.js and not the final round');
     // Otherwise, get the preset list of objects for the new round
     this.roundNum += 1;
-    console.log("step 0") // sebholt printing
     this.trialInfo = {currStim: this.trialList[this.roundNum]};
-    console.log("step 1") // sebholt printing
     //console.log("this.trialList[this.roundNum]: " + this.trialList[this.roundNum]);
     this.objects = this.trialList[this.roundNum];
-    console.log("step 2") // sebholt printing
     this.objClicked = false;
     active_players = this.get_active_players();
-    console.log("step 3") // sebholt printing
     this.setupTimer(this.timeLimit,active_players);
-    console.log("step 4") // sebholt printing
     this.server_send_update();
-    console.log("step 5") // sebholt printing
   }
 };
 
