@@ -292,11 +292,11 @@ game_core.prototype.getRandomizedConditions = function() {
 
   } else { // if waitingDining is true, so only chairs from waiting and dining clusters are used
     if (this.waiting) { // waiting is repeated, dining is control   // sebholt edit. Was 'waiting', leaving it as-is because that's the variable name
-      repeatedCat = "waiting";   // sebholt edit. Was 'waiting'
-      controlCat = "dining";  // sebholt edit. Was 'dining'
+      repeatedCat = "bears";   // sebholt edit. Was 'waiting'
+      controlCat = "deer";  // sebholt edit. Was 'dining'
     } else {            // dining is repeated, waiting is control
-      repeatedCat = "dining";  // sebholt edit
-      controlCat = "waiting";  // sebholt edit
+      repeatedCat = "deer";  // sebholt edit
+      controlCat = "bears";  // sebholt edit
     }  
   }
 
