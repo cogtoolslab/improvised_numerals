@@ -278,7 +278,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   // console.log(this) // sebholt print
   var numCats = 2;
-  var numObjs = this.setSize * 3; // sebholt edit. What is now 3 was 2
+  var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
@@ -441,7 +441,7 @@ game_core.prototype.makeTrialList = function () {
     console.log("objList: ", objList ,"\n") // sebholt print statement
     console.log("locs.speaker: ", locs.speaker ,"\n") // sebholt print statement
     console.log("locs.listener: ", locs.listener ,"\n") // sebholt print statement
-    
+
     trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener), function(tuple) {
       console.log("tuple: ", tuple ,"\n") // sebholt print statement
       console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
