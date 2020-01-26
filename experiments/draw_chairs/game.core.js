@@ -276,7 +276,6 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 }
 
 game_core.prototype.getRandomizedConditions = function() {
-  // console.log(this) // sebholt print
   var numCats = 2;
   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
@@ -372,14 +371,6 @@ game_core.prototype.getRandomizedConditions = function() {
 
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
-  // console.log(pre) // sebholt print statement
-  // console.log("END OF PRE") // sebholt print statement
-  // console.log(repeated) // sebholt print statement
-  // console.log("END OF REPEATED") // sebholt print statement
-  // console.log(post) // sebholt print statement
-  // console.log("END OF POST") // sebholt print statement
-  // console.log(session) // sebholt print statement
-  // console.log("END OF SESSION") // sebholt print statement
 
   // this is the design dictionary
   return session;
