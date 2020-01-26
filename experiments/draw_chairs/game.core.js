@@ -143,7 +143,7 @@ var game_core = function(options){
   this.useSubmitButton = true;
 
   // Use augmented version of stimlist_subord that partitions into "set A" and "set B" within cluster
-  this.useAugmentedStimlist = true;
+  this.useAugmentedStimlist = false; // sebholt edit. Used to be 'true'
 
   if(this.server) {
     console.log('sent server update bc satisfied this.server')
