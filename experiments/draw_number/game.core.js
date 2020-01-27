@@ -140,7 +140,7 @@ var game_core = function(options){
     console.log('sent server update bc satisfied this.server')
     // If we're initializing the server game copy, pre-create the list of trials
     // we'll use, make a player object, and tell the player who they are
-    this.stimList = _.map(require('./stimList_subord_v2', _.clone));
+    this.stimList = _.map(require('./stimList', _.clone));
     this.id = options.id;
     this.expName = options.expName;
     this.player_count = options.player_count;
