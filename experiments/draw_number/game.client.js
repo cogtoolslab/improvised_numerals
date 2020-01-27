@@ -60,7 +60,7 @@ var client_onserverupdate_received = function(data){
   // machinery to draw them
   if (globalGame.roundNum != data.roundNum) {
     var alreadyLoaded = 0;
-    $('#occluder').show();
+    //$('#occluder').show();
     globalGame.drawingAllowed = false;
     //console.log("data.objects:" + data.objects);
     globalGame.objects = _.map(data.objects, function(obj) {

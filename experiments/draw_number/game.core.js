@@ -142,19 +142,11 @@ var game_core = function(options){
   // Use submit button
   this.useSubmitButton = true;
 
-  // Use augmented version of stimlist_subord that partitions into "set A" and "set B" within cluster
-  this.useAugmentedStimlist = false; // sebholt edit. Used to be 'true'
-
   if(this.server) {
     console.log('sent server update bc satisfied this.server')
     // If we're initializing the server game copy, pre-create the list of trials
     // we'll use, make a player object, and tell the player who they are
-    if (this.useAugmentedStimlist) {
-      this.stimList = _.map(require('./stimList_subord_v2', _.clone));
-    } else {
-      this.stimList = _.map(require('./stimList_subord', _.clone));
-    }
-
+    this.stimList = _.map(require('./stimList_subord_v2', _.clone));
     this.id = options.id;
     this.expName = options.expName;
     this.player_count = options.player_count;
