@@ -296,34 +296,14 @@ game_core.prototype.getRandomizedConditions = function() {
     controlCat = repeatedCat;
   }
 
-  if (!this.useAugmentedStimlist) { // NOT useAugmentedStimlist means old refgame version 1.0-1.2
-    // split these 8 chairs up into 2 sets of 4, one of them will be repeated, the other will be control
-    var shuffledObjs = _.shuffle(_.range(0,numObjs));
-    var repeatedObjs = shuffledObjs.slice(0,setSize);
-    var controlObjs = shuffledObjs.slice(setSize,setSize*2);
-    var sampledSubsetRepeated = "N"; // null placeholder
-    var sampledSubsetControl = "N"; // null placeholder   
-  } else { // define repeatedObj on basis of hard subsetting within cluster into contexts
-    // independent random sampling to decide whether to use subset "A" or subset "B" within each cluster
-    var sampledSubsetRepeated = _.sample(["A","A"]);
-    var sampledSubsetControl = _.sample(["B","B"]);    
-    _r = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetRepeated && basic == repeatedCat);
-    // console.log("_r: ", _r ,"\n") // sebholt print statement
-    // console.log("_.mapValues(_r, ({object}) => object): ", _.mapValues(_r, ({object}) => object) ,"\n") // sebholt print statement
-
-    var repeatedObjs = _.values(_.mapValues(_r, ({object}) => object));
-    // console.log("repeatedObjs: ", repeatedObjs ,"\n") // sebholt print statement
-    _c = _.filter(this.stimList, ({subset,basic}) => subset == sampledSubsetControl && basic == controlCat);
-    // console.log("_c: ", _c ,"\n") // sebholt print statement
-    var controlObjs = _.values(_.mapValues(_c, ({object}) => object));    
-    // console.log("controlObjs: ", controlObjs ,"\n") // sebholt print statement
-  }
+  var shuffledObjs = _.shuffle(_.range(0,numObjs));
+  var repeatedObjs = shuffledObjs.slice(0,setSize);
+  var controlObjs = shuffledObjs.slice(setSize,setSize*2);
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
   // added iteratively)
   commonRepeatedTrialInfo = {'objectIDs': repeatedObjs,
                             'category': repeatedCat,
-                            'subset': sampledSubsetRepeated,      
                             'pose': 35,
                             'condition':'repeated',
                             'repeatedColor':repeatedColor
@@ -331,7 +311,6 @@ game_core.prototype.getRandomizedConditions = function() {
 
   commonControlTrialInfo = {'objectIDs': controlObjs,
                             'category': controlCat,
-                            'subset': sampledSubsetControl,      
                             'pose': 35,
                             'condition':'control',
                             'repeatedColor':repeatedColor
@@ -377,7 +356,7 @@ var filterStimList = function(stimList, numObjs) {
 
 game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
   var filteredList = filterStimList(this.stimList, currentSetSize*2);
-  var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor', 'subset'])
+  var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist 
