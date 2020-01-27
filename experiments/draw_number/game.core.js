@@ -27,7 +27,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iteratedNumber';
   this.experimentName = 'drawing';
-  this.iterationName = 'testing'; // ['run0_bonusmeter','run1_chairsOnly','run2_chairs1k_size4','run2_chairs1k_size6', 'run3_size6_waiting','run3_size4_waiting','run4_generalization','run5_submitButton']
+  this.iterationName = 'testing'; 
   this.email = 'sketchloop@gmail.com';
   // console.log("color randomized");
 
@@ -132,12 +132,6 @@ var game_core = function(options){
 
   // Is the viewer ready to move on?
   this.viewerReady = false;
-
-  // Are we just using waiting and dining chairs? Should be true for all planned experiments. 
-  this.waitingDining = true;
-
-  // set TRUE to set waiting to be repeated, set FALSE for dining to be repeated
-  this.waiting = false;
 
   // Use submit button
   this.useSubmitButton = true;
@@ -274,27 +268,8 @@ game_core.prototype.getRandomizedConditions = function() {
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-  var repeatedCat;
-  var controlCat;
-
-  if (!this.waitingDining) { // if deck/armchair cluster items allowed    
-    var shuffledCat = _.shuffle(['waiting','dining','deck','armchair']);
-    repeatedCat = shuffledCat[0];
-    controlCat = shuffledCat[1];
-
-  } else { // if waitingDining is true, so only chairs from waiting and dining clusters are used
-    if (this.waiting) { // waiting is repeated, dining is control   // sebholt edit. Was 'waiting', leaving it as-is because that's the variable name
-      repeatedCat = "bears";   // sebholt edit. Was 'waiting'
-      controlCat = "deer";  // sebholt edit. Was 'dining'
-    } else {            // dining is repeated, waiting is control
-      repeatedCat = "deer";  // sebholt edit
-      controlCat = "bears";  // sebholt edit
-    }  
-  }
-
-  if (!this.diffCats) { // NOT diffcats means we want to use the same cluster for repeated and control
-    controlCat = repeatedCat;
-  }
+  var repeatedCat = "bears";
+  var controlCat = "deer";
 
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
