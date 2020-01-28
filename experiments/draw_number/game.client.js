@@ -81,6 +81,7 @@ var client_onserverupdate_received = function(data){
         globalGame.ctx.drawImage(imgObj, parseInt(customObj.trueX), parseInt(customObj.trueY),
 				  customObj.width, customObj.height);
           if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+            console.log("is this condition being met?") // sebholt print
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
             drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
