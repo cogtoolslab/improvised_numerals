@@ -34,8 +34,8 @@ if(argv.expname) {
   var exp = argv.expname.replace(/\/$/, "");
   var gameServer = new Server(exp);
 } else {
-  console.log('no expname specified; using the default expname, "draw_chairs"')
-  var exp = 'draw_chairs';
+  console.log('no expname specified; using the default expname, "draw_number"')
+  var exp = 'draw_number';
   var gameServer = new Server(exp);
 }
 
@@ -65,8 +65,9 @@ app.get( '/*' , function( req, res ) {
   var isResearcher = _.includes(researchers, id);
   if(!id || id === 'undefined' || (isResearcher && !blockResearcher))  {
     // If no worker id supplied (e.g. for demo), allow to continue
-    console.log("req.params: ",req.params,"\n") // sebholt print
-    console.log("req.params[0]: ",req.params[0],"\n") // sebholt print
+    // console.log("req.params: ",req.params,"\n") // sebholt print    
+    // console.log("req.params[0]: ",req.params[0],"\n") // sebholt print
+
     return utils.serveFile(req, res);
   } else if(!valid_id(id)) {
     // If invalid id, block them
