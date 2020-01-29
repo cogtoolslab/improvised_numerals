@@ -363,6 +363,7 @@ game_core.prototype.getRandomizedConditions = function() {
                                _.map(controlObjs, curObj => {
                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
                     })));
+  console.log("pre: \n", pre)
   // repeated phase
   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
