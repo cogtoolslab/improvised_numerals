@@ -98,7 +98,9 @@ var client_onserverupdate_received = function(data){
               $('#occluder').hide();
               drawGrid(globalGame);
               drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
-              highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
+              if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+                highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
+              }
               globalGame.drawingAllowed = true;
             },750);
           }
