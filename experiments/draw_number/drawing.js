@@ -58,19 +58,19 @@ var highlightCell = function(game, color, condition) {
     var upperLeftX = globalGame.getPixelFromCell(gridX, gridY).upperLeftX;
     var upperLeftY = globalGame.getPixelFromCell(gridX, gridY).upperLeftY;
     globalGame.ctx.globalCompositeOperation='source-over';
-    //if (upperLeftX != null && upperLeftY != null) {
-    globalGame.ctx.beginPath();
-    globalGame.ctx.lineWidth="7";
-    globalGame.ctx.strokeStyle=color;
-    globalGame.ctx.rect(upperLeftX +5 , upperLeftY +5 ,globalGame.cellDimensions.width-10,globalGame.cellDimensions.height-10);
-    globalGame.ctx.stroke();
-    //}
+    if (upperLeftX != null && upperLeftY != null) {
+      console.log("IT'S HITTING THIS CONDITION") // sebholt print
+      globalGame.ctx.beginPath();
+      globalGame.ctx.lineWidth="7";
+      globalGame.ctx.strokeStyle=color;
+      globalGame.ctx.rect(upperLeftX +5 , upperLeftY +5 ,globalGame.cellDimensions.width-10,globalGame.cellDimensions.height-10);
+      globalGame.ctx.stroke();
+    }
   }
 };
 
 // Color the border around objects depending on which set is currently shown
 var colorBorder = function(globalGame) {
-  console.log(globalGame.objects) // sebholt print
   var repeatedColor = globalGame.objects[0]['repeatedColor'];
   var controlColor;
   if (repeatedColor == "#ce0a04") {
