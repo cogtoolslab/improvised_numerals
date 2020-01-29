@@ -50,7 +50,7 @@ var drawObjects = function(game, player) {
 //// almost same as copy above except instances of game replaced by globalGame
 var highlightCell = function(game, color, condition) {
   var targetObjects = _.filter(globalGame.objects, condition);
-  console.log("targetObjects: \n", targetObjects) // sebholt print
+  // console.log("targetObjects: \n", targetObjects) // sebholt print
   var customCoords = globalGame.my_role == "sketcher" ? 'speakerCoords' : 'listenerCoords';
   for (var i = 0; i < targetObjects.length; i++){
     var gridX = targetObjects[i][customCoords]['gridX'];
@@ -58,13 +58,13 @@ var highlightCell = function(game, color, condition) {
     var upperLeftX = globalGame.getPixelFromCell(gridX, gridY).upperLeftX;
     var upperLeftY = globalGame.getPixelFromCell(gridX, gridY).upperLeftY;
     globalGame.ctx.globalCompositeOperation='source-over';
-    if (upperLeftX != null && upperLeftY != null) {
-      globalGame.ctx.beginPath();
-      globalGame.ctx.lineWidth="7";
-      globalGame.ctx.strokeStyle=color;
-      globalGame.ctx.rect(upperLeftX +5 , upperLeftY +5 ,globalGame.cellDimensions.width-10,globalGame.cellDimensions.height-10);
-      globalGame.ctx.stroke();
-    }
+    //if (upperLeftX != null && upperLeftY != null) {
+    globalGame.ctx.beginPath();
+    globalGame.ctx.lineWidth="7";
+    globalGame.ctx.strokeStyle=color;
+    globalGame.ctx.rect(upperLeftX +5 , upperLeftY +5 ,globalGame.cellDimensions.width-10,globalGame.cellDimensions.height-10);
+    globalGame.ctx.stroke();
+    //}
   }
 };
 
