@@ -85,7 +85,7 @@ var client_onserverupdate_received = function(data){
             drawGrid(globalGame);
             drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
             // console.log("thing: ", _.filter(globalGame.objects, function(x) {return x.target_status == 'target';})) // sebholt print
-            highlightCell(globalGame, 'green', function(x) {return x.target_status == 'target';});
+            highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';});
           } else {
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
@@ -99,6 +99,7 @@ var client_onserverupdate_received = function(data){
               $('#occluder').hide();
               drawGrid(globalGame);
               drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
+              highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
               globalGame.drawingAllowed = true;
             },750);
           }
