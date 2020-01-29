@@ -50,7 +50,6 @@ var drawObjects = function(game, player) {
 //// almost same as copy above except instances of game replaced by globalGame
 var highlightCell = function(game, color, condition) {
   var targetObjects = _.filter(globalGame.objects, condition);
-  console.log("targetObjects: \n", targetObjects) // sebholt print
   var customCoords = globalGame.my_role == "sketcher" ? 'speakerCoords' : 'listenerCoords';
   for (var i = 0; i < targetObjects.length; i++){
     var gridX = targetObjects[i][customCoords]['gridX'];
@@ -59,7 +58,6 @@ var highlightCell = function(game, color, condition) {
     var upperLeftY = globalGame.getPixelFromCell(gridX, gridY).upperLeftY;
     globalGame.ctx.globalCompositeOperation='source-over';
     if (upperLeftX != null && upperLeftY != null) {
-      console.log("IT'S HITTING THIS CONDITION") // sebholt print
       globalGame.ctx.beginPath();
       globalGame.ctx.lineWidth="7";
       globalGame.ctx.strokeStyle=color;

@@ -84,7 +84,6 @@ var client_onserverupdate_received = function(data){
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
             drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
-            // console.log("thing: ", _.filter(globalGame.objects, function(x) {return x.target_status == 'target';})) // sebholt print
             highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';});
           } else {
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
