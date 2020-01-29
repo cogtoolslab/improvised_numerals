@@ -261,6 +261,69 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
   }
 }
 
+// game_core.prototype.getRandomizedConditions = function() {
+//   var numCats = 2;
+//   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
+//   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
+//   //console.log("setsize in getRandomizedConditions: " + this.setSize);
+//   // make category array
+//   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
+//   var repeatedCat = "bears";
+//   var controlCat = "deer";
+
+//   var shuffledObjs = _.shuffle(_.range(0,numObjs));
+//   var repeatedObjs = shuffledObjs.slice(0,setSize);
+//   var controlObjs = shuffledObjs.slice(setSize,setSize*2);
+
+//   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
+//   // added iteratively)
+//   commonRepeatedTrialInfo = {'objectIDs': repeatedObjs,
+//                             'category': repeatedCat,
+//                             'pose': 35,
+//                             'condition':'repeated',
+//                             'repeatedColor':repeatedColor
+//                             }
+
+//   commonControlTrialInfo = {'objectIDs': controlObjs,
+//                             'category': controlCat,
+//                             'pose': 35,
+//                             'condition':'control',
+//                             'repeatedColor':repeatedColor
+//                             }
+// // console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
+// // console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
+//   // pre phase 
+//   var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
+//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
+//                     }), 
+//                                _.map(controlObjs, curObj => {
+//                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
+//                     })));
+// // console.log("pre: ", pre ,"\n") // sebholt print statement
+//   // repeated phase
+//   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
+//                   return _.map(_.shuffle(repeatedObjs), curObj => {
+//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'repeated','repetition':curRep, 'targetID': curObj});
+//                   })
+//                  });
+
+//   // post phase
+//   var post = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
+//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'post','repetition':this.numReps+1, 'targetID': curObj});
+//                     }), 
+//                                _.map(controlObjs, curObj => {
+//                     return _.extend({}, commonControlTrialInfo, {'phase':'post','repetition':1, 'targetID': curObj});
+//                     })));  
+
+//   // build session by concatenating pre, repeated, and post phases
+//   var session = _.concat(pre, repeated, post);
+
+//   // this is the design dictionary
+//   return session;
+
+// };
+
+// sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
   var numCats = 2;
   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
@@ -274,6 +337,9 @@ game_core.prototype.getRandomizedConditions = function() {
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
   var controlObjs = shuffledObjs.slice(setSize,setSize*2);
+  console.log("shuffledObjs: ", shuffledObjs, "\n",
+  "repeatedObjs: ", repeatedObjs, "\n",
+  "controlObjs: ", controlObjs, "\n")
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
   // added iteratively)
@@ -290,8 +356,6 @@ game_core.prototype.getRandomizedConditions = function() {
                             'condition':'control',
                             'repeatedColor':repeatedColor
                             }
-// console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
-// console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
   // pre phase 
   var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
@@ -299,7 +363,6 @@ game_core.prototype.getRandomizedConditions = function() {
                                _.map(controlObjs, curObj => {
                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
                     })));
-// console.log("pre: ", pre ,"\n") // sebholt print statement
   // repeated phase
   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
@@ -322,6 +385,7 @@ game_core.prototype.getRandomizedConditions = function() {
   return session;
 
 };
+// sebholt end edit, rewriting getRandomizedConditions function
 
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
