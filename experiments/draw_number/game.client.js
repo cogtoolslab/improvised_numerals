@@ -85,7 +85,7 @@ var client_onserverupdate_received = function(data){
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
             drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
-            highlightCell(globalGame, '#ed0505', function(x) {return x.target_status == 'target';});
+            highlightCell(globalGame, '#139e23', function(x) {return x.target_status == 'target';});
           } else {
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
