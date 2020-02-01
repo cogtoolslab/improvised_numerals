@@ -401,7 +401,7 @@ game_core.prototype.getRandomizedConditions = function() {
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
 var filterStimList = function(stimList, numObjs) {
   console.log("stimList: ", stimList ,"\n") // sebholt print statement
-  console.log("filtredlist: ", _.filter(stimList, ({object}) => object < numObjs) ,"\n") // sebholt print statement
+  console.log("filtredlist: ", _.filter(stimList, ({object}) => object < numObjs-2) ,"\n") // sebholt print statement
   return _.filter(stimList, ({object}) => object < numObjs); 
 }
 
