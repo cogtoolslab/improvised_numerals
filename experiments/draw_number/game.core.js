@@ -400,23 +400,38 @@ game_core.prototype.getRandomizedConditions = function() {
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
 var filterStimList = function(stimList, numObjs) {
-  console.log("stimList: ", stimList ,"\n") // sebholt print statement
-  console.log("filtredlist: ", _.filter(stimList, ({object}) => object < numObjs-2) ,"\n") // sebholt print statement
+  // sebholt note: if you change numObjs in the next line to numObjs-2, it takes the first 6 of *each category*
   return _.filter(stimList, ({object}) => object < numObjs); 
 }
 
+// game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
+//   var filteredList = filterStimList(this.stimList, currentSetSize*2);
+//   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
+//   var distractorLabels = ['distr1', 'distr2', 'distr3']
+
+//   // Pull objects specified in trialInfo out of stimlist 
+//   return _.map(trialInfo.objectIDs, objID => {
+//     var objFromList = _.find(filteredList, {'basic' : trialInfo.category, 'object' : objID});
+//     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
+//     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
+//   });
+// };
+
+// sebholt begin edit rewrite this function
 game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
-  var filteredList = filterStimList(this.stimList, currentSetSize*2);
+  var stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist 
   return _.map(trialInfo.objectIDs, objID => {
-    var objFromList = _.find(filteredList, {'basic' : trialInfo.category, 'object' : objID});
+    var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
+    console.log("THE THING: \n",_.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus}),"\n")
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
 };
+// sebholt end edit rewrite this function
 
 
 game_core.prototype.sampleStimulusLocs = function() {
