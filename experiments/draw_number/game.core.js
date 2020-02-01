@@ -442,7 +442,7 @@ game_core.prototype.makeTrialList = function () {
     // sample locations for those objects
     var locs = this.sampleStimulusLocs();
     // construct trial list (in sets of complete rounds)
-    // console.log("objList: ", objList ,"\n") // sebholt print statement
+    console.log("objList: ", objList ,"\n") // sebholt print statement
     // console.log("locs.speaker: ", locs.speaker ,"\n") // sebholt print statement
     // console.log("locs.listener: ", locs.listener ,"\n") // sebholt print statement
 
