@@ -325,7 +325,6 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
-  var numCats = 2;
   var numObjs = this.setSize * 3; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
@@ -363,7 +362,7 @@ game_core.prototype.getRandomizedConditions = function() {
                                _.map(controlObjs, curObj => {
                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
                     })));
-  console.log("pre: \n", pre,"\n")
+  // console.log("pre: \n", pre,"\n")
   // repeated phase
   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
@@ -379,11 +378,11 @@ game_core.prototype.getRandomizedConditions = function() {
                     return _.extend({}, commonControlTrialInfo, {'phase':'post','repetition':1, 'targetID': curObj});
                     })));  
                     
-  console.log("repeated: \n", repeated,"\n")
-  console.log("post: \n", post)
+  // console.log("repeated: \n", repeated,"\n")
+  // console.log("post: \n", post)
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
-
+  console.log("session: \n", session)
   // this is the design dictionary
   return session;
 
@@ -442,7 +441,7 @@ game_core.prototype.makeTrialList = function () {
     // sample locations for those objects
     var locs = this.sampleStimulusLocs();
     // construct trial list (in sets of complete rounds)
-    console.log("objList: ", objList ,"\n") // sebholt print statement
+    // console.log("objList: ", objList ,"\n") // sebholt print statement
     // console.log("locs.speaker: ", locs.speaker ,"\n") // sebholt print statement
     // console.log("locs.listener: ", locs.listener ,"\n") // sebholt print statement
 
