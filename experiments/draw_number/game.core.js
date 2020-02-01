@@ -424,12 +424,15 @@ game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist 
-  return _.map(trialInfo.objectIDs, objID => {
+  
+
+  output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
-    console.log("THE THING: \n",_.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus}),"\n")
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
+  console.log("THE THING: \n", output,"\n")
+  return output ;
 };
 // sebholt end edit rewrite this function
 
