@@ -101,8 +101,10 @@ var wolves_12_0 = {filename: "12_0_wolf.png" , basic: "wolves" , subordinate: "w
 var stimList = [
   bears_1_0, bears_2_0, bears_3_0, bears_4_0, 
   bears_5_0, bears_6_0, bears_7_0, bears_8_0,
+  bears_9_0, bears_10_0, bears_11_0, bears_12_0,
   deer_1_0, deer_2_0, deer_3_0, deer_4_0, 
-  deer_5_0, deer_6_0, deer_7_0, deer_8_0
+  deer_5_0, deer_6_0, deer_7_0, deer_8_0,
+  deer_9_0, deer_10_0, deer_11_0, deer_12_0
 ]
 
 module.exports = stimList;

@@ -326,7 +326,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
   var numCats = 2;
-  var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
+  var numObjs = this.setSize * 3; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
@@ -336,7 +336,7 @@ game_core.prototype.getRandomizedConditions = function() {
 
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
-  var controlObjs = shuffledObjs.slice(setSize,setSize*2);
+  var controlObjs = shuffledObjs.slice(setSize,setSize*3);
   console.log("shuffledObjs: ", shuffledObjs, "\n",
   "repeatedObjs: ", repeatedObjs, "\n",
   "controlObjs: ", controlObjs, "\n")
