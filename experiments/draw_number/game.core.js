@@ -329,7 +329,7 @@ game_core.prototype.getRandomizedConditions = function() {
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
   //console.log("setsize in getRandomizedConditions: " + this.setSize);
   // make category array
-  var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
+  var repeatedColor = _.sample(["#4286f4"]); // randomly assign border color (red or blue) to repeated and control
   var repeatedCat = "bears";
   var controlCat = "deer";
 
@@ -342,6 +342,14 @@ game_core.prototype.getRandomizedConditions = function() {
 
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
   // added iteratively)
+
+  commonTrialInfo = {'objectIDs': repeatedObjs, //
+                    'category': repeatedCat, // should change every time
+                    'pose': 35, // not important
+                    'condition':'repeated', // not important
+                    'repeatedColor':repeatedColor // not important
+                  }
+
   commonRepeatedTrialInfo = {'objectIDs': repeatedObjs,
                             'category': repeatedCat,
                             'pose': 35,
@@ -452,7 +460,7 @@ game_core.prototype.makeTrialList = function () {
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
       var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
-      console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
+      // console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
       var listenerGridCell = local_this.getPixelFromCell(tuple[2][0], tuple[2][1]);
       object.speakerCoords = {
       	gridX : tuple[1][0],
