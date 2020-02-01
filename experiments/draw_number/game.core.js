@@ -400,6 +400,8 @@ game_core.prototype.getRandomizedConditions = function() {
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
 var filterStimList = function(stimList, numObjs) {
+  console.log("stimList: ", stimList ,"\n") // sebholt print statement
+  console.log("filtredlist: ", _.filter(stimList, ({object}) => object < numObjs) ,"\n") // sebholt print statement
   return _.filter(stimList, ({object}) => object < numObjs); 
 }
 
