@@ -425,7 +425,7 @@ game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
 
   // Pull objects specified in trialInfo out of stimlist
 
-  var same_number = _.find(stimlist, {'cardinality' : 7});
+  var same_number = _.pick(stimlist, {'cardinality' : 7});
   console.log("THE THING: \n", same_number,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
