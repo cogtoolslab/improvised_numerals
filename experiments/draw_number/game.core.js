@@ -423,15 +423,17 @@ game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
-  // Pull objects specified in trialInfo out of stimlist 
-  
+  // Pull objects specified in trialInfo out of stimlist
 
-  output = _.map(trialInfo.objectIDs, objID => {
+  var same_number = _.find(stimlist, {'cardinality' : 7});
+  console.log("THE THING: \n", same_number,"\n")
+
+  var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
-  console.log("THE THING: \n", output,"\n")
+  // console.log("THE THING: \n", output,"\n")
   return output ;
 };
 // sebholt end edit rewrite this function
