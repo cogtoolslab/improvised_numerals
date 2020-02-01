@@ -453,6 +453,7 @@ game_core.prototype.makeTrialList = function () {
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
       var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
+      console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
       var listenerGridCell = local_this.getPixelFromCell(tuple[2][0], tuple[2][1]);
       object.speakerCoords = {
       	gridX : tuple[1][0],
