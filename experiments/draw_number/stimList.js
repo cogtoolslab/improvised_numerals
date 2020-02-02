@@ -102,17 +102,26 @@ var stimList = [
   bears_1_0, bears_2_0, bears_3_0, bears_4_0, 
   bears_5_0, bears_6_0, bears_7_0, bears_8_0,
   bears_9_0, bears_10_0, bears_11_0, bears_12_0,
+
   deer_1_0, deer_2_0, deer_3_0, deer_4_0, 
   deer_5_0, deer_6_0, deer_7_0, deer_8_0,
   deer_9_0, deer_10_0, deer_11_0, deer_12_0,
+
   owls_1_0, owls_2_0, owls_3_0, owls_4_0, 
   owls_5_0, owls_6_0, owls_7_0, owls_8_0,
-  rabbits_1_0, rabbits_2_0, rabbits_3_0, rabbits_4_0, rabbits_5_0, rabbits_6_0,
-  rabbits_7_0, rabbits_8_0, rabbits_9_0, rabbits_10_0, rabbits_11_0, rabbits_12_0,
-  squirrels_1_0, squirrels_2_0, squirrels_3_0, squirrels_4_0, squirrels_5_0, squirrels_6_0,
-  squirrels_7_0, squirrels_8_0, squirrels_9_0, squirrel_10_0, squirrels_11_0, squirrels_12_0,
-  wolves_1_0, wolves_2_0, wolves_3_0, wolves_4_0, wolves_5_0, wolves_6_0,
-  wolves_7_0, wolves_8_0, wolves_9_0, wolves_10_0, wolves_11_0, wolves_12_0
+  owls_9_0, owls_10_0, owls_11_0, owls_12_0,
+
+  rabbits_1_0, rabbits_2_0, rabbits_3_0, rabbits_4_0,
+  rabbits_5_0, rabbits_6_0, rabbits_7_0, rabbits_8_0,
+  rabbits_9_0, rabbits_10_0, rabbits_11_0, rabbits_12_0,
+
+  squirrels_1_0, squirrels_2_0, squirrels_3_0, squirrels_4_0,
+  squirrels_5_0, squirrels_6_0, squirrels_7_0, squirrels_8_0,
+  squirrels_9_0, squirrel_10_0, squirrels_11_0, squirrels_12_0,
+
+  wolves_1_0, wolves_2_0, wolves_3_0, wolves_4_0,
+  wolves_5_0, wolves_6_0, wolves_7_0, wolves_8_0,
+  wolves_9_0, wolves_10_0, wolves_11_0, wolves_12_0
 ]
 
 module.exports = stimList;
