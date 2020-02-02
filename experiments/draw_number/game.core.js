@@ -372,9 +372,9 @@ game_core.prototype.getRandomizedConditions = function() {
                     })));
   // console.log("pre: \n", pre,"\n")
   // repeated phase
-  var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
+  var session = _.flatMap(_.range(1,this.stimList.length), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
-                    return _.extend({}, commonRepeatedTrialInfo, {'phase':'repeated','repetition':curRep, 'targetID': curObj});
+                    return _.extend({}, commonRepeatedTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
                   })
                  });
 
@@ -389,9 +389,9 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("repeated: \n", repeated,"\n")
   // console.log("post: \n", post)
   // build session by concatenating pre, repeated, and post phases
-  var session = _.concat(pre, repeated, post);
+  // var session = _.concat(pre, repeated, post);
   console.log("Lengths: pre ",pre.length, '\n ',
-  "repeated ",repeated.length, '\n ',
+  // "repeated ",repeated.length, '\n ',
   "post ",post.length, '\n ',
   "whole session ",session.length, '\n '
   )
