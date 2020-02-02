@@ -421,8 +421,7 @@ var filterStimList = function(stimList, numObjs) {
 game_core.prototype.newsampleTrial = function(trialInfo, target) {
   stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
-  var distractorLabels = ['distr1', 'distr2', 'distr3']
-
+  
   // Pull objects specified in trialInfo out of stimlist
   var curTarg = target
 
@@ -430,9 +429,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   var same_shape = _.without(_.filter(stimlist, {'basic' : curTarg['basic']}),curTarg);
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
-  // ^ replace this with a single call of '_.without' – this does the job better
-
-  // console.log("Current Target: \n",curTarg,"\n")
+  // ^ replace above two lines with a single call of '_.without' – this does the job better
 
   // sample from each of the distractor categories:
   var sampled_distr1 = _.sample(same_number);
@@ -440,19 +437,11 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   var sampled_distr3 = _.sample(same_neither);
 
   var d1 = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
-  var d2 = _.extend(newoutput, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
+  var d2 = _.extend({}, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
   var d3 = _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
   var tg = _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
 
   var newoutput = [d1,d2,d3,tg]
-  
-
-  var output = _.map(trialInfo.objectIDs, objID => {
-    var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
-    var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
-    return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
-  });
-  // console.log("THE THING: \n", newoutput,"\n")
   return newoutput ;
 };
 // sebholt end edit rewrite this function
