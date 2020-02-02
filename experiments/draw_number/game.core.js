@@ -393,7 +393,7 @@ game_core.prototype.getRandomizedConditions = function() {
   console.log("Lengths: pre ",pre.length, '\n ',
   "repeated ",repeated.length, '\n ',
   "post ",post.length, '\n ',
-  "whole session ",repeated.length, '\n '
+  "whole session ",session.length, '\n '
   )
   // console.log("session: \n", session)
   // this is the design dictionary
