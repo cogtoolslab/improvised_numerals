@@ -349,53 +349,15 @@ game_core.prototype.getRandomizedConditions = function() {
                     'condition':'repeated', // not important
                     'repeatedColor':repeatedColor // not important
                   }
-
-  commonRepeatedTrialInfo = {'objectIDs': repeatedObjs,
-                            'category': repeatedCat,
-                            'pose': 35,
-                            'condition':'repeated',
-                            'repeatedColor':repeatedColor
-                            }
-
-  commonControlTrialInfo = {'objectIDs': controlObjs,
-                            'category': controlCat,
-                            'pose': 35,
-                            'condition':'control',
-                            'repeatedColor':repeatedColor
-                            }
-  // pre phase 
-  var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
-                    return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
-                    }), 
-                               _.map(controlObjs, curObj => {
-                    return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
-                    })));
-  // console.log("pre: \n", pre,"\n")
-  // repeated phase
+                  
   var session = _.flatMap(_.range(1,this.stimList.length), curRep => {
                   return _.map(_.shuffle(repeatedObjs), curObj => {
-                    return _.extend({}, commonRepeatedTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
+                    return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
                   })
                  });
-
-  // post phase
-  var post = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
-                    return _.extend({}, commonRepeatedTrialInfo, {'phase':'post','repetition':this.numReps+1, 'targetID': curObj});
-                    }), 
-                               _.map(controlObjs, curObj => {
-                    return _.extend({}, commonControlTrialInfo, {'phase':'post','repetition':1, 'targetID': curObj});
-                    })));  
-                    
-  // console.log("repeated: \n", repeated,"\n")
-  // console.log("post: \n", post)
-  // build session by concatenating pre, repeated, and post phases
-  // var session = _.concat(pre, repeated, post);
-  console.log("Lengths: pre ",pre.length, '\n ',
-  // "repeated ",repeated.length, '\n ',
-  "post ",post.length, '\n ',
-  "whole session ",session.length, '\n '
-  )
-  // console.log("session: \n", session)
+  console.log("stimlist length : ",this.stimList.length,'\n')
+  console.log("session length : ",session.length, '\n')
+  
   // this is the design dictionary
   return session;
 
