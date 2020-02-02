@@ -439,10 +439,13 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   var sampled_distr2 = _.sample(same_shape);
   var sampled_distr3 = _.sample(same_neither);
 
-  var newoutput = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
-  _.extend(newoutput, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
-  // _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
-  // _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
+  var d1 = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
+  var d2 = _.extend(newoutput, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
+  var d3 = _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
+  var tg = _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
+
+  var newoutput = [d1,d2,d3,tg]
+  
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
