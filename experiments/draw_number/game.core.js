@@ -428,7 +428,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, currentSetSize) {
   var same_number = _.filter(stimlist, {'object' : 7});
   var same_shape = _.filter(stimlist, {'basic' : deer});
 
-  console.log("THE THING: \n", same_number,"\n")
+  // console.log("THE THING: \n", same_number,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
