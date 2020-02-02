@@ -426,10 +426,10 @@ game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
   // Pull objects specified in trialInfo out of stimlist
   var curTarg = _.sample(possible_targets)
 
-  var same_number = _.filter(stimlist, {'object' : 7});
-  var same_shape = _.filter(stimlist, {'basic' : 'deer'});
+  var same_number = _.filter(stimlist, {'object' : curTarg['object']});
+  var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
 
-  console.log("THE THING: \n", curTarg['basic'],"\n")
+  console.log("THE THING: \n", _.filter(stimlist, {'object' : curTarg['object'], 'subordinate' : !curTarg['subordinate']}),"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
