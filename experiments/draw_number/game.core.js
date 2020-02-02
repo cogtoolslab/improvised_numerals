@@ -426,7 +426,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   // Pull objects specified in trialInfo out of stimlist
   var curTarg = target
 
-  var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),CurTarg);
+  var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
   var same_shape = _.without(_.filter(stimlist, {'basic' : curTarg['basic']}),curTarg);
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
