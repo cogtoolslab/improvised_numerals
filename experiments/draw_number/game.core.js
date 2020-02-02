@@ -475,7 +475,7 @@ game_core.prototype.makeTrialList = function () {
     // sample four object images that are unique and follow the condition constraints
 
     var target = _.sample(possible_targets) // sebholt addition
-    _.remove(possible_targets,target) // sebholt addition
+    // _.remove(possible_targets,target) // sebholt addition
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
     // console.log('objList',objList);
