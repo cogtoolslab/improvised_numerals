@@ -452,8 +452,8 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
-  console.log("THE THING: \n", newoutput,"\n")
-  return output ;
+  // console.log("THE THING: \n", newoutput,"\n")
+  return newoutput ;
 };
 // sebholt end edit rewrite this function
 
