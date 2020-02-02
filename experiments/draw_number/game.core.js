@@ -430,7 +430,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
   var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
   var same_neither = _.filter(stimlist, {'basic' : !curTarg['basic'],'object' : !curTarg['object']});
 
-  console.log("THE THING: \n", _.filter(stimlist, {'object' : curTarg['object'], 'subordinate' : !curTarg['subordinate']}),"\n")
+  console.log("THE THING: \n",same_neither,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
