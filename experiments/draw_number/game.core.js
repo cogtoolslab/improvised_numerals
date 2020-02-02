@@ -432,15 +432,14 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
   // ^ replace this with a single call of '_.without' – this does the job better
 
-  console.log("Current Target: \n",curTarg,"\n")
-  //console.log("THE THING: \n",same_neither,"\n")
+  // console.log("Current Target: \n",curTarg,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
-  // console.log("THE THING: \n", output,"\n")
+  console.log("THE THING: \n", output,"\n")
   return output ;
 };
 // sebholt end edit rewrite this function
@@ -476,7 +475,7 @@ game_core.prototype.makeTrialList = function () {
     // sample four object images that are unique and follow the condition constraints
 
     var target = _.sample(possible_targets) // sebholt addition
-    _.remove(possible_targets,target)
+    _.remove(possible_targets,target) // sebholt addition
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
     // console.log('objList',objList);
