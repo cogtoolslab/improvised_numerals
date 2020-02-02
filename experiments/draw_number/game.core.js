@@ -428,7 +428,8 @@ game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
 
   var same_number = _.filter(stimlist, {'object' : curTarg['object']});
   var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
-  var same_neither = _.filter(stimlist, {'basic' : !curTarg['basic'],'object' : !curTarg['object']});
+  var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
+  same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
 
   console.log("THE THING: \n",same_neither,"\n")
 
