@@ -440,7 +440,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   var sampled_distr3 = _.sample(same_neither);
 
   var newoutput = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
-  // _.extend({}, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
+  _.extend(newoutput, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
   // _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
   // _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
 
