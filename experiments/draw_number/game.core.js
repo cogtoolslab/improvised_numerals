@@ -431,6 +431,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
 
+  console.log("Current Target: \n",curTarg,"\n")
   console.log("THE THING: \n",same_neither,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
