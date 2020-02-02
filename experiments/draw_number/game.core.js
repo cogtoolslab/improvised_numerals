@@ -418,14 +418,16 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
+game_core.prototype.newsampleTrial = function(trialInfo, currentSetSize) {
   var stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist
 
-  var same_number = _.filter(stimlist, {'cardinality' : 7});
+  var same_number = _.filter(stimlist, {'object' : 7});
+  var same_shape = _.filter(stimlist, {'basic' : deer});
+
   console.log("THE THING: \n", same_number,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
@@ -460,12 +462,16 @@ game_core.prototype.makeTrialList = function () {
 
   var trialList = [];
   var currentSetSize = this.setSize;
+
+  console.log("is stimlist callable here? \n", this.stimList.length) // sebholt print statement
+
   for (var i = 0; i < session.length; i++) {
     var trialInfo = session[i]
     // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
     // sample four object images that are unique and follow the condition constraints
 
-    var objList = this.sampleTrial(trialInfo, currentSetSize);
+    // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
+    var objList = this.newsampleTrial(trialInfo, currentSetSize); // sebholt edit
     // console.log('objList',objList);
 
     // sample locations for those objects
