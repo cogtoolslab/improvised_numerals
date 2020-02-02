@@ -418,18 +418,19 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
+game_core.prototype.newsampleTrial = function(trialInfo, target) {
   stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist
-  var curTarg = _.sample(possible_targets)
+  var curTarg = target
 
   var same_number = _.filter(stimlist, {'object' : curTarg['object']});
   var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
+  // ^ replace this with a single call of '_.without' – this does the job better
 
   console.log("Current Target: \n",curTarg,"\n")
   console.log("THE THING: \n",same_neither,"\n")
@@ -467,15 +468,17 @@ game_core.prototype.makeTrialList = function () {
   var trialList = [];
   var currentSetSize = this.setSize;
 
-  var possible_targets = this.stimList
+  var possible_targets = this.stimList  // sebholt addition
 
   for (var i = 0; i < session.length; i++) {
     var trialInfo = session[i]
     // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
     // sample four object images that are unique and follow the condition constraints
 
+    var target = _.sample(possible_targets) // sebholt addition
+    _.remove(possible_targets,target)
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(trialInfo, possible_targets); // sebholt edit
+    var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
     // console.log('objList',objList);
 
     // sample locations for those objects
