@@ -421,7 +421,7 @@ var filterStimList = function(stimList, numObjs) {
 game_core.prototype.newsampleTrial = function(trialInfo, target) {
   stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
-  
+
   // Pull objects specified in trialInfo out of stimlist
   var curTarg = target
 
@@ -436,10 +436,10 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   var sampled_distr2 = _.sample(same_shape);
   var sampled_distr3 = _.sample(same_neither);
 
-  var d1 = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
-  var d2 = _.extend({}, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
-  var d3 = _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
-  var tg = _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
+  var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'});
+  var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'});
+  var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'});
+  var tg = _.extend({}, curTarg, {target_status: 'target'});
 
   var newoutput = [d1,d2,d3,tg]
   return newoutput ;
