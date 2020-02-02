@@ -390,7 +390,7 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("post: \n", post)
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
-  console.log("session: \n", session)
+  // console.log("session: \n", session)
   // this is the design dictionary
   return session;
 
@@ -418,17 +418,18 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(trialInfo, currentSetSize) {
-  var stimlist = this.stimList
+game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
+  stimlist = this.stimList
   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
   var distractorLabels = ['distr1', 'distr2', 'distr3']
 
   // Pull objects specified in trialInfo out of stimlist
+  var curTarg = _.sample(possible_targets)
 
   var same_number = _.filter(stimlist, {'object' : 7});
   var same_shape = _.filter(stimlist, {'basic' : 'deer'});
 
-  // console.log("THE THING: \n", same_number,"\n")
+  console.log("THE THING: \n", curTarg,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
@@ -463,7 +464,7 @@ game_core.prototype.makeTrialList = function () {
   var trialList = [];
   var currentSetSize = this.setSize;
 
-  console.log("is stimlist callable here? \n", this.stimList.length) // sebholt print statement
+  var possible_targets = this.stimList
 
   for (var i = 0; i < session.length; i++) {
     var trialInfo = session[i]
@@ -471,7 +472,7 @@ game_core.prototype.makeTrialList = function () {
     // sample four object images that are unique and follow the condition constraints
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(trialInfo, currentSetSize); // sebholt edit
+    var objList = this.newsampleTrial(trialInfo, possible_targets); // sebholt edit
     // console.log('objList',objList);
 
     // sample locations for those objects
