@@ -428,6 +428,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, possible_targets) {
 
   var same_number = _.filter(stimlist, {'object' : curTarg['object']});
   var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
+  var same_neither = _.filter(stimlist, {'basic' : !curTarg['basic'],'object' : !curTarg['object']});
 
   console.log("THE THING: \n", _.filter(stimlist, {'object' : curTarg['object'], 'subordinate' : !curTarg['subordinate']}),"\n")
 
