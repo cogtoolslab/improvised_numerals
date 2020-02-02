@@ -420,15 +420,12 @@ var filterStimList = function(stimList, numObjs) {
 // sebholt begin edit rewrite this function
 game_core.prototype.newsampleTrial = function(trialInfo, target) {
   stimlist = this.stimList
-  var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
-
-  // Pull objects specified in trialInfo out of stimlist
   var curTarg = target
 
   var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
   var same_shape = _.without(_.filter(stimlist, {'basic' : curTarg['basic']}),curTarg);
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
-  same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
+  same_neither = _.without(_.differenceWith(same_neither, same_shape, _.isEqual),curTarg);
   // ^ replace above two lines with a single call of '_.without' – this does the job better
 
   // sample from each of the distractor categories:
