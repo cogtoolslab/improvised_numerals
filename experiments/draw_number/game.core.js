@@ -426,20 +426,30 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   // Pull objects specified in trialInfo out of stimlist
   var curTarg = target
 
-  var same_number = _.filter(stimlist, {'object' : curTarg['object']});
-  var same_shape = _.filter(stimlist, {'basic' : curTarg['basic']});
+  var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),CurTarg);
+  var same_shape = _.without(_.filter(stimlist, {'basic' : curTarg['basic']}),curTarg);
   var same_neither = _.differenceWith(stimlist, same_number, _.isEqual);
   same_neither = _.differenceWith(same_neither, same_shape, _.isEqual);
   // ^ replace this with a single call of '_.without' – this does the job better
 
   // console.log("Current Target: \n",curTarg,"\n")
 
+  // sample from each of the distractor categories:
+  var sampled_distr1 = _.sample(same_number);
+  var sampled_distr2 = _.sample(same_shape);
+  var sampled_distr3 = _.sample(same_neither);
+
+  var newoutput = _.extend({}, sampled_distr1, miniTrialInfo, {target_status: 'distr1'});
+  // _.extend({}, sampled_distr2, miniTrialInfo, {target_status: 'distr2'});
+  // _.extend({}, sampled_distr3, miniTrialInfo, {target_status: 'distr3'});
+  // _.extend({}, curTarg, miniTrialInfo, {target_status: 'target'});
+
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
   });
-  console.log("THE THING: \n", output,"\n")
+  console.log("THE THING: \n", newoutput,"\n")
   return output ;
 };
 // sebholt end edit rewrite this function
