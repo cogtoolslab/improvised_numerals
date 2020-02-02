@@ -426,7 +426,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, currentSetSize) {
   // Pull objects specified in trialInfo out of stimlist
 
   var same_number = _.filter(stimlist, {'object' : 7});
-  var same_shape = _.filter(stimlist, {'basic' : deer});
+  var same_shape = _.filter(stimlist, {'basic' : 'deer'});
 
   // console.log("THE THING: \n", same_number,"\n")
 
