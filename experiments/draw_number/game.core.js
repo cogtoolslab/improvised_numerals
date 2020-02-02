@@ -390,6 +390,11 @@ game_core.prototype.getRandomizedConditions = function() {
   // console.log("post: \n", post)
   // build session by concatenating pre, repeated, and post phases
   var session = _.concat(pre, repeated, post);
+  console.log("Lengths: pre ",pre.length, '\n ',
+  "repeated ",repeated.length, '\n ',
+  "post ",post.length, '\n ',
+  "whole session ",repeated.length, '\n '
+  )
   // console.log("session: \n", session)
   // this is the design dictionary
   return session;
