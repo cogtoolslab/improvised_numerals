@@ -433,7 +433,7 @@ game_core.prototype.newsampleTrial = function(trialInfo, target) {
   // ^ replace this with a single call of '_.without' – this does the job better
 
   console.log("Current Target: \n",curTarg,"\n")
-  console.log("THE THING: \n",same_neither,"\n")
+  //console.log("THE THING: \n",same_neither,"\n")
 
   var output = _.map(trialInfo.objectIDs, objID => {
     var objFromList = _.find(stimlist, {'basic' : trialInfo.category, 'object' : objID});
