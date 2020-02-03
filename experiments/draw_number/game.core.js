@@ -458,7 +458,7 @@ game_core.prototype.makeTrialList = function () {
       _.remove(available_cardinalities,current_cardinality)
       
       }
-    }
+    
 
     
     var target = _.find(possible_targets, { basic: current_animal, object: current_cardinality })
