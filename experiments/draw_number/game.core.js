@@ -435,13 +435,14 @@ game_core.prototype.makeTrialList = function () {
 
   var possible_targets = this.stimList  // sebholt addition
 
-  for (var i = 0; i < session.length; i++) {
+  // for (var i = 0; i < session.length; i++) {    // sebholt commented this
+  for (var i = 0; i < this.stimList.length; i++) {  // sebholt addition, to replace above
     var trialInfo = session[i]
     // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
     // sample four object images that are unique and follow the condition constraints
 
     var target = _.sample(possible_targets) // sebholt addition
-    // _.remove(possible_targets,target) // sebholt addition
+    _.remove(possible_targets,target) // sebholt addition
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
     // console.log('objList',objList);
