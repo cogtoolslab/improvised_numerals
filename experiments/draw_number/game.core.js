@@ -452,9 +452,9 @@ game_core.prototype.makeTrialList = function () {
         available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
       }
 
-      var current_animal = _.sample(available_animals)
+      current_animal = _.sample(available_animals)
       _.remove(available_animals,current_animal)
-      var current_cardinality = _.sample(available_cardinalities)
+      current_cardinality = _.sample(available_cardinalities)
       _.remove(available_cardinalities,current_cardinality)
       
       }
