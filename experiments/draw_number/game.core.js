@@ -459,10 +459,13 @@ game_core.prototype.makeTrialList = function () {
       
       }
     }
-    // sebholt end edit
-    var target = _.sample(possible_targets); // sebholt addition
-    _.remove(possible_targets,target); // sebholt addition
 
+    
+    var target = _.find(possible_targets, { basic: current_animal, object: current_cardinality })
+    console.log("TARGET: ",target,'\n')
+    // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
+    _.remove(possible_targets,target); // sebholt addition
+    // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
