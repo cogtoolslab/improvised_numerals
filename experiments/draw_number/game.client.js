@@ -373,14 +373,16 @@ var customSetup = function(game) {
     $("#header").hide();
     $("#dimScreen").show();
 
-    if (game.roundNum == afterPreRound - 1) {
-      $("#after_pre").show(); //or $("#before_post").show();
-      setupOverlay();
+    // sebholt begin comment, this used to be active code
+    // if (game.roundNum == afterPreRound - 1) {
+    //   $("#after_pre").show(); //or $("#before_post").show();
+    //   setupOverlay();
 
-    } else {
-      $("#before_post").show(); //or $("#before_post").show();
-      setupOverlay();
-    }
+    // } else {
+    //   $("#before_post").show(); //or $("#before_post").show();
+    //   setupOverlay();
+    // }
+    // sebholt end comment, this used to be active code
 
   });
 

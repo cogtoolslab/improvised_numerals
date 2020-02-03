@@ -433,7 +433,10 @@ game_core.prototype.makeTrialList = function () {
   var trialList = [];
   var currentSetSize = this.setSize;
 
-  var possible_targets = this.stimList  // sebholt addition
+  var possible_targets = this.stimList;  // sebholt addition
+  var used_targets = [];  // sebholt addition
+  var available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];  // sebholt addition
+  var available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];  // sebholt addition
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
   for (var i = 0; i < this.stimList.length; i++) {  // sebholt addition, to replace above
@@ -441,8 +444,26 @@ game_core.prototype.makeTrialList = function () {
     // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
     // sample four object images that are unique and follow the condition constraints
 
-    var target = _.sample(possible_targets) // sebholt addition
-    _.remove(possible_targets,target) // sebholt addition
+    // sebholt begin edit
+    if (available_animals.length == 0) {
+      available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];
+
+      if (available_cardinalities.length == 0) {
+        available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
+      }
+
+      var current_animal = _.sample(available_animals)
+      _.remove(available_animals,current_animal)
+      var current_cardinality = _.sample(available_cardinalities)
+      _.remove(available_cardinalities,current_cardinality)
+      
+      }
+    }
+    // sebholt end edit
+    var target = _.sample(possible_targets); // sebholt addition
+    _.remove(possible_targets,target); // sebholt addition
+
+
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
     // console.log('objList',objList);
