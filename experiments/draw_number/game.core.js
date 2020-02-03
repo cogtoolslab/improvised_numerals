@@ -461,7 +461,7 @@ game_core.prototype.makeTrialList = function () {
     
 
     
-    var target = _.find(possible_targets, { 'basic': current_animal, 'object': current_cardinality })
+    var target = _.filter(possible_targets, { 'basic': current_animal, 'object': current_cardinality })
     console.log("TARGET: ",target,'\n')
     // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
     _.remove(possible_targets,target); // sebholt addition
