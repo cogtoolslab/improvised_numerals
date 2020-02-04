@@ -445,13 +445,6 @@ game_core.prototype.makeTrialList = function () {
     // sample four object images that are unique and follow the condition constraints
 
     // sebholt begin edit
-    if (available_animals.length == 0) {
-      available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];
-    }
-    if (available_cardinalities.length == 0) {
-      available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
-      console.log("Is this being reached?")
-    }
 
     var current_animal = _.sample(available_animals)
     available_animals = available_animals.filter(function(item) {
@@ -478,6 +471,13 @@ game_core.prototype.makeTrialList = function () {
     possible_targets = possible_targets.filter(function(item) {
       return item !== target
     });
+
+    if (available_animals.length == 0) {
+      available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];
+    }
+    if (available_cardinalities.length == 0) {
+      available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
+    }
     // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
