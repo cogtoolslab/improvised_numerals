@@ -455,6 +455,11 @@ game_core.prototype.makeTrialList = function () {
     })
     var target = _.sample(valid_targets)
 
+    console.log("cur_animal: ",current_animal,'\n')
+    console.log("same_animal: ",same_animal,'\n')
+    console.log("valid_targets: ",valid_targets,'\n')
+    console.log("target: ",target,'\n')
+
     var current_cardinality = target.object
     
     
