@@ -454,13 +454,9 @@ game_core.prototype.makeTrialList = function () {
     }
 
     var current_animal = _.sample(available_animals)
-    console.log(available_animals)
-    console.log(current_animal)
-    // _.remove(available_animals,current_animal)
     available_animals = available_animals.filter(function(item) {
       return item !== current_animal
     })
-    console.log(available_animals)
 
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
     var valid_targets = _.filter(same_animal, function(possible){
@@ -469,12 +465,14 @@ game_core.prototype.makeTrialList = function () {
     var target = _.sample(valid_targets)
 
     var current_cardinality = target.object
-    _.remove(available_cardinalities,current_cardinality)
+    available_cardinalities = available_cardinalities.filter(function(item) {
+      return item !== current_cardinality
+    })
 
     // console.log("animals: ",available_animals,'\n')
     // console.log("numbers: ",available_cardinalities,'\n')
-    // console.log("animal: ",current_animal,'\n')
-    // console.log("object: ",current_cardinality,'\n')
+    console.log("animal: ",current_animal,'\n')
+    console.log("object: ",current_cardinality,'\n')
     // console.log("TARGET: ",target,'\n')
     // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
     _.remove(possible_targets,target); // sebholt addition
