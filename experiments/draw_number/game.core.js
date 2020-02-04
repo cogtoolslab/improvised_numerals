@@ -437,6 +437,8 @@ game_core.prototype.makeTrialList = function () {
   var available_animals = ['bears','deer','owls'] //,'rabbits','squirrels','wolves'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
+  console.log("available_animals: ",available_animals,'\n')
+
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
   for (var i = 0; i < this.stimList.length; i++) {  // sebholt addition, to replace above
     var trialInfo = session[i]
