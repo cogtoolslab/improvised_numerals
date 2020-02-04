@@ -475,7 +475,9 @@ game_core.prototype.makeTrialList = function () {
     console.log("object: ",current_cardinality,'\n')
     // console.log("TARGET: ",target,'\n')
     // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
-    _.remove(possible_targets,target); // sebholt addition
+    possible_targets = possible_targets.filter(function(item) {
+      return item !== target
+    });
     // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
