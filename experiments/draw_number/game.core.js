@@ -447,12 +447,11 @@ game_core.prototype.makeTrialList = function () {
     // sebholt begin edit
     if (available_animals.length == 0) {
       available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];
-
-      if (available_cardinalities.length == 0) {
-        available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
-      }
     }
-    
+    if (available_cardinalities.length == 0) {
+      available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
+    }
+
     var current_animal = _.sample(available_animals)
     _.remove(available_animals,current_animal)
 
@@ -465,9 +464,11 @@ game_core.prototype.makeTrialList = function () {
     var current_cardinality = target.object
     _.remove(available_cardinalities,current_cardinality)
 
+    console.log("animals: ",available_animals,'\n')
+    console.log("numbers: ",available_cardinalities,'\n')
     console.log("animal: ",current_animal,'\n')
     console.log("object: ",current_cardinality,'\n')
-    console.log("TARGET: ",target,'\n')
+    // console.log("TARGET: ",target,'\n')
     // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
     _.remove(possible_targets,target); // sebholt addition
     // sebholt end edit
