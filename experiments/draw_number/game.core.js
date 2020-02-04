@@ -434,9 +434,8 @@ game_core.prototype.makeTrialList = function () {
   var currentSetSize = this.setSize;
 
   var possible_targets = this.stimList;  // sebholt addition
-  var used_targets = [];  // sebholt addition
-  var available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];  // sebholt addition
-  var available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];  // sebholt addition
+  var available_animals = ['bears','deer','owls'] //,'rabbits','squirrels','wolves'];  // sebholt addition
+  var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
   for (var i = 0; i < this.stimList.length; i++) {  // sebholt addition, to replace above
