@@ -446,9 +446,11 @@ game_core.prototype.makeTrialList = function () {
 
     // sebholt begin edit
 
-    
+
     var current_animal = _.sample(available_animals)
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
+
+    // now we have the animal, find all remaining targets whose cardinality hasn't been used in this 12 trial block
     var valid_targets = _.filter(same_animal, function(possible){
       return available_cardinalities.includes(possible.object)
     })
@@ -456,10 +458,6 @@ game_core.prototype.makeTrialList = function () {
 
     var current_cardinality = target.object
     
-    // console.log("animals: ",available_animals,'\n')
-    // console.log("numbers: ",available_cardinalities,'\n')
-    console.log("animal: ",current_animal,'\n')
-    console.log("object: ",current_cardinality,'\n')
     
     // delete current animal, cardinality, and target from their respective lists
     available_animals = available_animals.filter(function(item) {
