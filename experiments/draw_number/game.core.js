@@ -451,20 +451,22 @@ game_core.prototype.makeTrialList = function () {
       if (available_cardinalities.length == 0) {
         available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
       }
-      }
-      
+    }
+    
     var current_animal = _.sample(available_animals)
-    console.log("CURRENT animal: ",current_animal,'\n')
     _.remove(available_animals,current_animal)
-    var current_cardinality = _.sample(available_cardinalities)
-    _.remove(available_cardinalities,current_cardinality)
 
-    var interim_target = _.filter(possible_targets, {'basic': current_animal})
-    var target = _.filter(interim_target,{'object': current_cardinality })
+    var same_animal = _.filter(possible_targets, {'basic': current_animal})
+    var valid_targets = _.filter(same_animal, function(possible){
+      return available_cardinalities.includes(possible.object)
+    })
+    var target = _.sample(valid_targets)
+
+    var current_cardinality = target.object
+    _.remove(available_cardinalities,current_cardinality)
 
     console.log("animal: ",current_animal,'\n')
     console.log("object: ",current_cardinality,'\n')
-    console.log("INTERIM: ",interim_target,'\n')
     console.log("TARGET: ",target,'\n')
     // var target = _.sample(_.filter(possible_targets),SOMETHING??); // sebholt addition
     _.remove(possible_targets,target); // sebholt addition
