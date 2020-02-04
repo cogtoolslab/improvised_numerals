@@ -456,9 +456,12 @@ game_core.prototype.makeTrialList = function () {
     var current_animal = _.sample(available_animals)
     console.log(available_animals)
     console.log(current_animal)
-    _.remove(available_animals,current_animal)
+    // _.remove(available_animals,current_animal)
+    available_animals = available_animals.filter(function(item) {
+      return item !== current_animal
+    })
     console.log(available_animals)
-    
+
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
     var valid_targets = _.filter(same_animal, function(possible){
       return available_cardinalities.includes(possible.object)
