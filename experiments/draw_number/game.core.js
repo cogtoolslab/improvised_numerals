@@ -445,17 +445,20 @@ game_core.prototype.makeTrialList = function () {
     // sample four object images that are unique and follow the condition constraints
 
     // sebholt begin edit
-    console.log("length (animals, #s): ",available_animals.length, available_cardinalities.length,'\n')
     if (available_animals.length == 0) {
       available_animals = ['bears','deer','owls','rabbits','squirrels','wolves'];
     }
     if (available_cardinalities.length == 0) {
       available_cardinalities = [0,1,2,3,4,5,6,7,8,9,10,11];
+      console.log("Is this being reached?")
     }
 
     var current_animal = _.sample(available_animals)
+    console.log(available_animals)
+    console.log(current_animal)
     _.remove(available_animals,current_animal)
-
+    console.log(available_animals)
+    
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
     var valid_targets = _.filter(same_animal, function(possible){
       return available_cardinalities.includes(possible.object)
