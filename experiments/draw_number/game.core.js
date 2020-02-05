@@ -327,11 +327,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
-  //console.log("setsize in getRandomizedConditions: " + this.setSize);
-  // make category array
-  var repeatedColor = _.sample(["#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-  var repeatedCat = "bears";
-  var controlCat = "deer";
+  var reps = 3
 
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
@@ -355,7 +351,7 @@ game_core.prototype.getRandomizedConditions = function() {
   //                   return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
   //                 })
   //                });
-  var session = _.range(this.stimList.length)
+  var session = _.range(this.stimList.length*reps)
   console.log("stimlist length : ",this.stimList.length,'\n')
   console.log("session length : ",session.length, '\n')
   
@@ -469,6 +465,10 @@ game_core.prototype.makeTrialList = function () {
       return item !== current_cardinality
     });
 
+    // if the sets from which we're sampling without replacement are empty, refill them:
+    if (possible_targets.length == 0) {
+      possible_targets = this.stimList
+    }
     if (available_animals.length == 0) {
       available_animals = ['bears','deer','owls']; //,'rabbits','squirrels','wolves'];
     }
