@@ -134,10 +134,49 @@ var owls_8_0 = {filename: "8_0_owl.png" , basic: "owls" , subordinate: "owls_8" 
 
 
 
+// set v2
+
+var bears_1_1 = {filename: "1_1_bear.png" , basic: "bears" , subordinate: "bears_1" , subset:"A", object: 0, url: "stimuli/v1/1_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_2_1 = {filename: "2_1_bear.png" , basic: "bears" , subordinate: "bears_2" , subset:"A", object: 1, url: "stimuli/v1/2_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_3_1 = {filename: "3_1_bear.png" , basic: "bears" , subordinate: "bears_3" , subset:"A", object: 2, url: "stimuli/v1/3_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_4_1 = {filename: "4_1_bear.png" , basic: "bears" , subordinate: "bears_4" , subset:"A", object: 3, url: "stimuli/v1/4_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_5_1 = {filename: "5_1_bear.png" , basic: "bears" , subordinate: "bears_5" , subset:"A", object: 4, url: "stimuli/v1/5_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_6_1 = {filename: "6_1_bear.png" , basic: "bears" , subordinate: "bears_6" , subset:"A", object: 5, url: "stimuli/v1/6_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_7_1 = {filename: "7_1_bear.png" , basic: "bears" , subordinate: "bears_7" , subset:"B", object: 6, url: "stimuli/v1/7_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var bears_8_1 = {filename: "8_1_bear.png" , basic: "bears" , subordinate: "bears_8" , subset:"B", object: 7, url: "stimuli/v1/8_1_bear.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+
+var deer_1_1 = {filename: "1_1_deer.png" , basic: "deer" , subordinate: "deer_1" , subset:"A", object: 0, url: "stimuli/v1/1_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_2_1 = {filename: "2_1_deer.png" , basic: "deer" , subordinate: "deer_2" , subset:"A", object: 1, url: "stimuli/v1/2_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_3_1 = {filename: "3_1_deer.png" , basic: "deer" , subordinate: "deer_3" , subset:"A", object: 2, url: "stimuli/v1/3_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_4_1 = {filename: "4_1_deer.png" , basic: "deer" , subordinate: "deer_4" , subset:"A", object: 3, url: "stimuli/v1/4_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_5_1 = {filename: "5_1_deer.png" , basic: "deer" , subordinate: "deer_5" , subset:"A", object: 4, url: "stimuli/v1/5_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_6_1 = {filename: "6_1_deer.png" , basic: "deer" , subordinate: "deer_6" , subset:"A", object: 5, url: "stimuli/v1/6_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_7_1 = {filename: "7_1_deer.png" , basic: "deer" , subordinate: "deer_7" , subset:"B", object: 6, url: "stimuli/v1/7_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var deer_8_1 = {filename: "8_1_deer.png" , basic: "deer" , subordinate: "deer_8" , subset:"B", object: 7, url: "stimuli/v1/8_1_deer.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+
+var owls_1_1 = {filename: "1_1_owl.png" , basic: "owls" , subordinate: "owls_1" , subset:"A", object: 0, url: "stimuli/v1/1_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_2_1 = {filename: "2_1_owl.png" , basic: "owls" , subordinate: "owls_2" , subset:"A", object: 1, url: "stimuli/v1/2_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_3_1 = {filename: "3_1_owl.png" , basic: "owls" , subordinate: "owls_3" , subset:"A", object: 2, url: "stimuli/v1/3_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_4_1 = {filename: "4_1_owl.png" , basic: "owls" , subordinate: "owls_4" , subset:"A", object: 3, url: "stimuli/v1/4_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_5_1 = {filename: "5_1_owl.png" , basic: "owls" , subordinate: "owls_5" , subset:"A", object: 4, url: "stimuli/v1/5_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_6_1 = {filename: "6_1_owl.png" , basic: "owls" , subordinate: "owls_6" , subset:"A", object: 5, url: "stimuli/v1/6_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_7_1 = {filename: "7_1_owl.png" , basic: "owls" , subordinate: "owls_7" , subset:"B", object: 6, url: "stimuli/v1/7_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var owls_8_1 = {filename: "8_1_owl.png" , basic: "owls" , subordinate: "owls_8" , subset:"B", object: 7, url: "stimuli/v1/8_1_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 
 
 
 
+var stimListv2 = [
+  bears_1_1, bears_2_1, bears_3_1, bears_4_1, 
+  bears_5_1, bears_6_1, bears_7_1, bears_8_1,
+
+  deer_1_1, deer_2_1, deer_3_1, deer_4_1, 
+  deer_5_1, deer_6_1, deer_7_1, deer_8_1,
+
+  owls_1_1, owls_2_1, owls_3_1, owls_4_1, 
+  owls_5_1, owls_6_1, owls_7_1, owls_8_1,
+
+]
 
 var stimList = [
   bears_1_0, bears_2_0, bears_3_0, bears_4_0, 
