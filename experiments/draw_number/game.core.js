@@ -327,7 +327,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
-  var reps = 1
+  var reps = 3
 
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
@@ -467,6 +467,7 @@ game_core.prototype.makeTrialList = function () {
 
     // if the sets from which we're sampling without replacement are empty, refill them:
     if (possible_targets.length == 0) {
+      console.log("IS THIS CONDITION BEING MET??")
       possible_targets = this.stimList
     }
     if (available_animals.length == 0) {
