@@ -11,6 +11,8 @@ __pycache__/
 *.jpg
 *.png
 *.json
+*.csv
+# ^ ignore csv for now so I don't have to delete test data manually
 node_modules/
 
 .DS_Store
