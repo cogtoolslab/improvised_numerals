@@ -327,7 +327,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
-  var reps = 3
+  var reps = 1
 
   var shuffledObjs = _.shuffle(_.range(0,numObjs));
   var repeatedObjs = shuffledObjs.slice(0,setSize);
