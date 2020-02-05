@@ -343,18 +343,19 @@ game_core.prototype.getRandomizedConditions = function() {
   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
   // added iteratively)
 
-  commonTrialInfo = {'objectIDs': repeatedObjs, //
-                    'category': repeatedCat, // should change every time
-                    'pose': 35, // not important
-                    'condition':'repeated', // not important
-                    'repeatedColor':repeatedColor // not important
-                  }
+  // commonTrialInfo = {'objectIDs': repeatedObjs, //
+  //                   'category': repeatedCat, // should change every time
+  //                   'pose': 35, // not important
+  //                   'condition':'repeated', // not important
+  //                   'repeatedColor':repeatedColor // not important
+  //                 }
                   
-  var session = _.flatMap(_.range(1,this.stimList.length), curRep => {
-                  return _.map(_.shuffle(repeatedObjs), curObj => {
-                    return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
-                  })
-                 });
+  // var session = _.flatMap(_.range(1,this.stimList.length), curRep => {
+  //                 return _.map(_.shuffle(repeatedObjs), curObj => {
+  //                   return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
+  //                 })
+  //                });
+  var session = _.range(this.stimList.length)
   console.log("stimlist length : ",this.stimList.length,'\n')
   console.log("session length : ",session.length, '\n')
   
@@ -385,7 +386,7 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(trialInfo, target) {
+game_core.prototype.newsampleTrial = function(target) {
   stimlist = this.stimList
   var curTarg = target
 
@@ -438,7 +439,7 @@ game_core.prototype.makeTrialList = function () {
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
-  for (var i = 0; i < this.stimList.length; i++) {  // sebholt addition, to replace above
+  for (var i = 0; i < session.length; i++) {  // sebholt addition, to replace above
     var trialInfo = session[i]
     // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
     // sample four object images that are unique and follow the condition constraints
@@ -477,7 +478,7 @@ game_core.prototype.makeTrialList = function () {
     // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(trialInfo, target); // sebholt edit (addition)
+    var objList = this.newsampleTrial(target); // sebholt edit (addition)
     // console.log('objList',objList);
 
     // sample locations for those objects
