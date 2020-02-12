@@ -103,6 +103,7 @@ class ReferenceGameServer {
     // add to game collection
     this.games[game.id] = game;
     this.game_count++;
+    console.log("HOW MANY GAMES??",game_count,'\n') // sebholt print statement
 
     game.server_send_update();
     return game;

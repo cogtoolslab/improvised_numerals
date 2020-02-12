@@ -465,7 +465,7 @@ game_core.prototype.makeTrialList = function () {
     available_cardinalities = available_cardinalities.filter(function(item) {
       return item !== current_cardinality
     });
-    console.log("IS THIS CONDITION BEING MET??", possible_targets.length)
+    // console.log("IS THIS CONDITION BEING MET??", possible_targets.length)
     // if the sets from which we're sampling without replacement are empty, refill them:
     if (possible_targets.length == 0) {
       possible_targets = this.stimList
