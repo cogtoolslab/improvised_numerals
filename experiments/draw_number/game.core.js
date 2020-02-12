@@ -326,37 +326,12 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
-  var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
-  var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
-  var reps = 2
+  var reps = 4
 
-  var shuffledObjs = _.shuffle(_.range(0,numObjs));
-  var repeatedObjs = shuffledObjs.slice(0,setSize);
-  var controlObjs = shuffledObjs.slice(setSize,setSize*2);
-  console.log("shuffledObjs: ", shuffledObjs, "\n",
-  "repeatedObjs: ", repeatedObjs, "\n",
-  "controlObjs: ", controlObjs, "\n")
-
-  // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
-  // added iteratively)
-
-  // commonTrialInfo = {'objectIDs': repeatedObjs, //
-  //                   'category': repeatedCat, // should change every time
-  //                   'pose': 35, // not important
-  //                   'condition':'repeated', // not important
-  //                   'repeatedColor':repeatedColor // not important
-  //                 }
-                  
-  // var session = _.flatMap(_.range(1,this.stimList.length), curRep => {
-  //                 return _.map(_.shuffle(repeatedObjs), curObj => {
-  //                   return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
-  //                 })
-  //                });
   var session = _.range(this.stimList.length*reps - 10)
   console.log("stimlist length : ",this.stimList.length,'\n')
   console.log("session length : ",session.length, '\n')
   
-  // this is the design dictionary
   return session;
 
 };
