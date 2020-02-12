@@ -96,6 +96,7 @@ class ReferenceGameServer {
 
     // assign role
     player.game = game;
+    console.log("GAME",game,'\n') // sebholt print statement
     player.role = game.playerRoleNames.role1;
     player.send('s.join.' + game.players.length + '.' + player.role);
     this.log('player ' + player.userid + ' created a game with id ' + player.game.id);
@@ -103,7 +104,6 @@ class ReferenceGameServer {
     // add to game collection
     this.games[game.id] = game;
     this.game_count++;
-    console.log("HOW MANY GAMES??",this.game_count,'\n') // sebholt print statement
 
     game.server_send_update();
     return game;
