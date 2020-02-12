@@ -352,7 +352,7 @@ game_core.prototype.getRandomizedConditions = function() {
   //                   return _.extend({}, commonTrialInfo, {'phase':'repeated','repetition':0, 'targetID': curObj});
   //                 })
   //                });
-  var session = _.range(this.stimList.length*reps)
+  var session = _.range(this.stimList.length*reps - 10)
   console.log("stimlist length : ",this.stimList.length,'\n')
   console.log("session length : ",session.length, '\n')
   
