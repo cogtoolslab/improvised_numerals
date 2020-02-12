@@ -328,7 +328,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 game_core.prototype.getRandomizedConditions = function() {
   var reps = 1
 
-  var session = _.range(this.stimList.length*reps - 10)
+  var session = _.range(this.stimList.length*reps)
   console.log("stimlist length : ",this.stimList.length,'\n')
   console.log("session length : ",session.length, '\n')
   
