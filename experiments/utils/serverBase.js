@@ -96,7 +96,6 @@ class ReferenceGameServer {
 
     // assign role
     player.game = game;
-    console.log("GAME",game,'\n') // sebholt print statement
     player.role = game.playerRoleNames.role1;
     player.send('s.join.' + game.players.length + '.' + player.role);
     this.log('player ' + player.userid + ' created a game with id ' + player.game.id);
