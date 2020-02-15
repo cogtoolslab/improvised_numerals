@@ -426,6 +426,7 @@ game_core.prototype.makeTrialList = function () {
       return available_cardinalities.includes(possible.object)
     })
     var target = _.sample(valid_targets)
+    console.log("V T",valid_targets,'\n',target,'\n',same_animal)
 
     var current_cardinality = target.object
     
