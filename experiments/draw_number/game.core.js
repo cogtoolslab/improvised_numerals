@@ -421,11 +421,13 @@ game_core.prototype.makeTrialList = function () {
     var current_animal = _.sample(available_animals)
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
 
+    
     // now we have the animal, find all remaining targets whose cardinality hasn't been used in this 12 trial block
     var valid_targets = _.filter(same_animal, function(possible){
       return available_cardinalities.includes(possible.object)
     })
     var target = _.sample(valid_targets)
+    console.log("EEEEEYYYYYYYY",available_cardinalities,'\n\n')
     console.log("V T",valid_targets,'\n',target,'\n',same_animal)
 
     var current_cardinality = target.object
