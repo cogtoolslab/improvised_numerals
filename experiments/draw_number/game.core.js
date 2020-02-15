@@ -428,6 +428,7 @@ game_core.prototype.makeTrialList = function () {
     })
     var target = _.sample(valid_targets)
     console.log("EEEEEYYYYYYYY",available_cardinalities,'\n')
+    console.log("UH OH",current_cardinality,'\n')
     console.log("OOOOOOOYYYYYYYY",available_animals,'\n')
     console.log("AAAAAYYYYYYYY",target,'\n\n')
     //console.log("V T",valid_targets,'\n',target,'\n',same_animal)
