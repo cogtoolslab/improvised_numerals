@@ -441,9 +441,9 @@ game_core.prototype.makeTrialList = function () {
     available_animals = available_animals.filter(function(item) {
       return item !== current_animal
     });
-    possible_targets = possible_targets.filter(function(item) {
-      return item !== target
-    });
+    // possible_targets = possible_targets.filter(function(item) {
+    //   return item !== target
+    // });
     available_cardinalities = available_cardinalities.filter(function(item) {
       return item !== current_cardinality
     });
