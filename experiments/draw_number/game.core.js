@@ -326,7 +326,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
-  var reps = 1
+  var reps = 2
 
   var session = _.range(this.stimList.length*reps)
   console.log("stimlist length : ",this.stimList.length,'\n')
