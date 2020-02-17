@@ -326,7 +326,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
-  var reps = 2
+  var reps = 50
 
   var session = _.range(this.stimList.length*reps)
   console.log("stimlist length : ",this.stimList.length,'\n')
@@ -456,7 +456,7 @@ game_core.prototype.makeTrialList = function () {
     
     
     // console.log("poss_targs",poss_targs,'\n')
-    console.log(target.subordinate)
+    // console.log(target.subordinate)
     var current_cardinality = target.object
     var current_animal = target.basic
 
