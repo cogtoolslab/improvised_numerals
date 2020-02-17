@@ -422,17 +422,18 @@ game_core.prototype.makeTrialList = function () {
     var same_animal = _.filter(possible_targets, {'basic': current_animal})
 
     
-    // now we have the animal, find all remaining targets whose cardinality hasn't been used in this 12 trial block
+    // now we have the animal, find all remaining targets whose cardinality hasn't been used in this block
     var valid_targets = _.filter(same_animal, function(possible){
       return available_cardinalities.includes(possible.object)
     })
     var target = _.sample(valid_targets)
-    // console.log("EEEEEYYYYYYYY",available_cardinalities,'\n')
+    console.log("numbers",available_cardinalities,'\n')
     // console.log("UH OH",current_cardinality,'\n')
-    // console.log("OOOOOOOYYYYYYYY",available_animals,'\n')
+    console.log("animals",available_animals,'\n')
     // console.log("current_animal",current_animal,'\n')
     // console.log("curtarg",target,'\n\n')
     console.log("CurTarg",target.subordinate)
+    console.log("valid_targets",valid_targets,'\n')
 
     var current_cardinality = target.object
     
@@ -441,9 +442,9 @@ game_core.prototype.makeTrialList = function () {
     available_animals = available_animals.filter(function(item) {
       return item !== current_animal
     });
-    // possible_targets = possible_targets.filter(function(item) {
-    //   return item !== target
-    // });
+    possible_targets = possible_targets.filter(function(item) {
+      return item !== target
+    });
     available_cardinalities = available_cardinalities.filter(function(item) {
       return item !== current_cardinality
     });
