@@ -427,12 +427,12 @@ game_core.prototype.makeTrialList = function () {
       return available_cardinalities.includes(possible.object)
     })
     var target = _.sample(valid_targets)
-    console.log("EEEEEYYYYYYYY",available_cardinalities,'\n')
-    console.log("UH OH",current_cardinality,'\n')
-    console.log("OOOOOOOYYYYYYYY",available_animals,'\n')
-    console.log("current_animal",current_animal,'\n')
-    console.log("AAAAAYYYYYYYY",target,'\n\n')
-    //console.log("V T",valid_targets,'\n',target,'\n',same_animal)
+    // console.log("EEEEEYYYYYYYY",available_cardinalities,'\n')
+    // console.log("UH OH",current_cardinality,'\n')
+    // console.log("OOOOOOOYYYYYYYY",available_animals,'\n')
+    // console.log("current_animal",current_animal,'\n')
+    // console.log("curtarg",target,'\n\n')
+    console.log("CurTarg",target.subordinate)
 
     var current_cardinality = target.object
     
@@ -447,7 +447,7 @@ game_core.prototype.makeTrialList = function () {
     available_cardinalities = available_cardinalities.filter(function(item) {
       return item !== current_cardinality
     });
-    console.log("IS THIS CONDITION BEING MET??", possible_targets.length)
+    // console.log("IS THIS CONDITION BEING MET??", possible_targets.length)
     // if the sets from which we're sampling without replacement are empty, refill them:
     if (possible_targets.length == 0) {
       possible_targets = this.stimList
