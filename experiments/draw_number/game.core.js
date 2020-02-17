@@ -445,7 +445,10 @@ game_core.prototype.makeTrialList = function () {
       var poss_targs = _.filter(possible_targets, function(candidate){
         return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
       })
-      console.log("length",poss_targs.length)
+      if (poss_targs.length == 0){
+        console.log("numbers",available_cardinalities)
+        console.log("animals",available_animals)
+      }
       var target = _.sample(poss_targs)
       ticker = 1
     }
