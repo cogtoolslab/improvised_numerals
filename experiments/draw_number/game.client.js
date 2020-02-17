@@ -369,11 +369,13 @@ var customSetup = function(game) {
     // pop-ups in between phases
     var afterPreRound = globalGame.setSize * 2;
     var beforePostRound = globalGame.numRounds - globalGame.setSize * 2;
-    $("#main").hide();
-    $("#header").hide();
-    $("#dimScreen").show();
 
     // sebholt begin comment, this used to be active code
+    // $("#main").hide();
+    // $("#header").hide();
+    // $("#dimScreen").show();
+
+    
     // if (game.roundNum == afterPreRound - 1) {
     //   $("#after_pre").show(); //or $("#before_post").show();
     //   setupOverlay();
