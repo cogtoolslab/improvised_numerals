@@ -432,7 +432,7 @@ game_core.prototype.makeTrialList = function () {
     console.log("animals",available_animals)
     // console.log("current_animal",current_animal,'\n')
     // console.log("curtarg",target,'\n\n')
-    console.log("CurTarg",target.subordinate)
+    console.log("CurTarg",target.subordinate,'\n')
     // console.log("valid_targets",valid_targets,'\n')
 
     var current_cardinality = target.object
