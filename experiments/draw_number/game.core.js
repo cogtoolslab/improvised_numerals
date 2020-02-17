@@ -436,7 +436,7 @@ game_core.prototype.makeTrialList = function () {
     // console.log("CurTarg",target.subordinate,'\n')
     // console.log("valid_targets",valid_targets,'\n')
 
-    var current_cardinality = target.object
+    // var current_cardinality = target.object
     
 
     // trying it a new way
@@ -445,7 +445,8 @@ game_core.prototype.makeTrialList = function () {
     })
     
     var target = _.sample(poss_targs)
-
+    
+    var current_cardinality = target.object
     
     // delete current animal, cardinality, and target from their respective lists
     available_animals = available_animals.filter(function(item) {
