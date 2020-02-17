@@ -427,13 +427,13 @@ game_core.prototype.makeTrialList = function () {
       return available_cardinalities.includes(possible.object)
     })
     var target = _.sample(valid_targets)
-    console.log("numbers",available_cardinalities,'\n')
+    console.log("numbers",available_cardinalities)
     // console.log("UH OH",current_cardinality,'\n')
-    console.log("animals",available_animals,'\n')
+    console.log("animals",available_animals)
     // console.log("current_animal",current_animal,'\n')
     // console.log("curtarg",target,'\n\n')
     console.log("CurTarg",target.subordinate)
-    console.log("valid_targets",valid_targets,'\n')
+    // console.log("valid_targets",valid_targets,'\n')
 
     var current_cardinality = target.object
     
