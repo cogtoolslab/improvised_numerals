@@ -440,13 +440,20 @@ game_core.prototype.makeTrialList = function () {
     
 
     // trying it a new way
-    var poss_targs = _.filter(possible_targets, function(candidate){
-      return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
-    })
+    var ticker = 0
+    while (ticker == 0){
+      var poss_targs = _.filter(possible_targets, function(candidate){
+        return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
+      })
+      console.log("length",poss_targs.length)
+      var target = _.sample(poss_targs)
+      ticker = 0
+    }
     
-    var target = _.sample(poss_targs)
+    
+    
     // console.log("poss_targs",poss_targs,'\n')
-    console.log("curtarg",target.subordinate,'\n\n')
+    console.log(target.subordinate)
     var current_cardinality = target.object
     var current_animal = target.basic
 
