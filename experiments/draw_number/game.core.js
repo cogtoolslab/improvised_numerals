@@ -447,7 +447,7 @@ game_core.prototype.makeTrialList = function () {
       })
       console.log("length",poss_targs.length)
       var target = _.sample(poss_targs)
-      ticker = 0
+      ticker = 1
     }
     
     
