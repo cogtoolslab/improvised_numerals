@@ -418,26 +418,33 @@ game_core.prototype.makeTrialList = function () {
 
     // sebholt begin edit
 
-    var current_animal = _.sample(available_animals)
-    var same_animal = _.filter(possible_targets, {'basic': current_animal})
+    // var current_animal = _.sample(available_animals)
+    // var same_animal = _.filter(possible_targets, {'basic': current_animal})
 
-    
-    // now we have the animal, find all remaining targets whose cardinality hasn't been used in this block
-    var valid_targets = _.filter(same_animal, function(possible){
-      return available_cardinalities.includes(possible.object)
-    })
-    var target = _.sample(valid_targets)
+    // // now we have the animal, find all remaining targets whose cardinality hasn't been used in this block
+    // var valid_targets = _.filter(same_animal, function(possible){
+    //   return available_cardinalities.includes(possible.object)
+    // })
+    // var target = _.sample(valid_targets)
+
     console.log(i)
-    console.log("numbers",available_cardinalities)
+    // console.log("numbers",available_cardinalities)
     // console.log("UH OH",current_cardinality,'\n')
-    console.log("animals",available_animals)
+    // console.log("animals",available_animals)
     // console.log("current_animal",current_animal,'\n')
     // console.log("curtarg",target,'\n\n')
-    console.log("CurTarg",target.subordinate,'\n')
+    // console.log("CurTarg",target.subordinate,'\n')
     // console.log("valid_targets",valid_targets,'\n')
 
     var current_cardinality = target.object
     
+
+    // trying it a new way
+    var poss_targs = _.filter(available_animals, function(candidate){
+      return available_cardinalities.includes(candidate.object) && available_cardinalities.includes(candidate.basic)
+    })
+    var target = _.sample(poss_targs)
+
     
     // delete current animal, cardinality, and target from their respective lists
     available_animals = available_animals.filter(function(item) {
