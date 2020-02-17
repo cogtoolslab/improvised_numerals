@@ -461,9 +461,9 @@ game_core.prototype.makeTrialList = function () {
     var current_animal = target.basic
 
     // delete current animal, cardinality, and target from their respective lists
-    available_animals = available_animals.filter(function(item) {
-      return item !== current_animal
-    });
+    // available_animals = available_animals.filter(function(item) {
+    //   return item !== current_animal
+    // });
     possible_targets = possible_targets.filter(function(item) {
       return item !== target
     });
