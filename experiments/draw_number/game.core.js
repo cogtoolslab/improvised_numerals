@@ -441,8 +441,9 @@ game_core.prototype.makeTrialList = function () {
 
     // trying it a new way
     var poss_targs = _.filter(available_animals, function(candidate){
-      return available_cardinalities.includes(candidate.object) && available_cardinalities.includes(candidate.basic)
+      return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
     })
+    
     var target = _.sample(poss_targs)
 
     
