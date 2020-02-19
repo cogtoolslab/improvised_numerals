@@ -52,17 +52,24 @@ var onMessage = function(client,message) {
         // if there should be a phase change, call phaseChange but not gc.newRound()
 
         // sebholt commenting this out begin 
-        if ((gc.roundNum == afterPreRound - 1) || (gc.roundNum == beforePostRound - 1)) {
-          _.map(all, function(p) {
-            p.player.instance.emit('phaseChange');
-          });
-        } else {
-          _.map(all, function(p) {
-            p.player.instance.emit('newRoundUpdate');
-          });
-          gc.newRound();
-        }
-        // sebholt commenting this out
+        // if ((gc.roundNum == afterPreRound - 1) || (gc.roundNum == beforePostRound - 1)) {
+        //   _.map(all, function(p) {
+        //     p.player.instance.emit('phaseChange');
+        //   });
+        // } else {
+        //   _.map(all, function(p) {
+        //     p.player.instance.emit('newRoundUpdate');
+        //   });
+        //   gc.newRound();
+        // }
+        // sebholt commenting this out end
+        
+        // sebholt copying this from the commented-out code above begin
+        _.map(all, function(p) {
+          p.player.instance.emit('newRoundUpdate');
+        });
+        gc.newRound();
+        // sebholt copying this from the commented-out code above end
       }, 2000);
     break;
 
