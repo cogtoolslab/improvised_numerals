@@ -50,6 +50,8 @@ var onMessage = function(client,message) {
       var beforePostRound = gc.numRounds - gc.setSize * 2;
       setTimeout(function() {
         // if there should be a phase change, call phaseChange but not gc.newRound()
+
+        // sebholt commenting this out begin 
         if ((gc.roundNum == afterPreRound - 1) || (gc.roundNum == beforePostRound - 1)) {
           _.map(all, function(p) {
             p.player.instance.emit('phaseChange');
@@ -60,6 +62,7 @@ var onMessage = function(client,message) {
           });
           gc.newRound();
         }
+        // sebholt commenting this out
       }, 2000);
     break;
 
