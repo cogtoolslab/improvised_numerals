@@ -370,9 +370,10 @@ game_core.prototype.newsampleTrial = function(target) {
 
   var not_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
   console.log(curTarg.subordinate, "(our target)")
-  for (item in not_number){
-    console.log(item.subordinate)
-  }
+  // for (item in not_number){
+  //   console.log(item.subordinate)
+  // }
+  console.log(not_number)
   console.log('\n')
 
   // sample from each of the distractor categories:
