@@ -369,18 +369,17 @@ game_core.prototype.newsampleTrial = function(target) {
   // ^ replace above two lines with a single call of '_.without' – this does the job better
 
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
-  
-  console.log(curTarg.subordinate, "(our target)")
-  // for (item in not_number){
-  //   console.log(item.subordinate)
-  // }
-  console.log(not_number)
-  console.log('\n')
 
-  // sample from each of the distractor categories:
-  var sampled_distr1 = _.sample(same_number);
-  var sampled_distr2 = _.sample(same_shape);
-  var sampled_distr3 = _.sample(same_neither);
+  // sample from each of the distractor categories (first try):
+  // var sampled_distr1 = _.sample(same_number);
+  // var sampled_distr2 = _.sample(same_shape);
+  // var sampled_distr3 = _.sample(same_neither);
+
+  // sample from each of the distractor categories (second try):
+  var sampled_distr1 = _.sample(not_number);
+  var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
+  var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
+
 
   var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'});
   var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'});
