@@ -368,7 +368,8 @@ game_core.prototype.newsampleTrial = function(target) {
   same_neither = _.without(_.differenceWith(same_neither, same_shape, _.isEqual),curTarg);
   // ^ replace above two lines with a single call of '_.without' – this does the job better
 
-  var not_number = _.filter(stimlist, {'object' : !curTarg['object']});
+  var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
+  
   console.log(curTarg.subordinate, "(our target)")
   // for (item in not_number){
   //   console.log(item.subordinate)
