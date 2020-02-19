@@ -368,6 +368,13 @@ game_core.prototype.newsampleTrial = function(target) {
   same_neither = _.without(_.differenceWith(same_neither, same_shape, _.isEqual),curTarg);
   // ^ replace above two lines with a single call of '_.without' – this does the job better
 
+  var not_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
+  console.log(curTarg.subordinate, "(our target)")
+  for (item in not_number){
+    console.log(item.subordinate)
+  }
+  console.log('\n')
+
   // sample from each of the distractor categories:
   var sampled_distr1 = _.sample(same_number);
   var sampled_distr2 = _.sample(same_shape);
