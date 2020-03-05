@@ -458,7 +458,7 @@ var client_onjoingame = function(num_players, role) {
   }
   // set role locally
   globalGame.my_role = role;
-
+  console.log("MY ROLE: ",role) // sebholt comment
   globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
 
   // this.browser = BrowserDetect.browser;
