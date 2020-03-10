@@ -99,7 +99,7 @@ var game_core = function(options){
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 24;
+    this.numRounds = 24; // sebholt edit; changed 40 to 24
   } else {
     this.numRounds = 48;
   }

@@ -355,10 +355,10 @@ var customSetup = function(game) {
       $('#instructs').html('Thanks for participating in our experiment! ' +
         "Before you submit your HIT, we'd like to ask you a few questions.");
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 1) + " of " + game.numRounds);
+        .append("Round\n" + (game.roundNum + 1) + " of " + "24"); // sebholt edit; changed 'game.numRounds' to '24'
     } else {
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 2) + " of " + game.numRounds);
+        .append("Round\n" + (game.roundNum + 2) + " of " + "24"); // sebholt edit; changed 'game.numRounds' to '24'
     }
     $('#score').empty().append(score / 3 + ' of ' + (game.roundNum + 1) + ' correct for a bonus of $'
 			       + displaytotal);
