@@ -99,7 +99,7 @@ var game_core = function(options){
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 40;
+    this.numRounds = 24;
   } else {
     this.numRounds = 48;
   }
@@ -326,7 +326,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 
 // sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
-  var reps = 50
+  var reps = 1
 
   var session = _.range(this.stimList.length*reps)
   console.log("stimlist length : ",this.stimList.length,'\n')
