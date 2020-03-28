@@ -527,6 +527,7 @@ game_core.prototype.makeTrialList = function () {
       	gridPixelX: listenerGridCell.centerX - 100,
       	gridPixelY: listenerGridCell.centerY - 100
       };
+      console.log("OBJECT HERE:", object)
       return object;
 
       }));
