@@ -204,4 +204,4 @@ var stimList = [
   // wolves_9_0, wolves_10_0, wolves_11_0, wolves_12_0
 ]
 
-module.exports = stimList;
+module.exports = {stimList,stimListv2};

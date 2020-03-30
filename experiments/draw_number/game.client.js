@@ -47,6 +47,8 @@ var submitted = false;
  */
 
 var client_onserverupdate_received = function(data){
+  console.log("data:",data) // sebholt print statement
+  console.log("globalGAME:",globalGame) // sebholt print statement
   // Update client versions of variables with data received from
   // server_send_update function in game.core.js
   //data refers to server information
@@ -64,6 +66,7 @@ var client_onserverupdate_received = function(data){
     globalGame.drawingAllowed = false;
     //console.log("data.objects:" + data.objects);
     globalGame.objects = _.map(data.objects, function(obj) {
+      // console.log("OBJ:", obj)
       // Extract the coordinates matching your role
       var customCoords = globalGame.my_role == "sketcher" ? obj.speakerCoords : obj.listenerCoords;
       // remove the speakerCoords and listenerCoords properties

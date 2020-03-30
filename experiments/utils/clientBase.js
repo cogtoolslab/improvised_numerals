@@ -134,6 +134,7 @@ var sharedSetup = function(game) {
   game.socket.on('disconnect', ondisconnect.bind(game));
   //Sent each tick of the server simulation. This is our authoritive update
   game.socket.on('onserverupdate', client_onserverupdate_received.bind(game));
+  // game.socket.on('onserverupdate', console.log('GAME',game)); // sebholt print statement
   //Handle when we connect to the server, showing state and storing id's.
   game.socket.on('onconnected', onconnect.bind(game));
   //On message from the server, we parse the commands and send it to the handlers

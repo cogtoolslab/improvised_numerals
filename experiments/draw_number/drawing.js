@@ -33,14 +33,20 @@ var drawGrid = function(game){
 
 // Loop through the object list and draw each one in its specified location
 var drawObjects = function(game, player) {
+    // console.log("globalGame.objects HERE:", globalGame.objects) // sebholt print statement
     _.map(globalGame.objects, function(obj) {
+      // console.log("GGobj HERE:", obj) // sebholt print statement
       // game.ctx.globalCompositeOperation='destination-over';  // draw under highlight
       var customCoords = globalGame.my_role == "sketcher" ? 'speakerCoords' : 'listenerCoords';
       var trueX = obj[customCoords]['trueX'];
       var trueY = obj[customCoords]['trueY'];
       var gridX = obj[customCoords]['gridX'];
       var gridY = obj[customCoords]['gridY'];
-      globalGame.ctx.drawImage(obj.img, trueX, trueY,obj.width, obj.height);
+
+      // sebholt begin edit
+      var customImage = globalGame.my_role == "sketcher" ? obj.img : obj.img; // replace 2nd "obj.img" to alt version
+      globalGame.ctx.drawImage(customImage, trueX, trueY,obj.width, obj.height);
+      // sebholt end edit (line above was here, I changed 'obj.img' to 'customImage')
     });
 
 };

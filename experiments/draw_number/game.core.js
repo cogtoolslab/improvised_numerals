@@ -140,8 +140,8 @@ var game_core = function(options){
     console.log('sent server update bc satisfied this.server')
     // If we're initializing the server game copy, pre-create the list of trials
     // we'll use, make a player object, and tell the player who they are
-    this.stimList = _.map(require('./stimList', _.clone));
-    this.stimListv2 = _.map(require('./stimList', _.clone)); // sebholt addition
+    this.stimList = _.map(require('./stimList', _.clone))[0];
+    this.stimListv2 = _.map(require('./stimList', _.clone))[1]; // sebholt addition
     this.id = options.id;
     this.expName = options.expName;
     this.player_count = options.player_count;
@@ -235,6 +235,7 @@ game_core.prototype.newRound = function() {
     this.trialInfo = {currStim: this.trialList[this.roundNum]};
     //console.log("this.trialList[this.roundNum]: " + this.trialList[this.roundNum]);
     this.objects = this.trialList[this.roundNum];
+    //console.log("objects HERE:", this.objects) // sebholt print statement DELETE SOON
     this.objClicked = false;
     active_players = this.get_active_players();
     this.setupTimer(this.timeLimit,active_players);
@@ -358,8 +359,9 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(target) {
+game_core.prototype.newsampleTrial = function(target,alt=0) {
   stimlist = this.stimList
+  stimListv2 = this.stimListv2
   var curTarg = target
 
   var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
@@ -385,6 +387,13 @@ game_core.prototype.newsampleTrial = function(target) {
   var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'});
   var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'});
   var tg = _.extend({}, curTarg, {target_status: 'target'});
+
+  if(alt == 1){
+    d1 = _.filter(stimListv2, {'subordinate' : sampled_distr1['subordinate']})
+    d2 = _.filter(stimListv2, {'subordinate' : sampled_distr2['subordinate']})
+    d3 = _.filter(stimListv2, {'subordinate' : sampled_distr3['subordinate']})
+    tg = _.filter(stimListv2, {'subordinate' : curTarg['subordinate']})
+  }
 
   var newoutput = [d1,d2,d3,tg]
   return newoutput ;
@@ -493,6 +502,8 @@ game_core.prototype.makeTrialList = function () {
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
     var objList = this.newsampleTrial(target); // sebholt edit (addition)
+    var objListAlt = this.newsampleTrial(target,alt=1); // sebholt edit (addition)
+
     // console.log('objList',objList);
 
     // sample locations for those objects
@@ -502,10 +513,12 @@ game_core.prototype.makeTrialList = function () {
     // console.log("locs.speaker: ", locs.speaker ,"\n") // sebholt print statement
     // console.log("locs.listener: ", locs.listener ,"\n") // sebholt print statement
 
-    trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener), function(tuple) {
+    // sebholt edit within following block, all references to "objListAlt"
+    trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener, objListAlt), function(tuple) {
       // console.log("tuple: ", tuple ,"\n") // sebholt print statement
       // console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
       var object = _.clone(tuple[0]);
+      var objectAlt = _.clone(tuple[3]);
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
       var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
@@ -527,13 +540,46 @@ game_core.prototype.makeTrialList = function () {
       	gridPixelX: listenerGridCell.centerX - 100,
       	gridPixelY: listenerGridCell.centerY - 100
       };
-      console.log("OBJECT HERE:", object)
+      
       return object;
 
       }));
 
+      // whole new function to return the new objectAlt value that I tried to do above:
+      trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener, objListAlt), function(tuple) {
+        // console.log("tuple: ", tuple ,"\n") // sebholt print statement
+        // console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
+        var object = _.clone(tuple[0]);
+        var objectAlt = _.clone(tuple[3]);
+        object.width = local_this.cellDimensions.width;
+        object.height = local_this.cellDimensions.height;
+        var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
+        // console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
+        var listenerGridCell = local_this.getPixelFromCell(tuple[2][0], tuple[2][1]);
+        object.speakerCoords = {
+          gridX : tuple[1][0],
+          gridY : tuple[1][1],
+          trueX : speakerGridCell.centerX - object.width/2,
+          trueY : speakerGridCell.centerY - object.height/2,
+          gridPixelX: speakerGridCell.centerX - 100,
+          gridPixelY: speakerGridCell.centerY - 100
+              };
+        object.listenerCoords = {
+          gridX : tuple[2][0],
+          gridY : tuple[2][1],
+          trueX : listenerGridCell.centerX - object.width/2,
+          trueY : listenerGridCell.centerY - object.height/2,
+          gridPixelX: listenerGridCell.centerX - 100,
+          gridPixelY: listenerGridCell.centerY - 100
+        };
+
+        return objectAlt;
+  
+        }));
+
 
   };
+
   return(trialList);
 
 };
