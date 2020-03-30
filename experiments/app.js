@@ -99,8 +99,9 @@ io.on('connection', function (client) {
     if(valid_id(id)) {
       initialize(query, client, id);
     } else {
+      console.log("THIS CONDITION BEING MET!")
       res.redirect('/draw_number/forms/notwice.html');
-    }
+    } // sebholt edit addition, this else statement. Possibly not
   }
 });
 
