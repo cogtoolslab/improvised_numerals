@@ -87,6 +87,7 @@ io.on('connection', function (client) {
   var hs = client.request;
   var query = require('url').parse(hs.headers.referer, true).query;
   var id;
+  console.log("GPS: ",global_player_set) //sebholt print statement
   if( !(query.workerId && query.workerId in global_player_set) ) {
     if(!query.workerId || query.workerId === 'undefined') {
       id = utils.UUID();
