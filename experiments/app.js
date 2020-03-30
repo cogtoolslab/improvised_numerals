@@ -98,6 +98,8 @@ io.on('connection', function (client) {
     }
     if(valid_id(id)) {
       initialize(query, client, id);
+    } else {
+      res.redirect('/draw_number/forms/notwice.html');
     }
   }
 });
