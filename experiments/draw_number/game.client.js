@@ -150,6 +150,9 @@ var client_onMessage = function(data) {
   var subcommand = commands[1] || null;
   var commanddata = commands[2] || null;
 
+  console.log(command) // sebholt print statement
+  console.log(subcommand) // sebholt print statement
+
   switch(command) {
   case 's': //server message
     switch(subcommand) {
