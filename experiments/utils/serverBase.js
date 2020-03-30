@@ -83,6 +83,7 @@ class ReferenceGameServer {
 
   // Will run when first player connects
   createGame (player) {
+    console.log("GAME CREATED")
     //Create a new game instance
     var options = {
       expName: this.expName,
