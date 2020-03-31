@@ -270,6 +270,10 @@ var customSetup = function(game) {
 
   });
 
+  game.socket.on('redirect',function(destination) {
+    window.location.href = destination;
+    });
+    
   game.socket.on('mutualDoneDrawing', function(role) {
     globalGame.doneDrawing = true;
     globalGame.drawingAllowed = false;
