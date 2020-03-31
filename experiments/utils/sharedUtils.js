@@ -25,7 +25,7 @@ var handleInvalidID = function(req, res) {
 var checkPreviousParticipant = function(workerId, callback) {
   var p = {'workerId': workerId};
   var postData = {
-    dbname: '3dObjects',
+    dbname: 'iterated_number',
     query: p,
     projection: {'_id': 1}
   };
