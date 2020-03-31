@@ -85,8 +85,7 @@ function serve() {
       const projection = request.body.projection;
 
       // hardcoded for now (TODO: get list of collections in db)
-      var collectionList = ['sketchpad_basic','sketchpad_repeated',
-          'graphical_conventions', 'graphical_conventions_recog']; 
+      var collectionList = ['animals']; 
 
       function checkCollectionForHits(collectionName, query, projection, callback) {
         const collection = database.collection(collectionName);        
