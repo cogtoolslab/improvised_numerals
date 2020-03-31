@@ -89,26 +89,18 @@ io.on('connection', function (client) {
   var id;
   console.log("GPS: ",global_player_set) //sebholt print statement
   if( !(query.workerId && query.workerId in global_player_set) ) {
-    console.log("CONDITION A BEING MET!") // YES being met currently
-
     if(!query.workerId || query.workerId === 'undefined') {
       id = utils.UUID();
-      console.log("CONDITION AA BEING MET!") // NOT being met currently
-
     } else {
-      console.log("CONDITION AB BEING MET!") // YES being met currently
       // useid from query string if exists
       global_player_set[query.workerId] = true;
       id = query.workerId;
     }
     if(valid_id(id)) {
-      console.log("CONDITION AC BEING MET!") // YES being met currently
       initialize(query, client, id);
-
-    } else {
-      console.log("CONDITION AD BEING MET!") // NOT being met currently
-      res.redirect('/draw_number/forms/notwice.html');
-    } // sebholt edit addition, this else statement. Possibly not
+    }  
+  } else {
+      return utils.handleDuplicate(req, res)
   }
 });
 console.log("trivial")
