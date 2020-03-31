@@ -501,24 +501,15 @@ game_core.prototype.makeTrialList = function () {
     // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(target); // sebholt edit (addition)
-    var objListAlt = this.newsampleTrial(target,alt=1); // sebholt edit (addition)
+    var objList = this.newsampleTrial(target); // sebholt edit (addition)    
 
     // console.log('objList',objList);
 
     // sample locations for those objects
     var locs = this.sampleStimulusLocs();
     // construct trial list (in sets of complete rounds)
-    // console.log("objList: ", objList ,"\n") // sebholt print statement
-    // console.log("locs.speaker: ", locs.speaker ,"\n") // sebholt print statement
-    // console.log("locs.listener: ", locs.listener ,"\n") // sebholt print statement
-
-    // sebholt edit within following block, all references to "objListAlt"
-    trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener, objListAlt), function(tuple) {
-      // console.log("tuple: ", tuple ,"\n") // sebholt print statement
-      // console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
-      var object = _.clone(tuple[0]);
-      var objectAlt = _.clone(tuple[3]);
+    trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener), function(tuple) {
+      var object = _.clone(tuple[0]);      
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
       var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
@@ -544,38 +535,6 @@ game_core.prototype.makeTrialList = function () {
       return object;
 
       }));
-
-      // whole new function to return the new objectAlt value that I tried to do above:
-      trialList.push(_.map(_.zip(objList, locs.speaker, locs.listener, objListAlt), function(tuple) {
-        // console.log("tuple: ", tuple ,"\n") // sebholt print statement
-        // console.log("tuple[1]: ", tuple[1] ,"\n") // sebholt print statement
-        var object = _.clone(tuple[0]);
-        var objectAlt = _.clone(tuple[3]);
-        object.width = local_this.cellDimensions.width;
-        object.height = local_this.cellDimensions.height;
-        var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
-        // console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
-        var listenerGridCell = local_this.getPixelFromCell(tuple[2][0], tuple[2][1]);
-        object.speakerCoords = {
-          gridX : tuple[1][0],
-          gridY : tuple[1][1],
-          trueX : speakerGridCell.centerX - object.width/2,
-          trueY : speakerGridCell.centerY - object.height/2,
-          gridPixelX: speakerGridCell.centerX - 100,
-          gridPixelY: speakerGridCell.centerY - 100
-              };
-        object.listenerCoords = {
-          gridX : tuple[2][0],
-          gridY : tuple[2][1],
-          trueX : listenerGridCell.centerX - object.width/2,
-          trueY : listenerGridCell.centerY - object.height/2,
-          gridPixelX: listenerGridCell.centerX - 100,
-          gridPixelY: listenerGridCell.centerY - 100
-        };
-
-        return objectAlt;
-  
-        }));
 
 
   };
