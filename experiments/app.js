@@ -104,13 +104,14 @@ io.on('connection', function (client) {
     if(valid_id(id)) {
       console.log("CONDITION AC BEING MET!") // YES being met currently
       initialize(query, client, id);
-      
+
     } else {
       console.log("CONDITION AD BEING MET!") // NOT being met currently
       res.redirect('/draw_number/forms/notwice.html');
     } // sebholt edit addition, this else statement. Possibly not
   }
 });
+console.log("trivial")
 
 var valid_id = function(id) {
   return (id.length <= 15 && id.length >= 12) || id.length == 41;
