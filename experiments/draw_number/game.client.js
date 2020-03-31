@@ -47,8 +47,6 @@ var submitted = false;
  */
 
 var client_onserverupdate_received = function(data){
-  console.log("data:",data) // sebholt print statement
-  console.log("globalGAME:",globalGame) // sebholt print statement
   // Update client versions of variables with data received from
   // server_send_update function in game.core.js
   //data refers to server information
@@ -64,9 +62,7 @@ var client_onserverupdate_received = function(data){
     var alreadyLoaded = 0;
     //$('#occluder').show();
     globalGame.drawingAllowed = false;
-    //console.log("data.objects:" + data.objects);
     globalGame.objects = _.map(data.objects, function(obj) {
-      // console.log("OBJ:", obj)
       // Extract the coordinates matching your role
       var customCoords = globalGame.my_role == "sketcher" ? obj.speakerCoords : obj.listenerCoords;
       // remove the speakerCoords and listenerCoords properties
@@ -149,9 +145,6 @@ var client_onMessage = function(data) {
   var command = commands[0];
   var subcommand = commands[1] || null;
   var commanddata = commands[2] || null;
-
-  console.log("CMD", command) // sebholt print statement
-  console.log("sCMD",subcommand) // sebholt print statement
 
   switch(command) {
   case 's': //server message
@@ -354,11 +347,8 @@ var customSetup = function(game) {
 
     // Update display
     var score = game.data.subject_information.score;
-    //console.log("SCORE: " + score);
     var bonus_score = game.data.subject_information.bonus_score;
-    //console.log("BONUS: " + bonus_score);
     var displaytotal = (((parseFloat(score) + parseFloat(bonus_score))/ 100.0).toFixed(2));
-    // console.log("TOTAL: " + displaytotal); // added
     if(game.roundNum + 2 > game.numRounds) {
       $('#roundnumber').empty();
       $('#sketchpad').hide();
@@ -407,7 +397,6 @@ var customSetup = function(game) {
     var path = new Path();
     path.importJSON(jsonData);
     //var sketchShowsUpTime = Date.now();
-    //console.log("sketchshowsuptime: " + sketchShowsUpTime);
   });
 
  // new progress bar function
@@ -468,7 +457,6 @@ var client_onjoingame = function(num_players, role) {
   }
   // set role locally
   globalGame.my_role = role;
-  console.log("MY ROLE: ",role) // sebholt comment
   globalGame.get_player(globalGame.my_id).role = globalGame.my_role;
 
   // this.browser = BrowserDetect.browser;
@@ -504,13 +492,13 @@ var client_onjoingame = function(num_players, role) {
     this.timeoutID = setTimeout(function() {
       if(_.size(this.urlParams) == 4) {
   	this.submitted = true;
-  	window.opener.turk.submit(this.data, true);
-    // console.log("submitted the following :");
-  	// console.log(this.data);
-  	window.close();
+  	  window.opener.turk.submit(this.data, true);
+	  console.log("submitted the following :");
+	  console.log(this.data);	  
+  	  window.close();
       } else {
-  	// console.log("would have submitted the following :");
-  	// console.log(this.data);
+	  console.log('would have submitted the following:');
+	  console.log(this.data);
       }
     }, 1000 * 60 * 15);
     globalGame.get_player(globalGame.my_id).message = ('Waiting for another player...\nPlease do not refresh the page!\n If wait exceeds 5 minutes, we recommend returning the HIT and trying again later.');
@@ -540,10 +528,8 @@ var client_onjoingame = function(num_players, role) {
 };
 
 var setupOverlay = function() { // added transition pop-up
-  //console.log("setupOverlay being called");
-  if (globalGame.get_player(globalGame.my_id).role == globalGame.playerRoleNames.role1) {
-    //console.log("i am the sketcher");
-    $('#after_pre_button').click(function next() {
+    if (globalGame.get_player(globalGame.my_id).role == globalGame.playerRoleNames.role1) {
+      $('#after_pre_button').click(function next() {
       globalGame.socket.send('sketcherReady');
       $('#after_pre_text').text("Waiting for Viewer to click 'next'...");
     });
