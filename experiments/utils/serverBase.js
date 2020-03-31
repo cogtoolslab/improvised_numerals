@@ -106,7 +106,6 @@ class ReferenceGameServer {
     this.game_count++;
 
     game.server_send_update();
-    console.log("FUCKING GAME:",game)//['trialList'])
     return game;
   };
 
