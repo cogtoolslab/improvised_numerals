@@ -25,10 +25,10 @@ if( typeof _ === 'undefined' ) {
 var game_core = function(options){
   // Store a flag if we are the server instance
   this.server = options.server ;
-  this.projectName = 'iteratedNumber';
-  this.experimentName = 'drawing';
+  this.projectName = 'iterated_number';
+  this.experimentName = 'animals';
   this.iterationName = 'testing'; 
-  this.email = 'sketchloop@gmail.com';
+  this.email = 'ladlab.ucsd@gmail.com';
   // console.log("color randomized");
 
   // save data to the following locations (allowed: 'csv', 'mongo')
