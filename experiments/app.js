@@ -61,7 +61,7 @@ console.log("info  - socket.io started");
 console.log('\t :: Express :: Listening on port ' + gameport );
 
 app.get( '/*' , function( req, res ) {
-  var id = req.query.workerId;
+    var id = req.query.workerId;
     var isResearcher = _.includes(researchers, id);
   if(!id || id === 'undefined' || (isResearcher && !blockResearcher))  {
     // If no worker id supplied (e.g. for demo), allow to continue
@@ -86,8 +86,7 @@ io.on('connection', function (client) {
   // Recover query string information and set condition
   var hs = client.request;
   var query = require('url').parse(hs.headers.referer, true).query;
-  var id;
-  console.log("GPS: ",global_player_set) //sebholt print statement
+    var id;
   if( !(query.workerId && query.workerId in global_player_set) ) {
     if(!query.workerId || query.workerId === 'undefined') {
       id = utils.UUID();
@@ -100,10 +99,10 @@ io.on('connection', function (client) {
       initialize(query, client, id);
     }  
   } else {
-      return utils.handleDuplicate(req, res)
+      console.log('redirecting');
+      client.emit('redirect', 'https://cogtoolslab.org:' + gameport.toString() +  '/utils/duplicate.html');
   }
 });
-console.log("trivial")
 
 var valid_id = function(id) {
   return (id.length <= 15 && id.length >= 12) || id.length == 41;
