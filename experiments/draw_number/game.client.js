@@ -440,15 +440,15 @@ var client_onjoingame = function(num_players, role) {
   $('#roleLabel').append(role + '.');
   if (role === globalGame.playerRoleNames.role1) {
     txt = "target";
-    $('#instructs').html("<p>You have 30 seconds to use the sketchpad to indicate which image is the target (purple) so that your partner can tell which it is. You will receive </p>" +
-      "<p> a bonus ONLY if the Viewer selects the correct object (plus small additional speed bonus). DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
+    $('#instructs').html("<p>You have 30 seconds to use the sketchpad to indicate which image is the target (purple) so that your partner can tell which it is. You will receive " +
+      "a bonus ONLY if the Viewer selects the correct object (plus small additional speed bonus). DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
       if (globalGame.useSubmitButton) {
         $("#submitbutton").show();
       }
   } else if (role === globalGame.playerRoleNames.role2) {
 
-    $('#instructs').html("<p>Your partner has 30 seconds to use the sketchpad to indicate which image is the target. When you are sure which it is, click on the image </p>" +
-      "<p> you think they mean. If you are correct, you will both receive a bonus (plus small additional speed bonus).</p>" +
+    $('#instructs').html("<p>Your partner has 30 seconds to use the sketchpad to indicate which image is the target. When you are sure which it is, click on the image " +
+      "you think they mean. If you are correct, you will both receive a bonus (plus small additional speed bonus).</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
     if (globalGame.useSubmitButton) {
       $("#loading").show();
