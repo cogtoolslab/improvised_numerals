@@ -28,7 +28,7 @@ var game_core = function(options){
   this.projectName = 'iterated_number';
   this.experimentName = 'animals';
   this.iterationName = 'testing'; 
-  this.email = 'ladlab.ucsd@gmail.com';
+  this.email = 'cogtoolslab.requester@gmail.com';
   // console.log("color randomized");
 
   // save data to the following locations (allowed: 'csv', 'mongo')
