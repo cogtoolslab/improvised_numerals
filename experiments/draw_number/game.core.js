@@ -27,7 +27,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'animals';
-  this.iterationName = 'testing'; 
+  this.iterationName = 'sandboxtest'; 
   this.email = 'ladlab.ucsd@gmail.com';
   // console.log("color randomized");
 
