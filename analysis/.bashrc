@@ -1,0 +1,1 @@
+alias tunnel_cogtoolslab='ssh -fNL 27017:127.0.0.1:27017 sholt@cogtoolslab.org'

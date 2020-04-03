@@ -1,4 +1,0 @@
-iterationName	gameid	time	trialNum	intendedName	svgData	currStrokeNum	shiftKeyUsed	previous_score	previous_bonus_score	startStrokeTime	endStrokeTime	eventType
-testing	5427-2bf6ccaa-3091-4ccb-acbd-94571f4d8e74	1574663556621	1	waiting_02	M141,46c0,27.33333 0,54.66667 0,82c0,2.45058 -2.26858,27 2,27	1	0	0	0	1574663555739	1574663556135	stroke
-testing	5427-2bf6ccaa-3091-4ccb-acbd-94571f4d8e74	1574663557654	1	waiting_02	M197,166c-16.06622,0 -31.9721,1 -48,1	2	0	0	0	1574663556810	1574663557171	stroke
-testing	5427-2bf6ccaa-3091-4ccb-acbd-94571f4d8e74	1574663558951	1	waiting_02	M123,193c19.94697,-3.3245 56.6449,-34 64,-34	3	0	0	0	1574663558053	1574663558462	stroke
