@@ -29,6 +29,28 @@ import os, sys
 import numpy as np
 import re
 
+    
+def list_files(path, ext='png'):
+    result = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.%s' % ext))]
+    return result
+
+def tryint(s):
+    try:
+        return int(s)
+    except ValueError:
+        return s
+     
+def alphanum_key(s):
+    """ Turn a string into a list of string and number chunks.
+        "z23a" -> ["z", 23, "a"]
+    """
+    return [ tryint(c) for c in re.split('([0-9]+)', s) ]
+
+def sort_nicely(l):
+    """ Sort the given list in the way that humans expect.
+    """
+    l.sort(key=alphanum_key)    
+
 def render_images(D, 
                  data = 'pngData',
                  metadata = ['trialNum'],
@@ -68,24 +90,188 @@ def render_images(D,
     
     print('Done rendering {} images to {}.'.format(D.shape[0],out_dir))
     
+    
+def render_sketch_gallery(gameids, 
+                          sketch_dir = './sketches',
+                          gallery_dir = './gallery',
+                          num_trials = 24):
+    '''
+    input: 
+         gameids: list of gameids
+         sketch_dir: full path to dir containing rendered PNG sketch files (data source)
+         gallery_dir: full path to dir where you want to save gallery image out (data destination)
+         num_trials: how many trials per game? used to determine subplot arrangement
+    '''
+    sketch_paths = sorted([sketch_path for sketch_path in os.listdir(sketch_dir)])
 
-def list_files(path, ext='png'):
-    result = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.%s' % ext))]
-    return result
+    ## make guess about how many rows and columns to use
+    nrows = 3
+    ncols = num_trials / nrows if num_trials%nrows==0 else int(np.ceil(num_trials/nrows))
+    
+    ## generate gallery for each participant
+    for gind, game in enumerate(gameids): 
+        print('Generating sketch gallery for participant: {} | {} of {}'.format(game,gind+1,len(gameids)))
+        # get list of all sketch paths JUST from current game
+        game_sketch_paths = [path for path in sketch_paths if path.split('_')[0] == game]
+        fig = plt.figure(figsize=(14,12))   
+        for i,f in enumerate(game_sketch_paths):
+            # open image
+            im = Image.open(os.path.join(sketch_dir,f))
+            # get metadata
+            gameid = f.split('_')[0] 
+            category = f.split('_')[1]
+            cardinality = f.split('_')[2]  
+            trialNum = f.split('_')[3].split('.')[0]
+            # make gallery
+            p = plt.subplot(nrows,ncols,i+1)
+            plt.imshow(im)
+            sns.set_style('white')
+            k = p.get_xaxis().set_ticklabels([])
+            k = p.get_yaxis().set_ticklabels([])
+            k = p.get_xaxis().set_ticks([])
+            k = p.get_yaxis().set_ticks([])   
+            p.axis('off')
+            plt.title('{} {}'.format(category,cardinality))
+        plt.suptitle(gameid)
+        fname = '{}.png'.format(gameid)
+        plt.savefig(os.path.join(gallery_dir,fname))
+        plt.close(fig)
+    print('Done!')    
+    
+    
+def generate_dataframe(coll, complete_games, iterationName, csv_dir):
+    
+    # preprocessing
+    TrialNum = []
+    GameID = []
+    Condition = []
+    Target = []
+    Category = []
+    Cardinality = []
+    Distractor1 = []
+    Distractor2 = []
+    Distractor3 = []
+    Outcome = []
+    Response = []
+    Repetition = []
+    Phase = []
+    numStrokes = []
+    drawDuration = [] # in seconds
+    svgString = [] # svg string representation of ksetch
+    numCurvesPerSketch = [] # number of curve segments per sketch
+    numCurvesPerStroke = [] # mean number of curve segments per stroke
+    svgStringStd = [] # std of svg string length across strokes for this sketch
+    Outcome = [] #accuracy (True or False)
+    png=[] # the sketch
+    timedOut=[] # True if sketchers didn't draw anything, False o.w.
+    meanPixelIntensity=[]
 
-def tryint(s):
-    try:
-        return int(s)
-    except ValueError:
-        return s
-     
-def alphanum_key(s):
-    """ Turn a string into a list of string and number chunks.
-        "z23a" -> ["z", 23, "a"]
-    """
-    return [ tryint(c) for c in re.split('([0-9]+)', s) ]
 
-def sort_nicely(l):
-    """ Sort the given list in the way that humans expect.
-    """
-    l.sort(key=alphanum_key)    
+    for i,g in enumerate(complete_games):
+
+            # collection of all clickedObj events in a particular game
+            X = coll.find({ '$and': [{'gameid': g}, {'eventType': 'clickedObj'}]}).sort('time')
+            # collection of all stroke events in a particular game
+            Y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}]}).sort('time')
+            counter = 0
+            for t in X: # for each clickedObj event
+                print( 'Analyzing game {} | {} of {} | trial {}'.format(g, i+1, len(complete_games),counter))
+                clear_output(wait=True)                                
+                counter += 1
+                target = t['intendedName']
+                category = target.split('_')[0]
+                cardinality = target.split('_')[1]                
+                distractors = [t['object2Name'],t['object3Name'],t['object4Name']]
+                full_list = [t['intendedName'],t['object2Name'],t['object3Name'],t['object4Name']]
+                png.append(t['pngString'])
+
+                #for each stroke event with same trial number as this particular clickedObj event
+                y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+                # have to account for cases in which sketchers do not draw anything
+                if (y.count() == 0):
+                    numStrokes.append(float('NaN'))
+                    drawDuration.append(float('NaN'))
+                    #svgString.append('NaN')
+                    numCurvesPerSketch.append(float('NaN'))
+                    numCurvesPerStroke.append(float('NaN'))
+                    meanPixelIntensity.append('NaN')
+                    timedOut.append(True)
+                else:
+                    y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+
+
+                    lastStrokeNum = float(y[y.count() - 1]['currStrokeNum']) # get currStrokeNum at last stroke
+                    ns = y.count()
+                    if not lastStrokeNum == ns:
+                        print("ns: " + str(ns))
+                        print("lastStrokeNum: " + str(lastStrokeNum))
+
+                    numStrokes.append(lastStrokeNum)
+
+                    # calculate drawDuration
+                    startStrokeTime =  float(y[0]['startStrokeTime'])
+                    endStrokeTime = float(y[y.count() - 1]['endStrokeTime']) ## took out negative 1
+                    duration = (endStrokeTime - startStrokeTime) / 1000
+                    drawDuration.append(duration)
+
+                    # extract svg string into list
+                    svg_list = [_y['svgData'] for _y in y]
+
+                    # calculate other measures that have to do with sketch
+                    y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+                    num_curves = [len([m.start() for m in re.finditer('c',str(_y['svgData']))]) for _y in y] ## gotcha: need to call string on _y['svgData'], o/w its unicode and re cant do anything with it
+                    numCurvesPerSketch.append(sum(num_curves))
+                    numCurvesPerStroke.append(sum(num_curves)/lastStrokeNum)
+                    timedOut.append(False)
+
+                    ## calculate pixel intensity (amount of ink spilled)                    
+                    imsize = 300
+                    numpix = imsize**2
+                    thresh = 250
+                    imgData = t['pngString']
+                    im = Image.open(BytesIO(base64.b64decode(imgData)))
+                    _im = np.array(im)
+                    meanPixelIntensity.append(len(np.where(_im[:,:,3].flatten()>thresh)[0])/numpix)
+                  
+
+                ### aggregate game metadata
+                TrialNum.append(t['trialNum'])
+                GameID.append(t['gameid'])
+                Target.append(target)
+                Category.append(category)
+                Cardinality.append(cardinality)
+                Response.append(t['clickedName'])
+                Outcome.append(t['correct'])
+                Distractor1.append(distractors[0])
+                Distractor2.append(distractors[1])
+                Distractor3.append(distractors[2])
+                svgString.append(svg_list)
+
+
+
+    ## now actually make dataframe
+    GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png,svgString = map(np.array, \
+    [GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut,png, svgString])
+
+    Repetition = map(int,Repetition)
+
+    _D = pd.DataFrame([GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png,svgString],
+                     index = ['gameID','trialNum', 'target', 'category', 'cardinality', 'drawDuration', 'outcome', 'response', 'numStrokes', 'meanPixelIntensity', 'numCurvesPerSketch', 'numCurvesPerStroke', 'timedOut', 'png','svgString'])
+    _D = _D.transpose()    
+    
+    # tag outlier games (low accuracy)
+    _D['outcome'] = pd.to_numeric(_D['outcome'])
+    acc = _D.groupby('gameID')['outcome'].mean().reset_index()
+    thresh = acc['outcome'].mean() - acc['outcome'].std()*3
+    low_acc_games = acc[acc['outcome']<thresh]['gameID'].values
+
+    # add new column, low_acc, to keep track of low accuracy games
+    _D = _D.assign(low_acc = pd.Series(np.zeros(len(_D),dtype=bool)))
+    _D.loc[_D['gameID'].isin(low_acc_games),'low_acc'] = True
+
+    # save out dataframe to be able to load in and analyze later w/o doing the above mongo querying ...
+    _D.to_csv(os.path.join(csv_dir,'iterated_number_group_data_{}.csv'.format(iterationName)),index=False)
+
+    print('Done!')
+    return _D    
+    
