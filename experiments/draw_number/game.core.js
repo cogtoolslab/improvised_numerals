@@ -338,6 +338,14 @@ game_core.prototype.getRandomizedConditions = function() {
 };
 // sebholt end edit, rewriting getRandomizedConditions function
 
+// sebholt begin edit, writing a function to return a random version image url from Amazon given features
+game_core.prototype.fetchURL = function(target) {
+  num_versions = 100
+  random_version_num = Math.floor(Math.random() * num_versions)
+  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + target['object'] + '_' + toString(random_version_num);
+  }
+  
+
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
 var filterStimList = function(stimList, numObjs) {
@@ -470,7 +478,7 @@ game_core.prototype.makeTrialList = function () {
       ticker = 1
     }
     
-    
+    console.log("URL HERE: ", fetchURL(target))
     
     // console.log("poss_targs",poss_targs,'\n')
     // console.log(target.subordinate)
