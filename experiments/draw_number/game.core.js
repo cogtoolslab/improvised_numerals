@@ -141,7 +141,6 @@ var game_core = function(options){
     // If we're initializing the server game copy, pre-create the list of trials
     // we'll use, make a player object, and tell the player who they are
     this.stimList = _.map(require('./stimList', _.clone))[0];
-    this.stimListv2 = _.map(require('./stimList', _.clone))[1]; // sebholt addition
     this.id = options.id;
     this.expName = options.expName;
     this.player_count = options.player_count;
@@ -338,15 +337,14 @@ game_core.prototype.getRandomizedConditions = function() {
 };
 // sebholt end edit, rewriting getRandomizedConditions function
 
-// sebholt begin edit, writing a function to return a random version image url from Amazon given features
+// sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
 game_core.prototype.fetchURL = function(target) {
   num_versions = 100
   v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
   while (v.length < 3) v = "0" + v;
-  console.log(v)
   return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + (target['object']+1)+ '_' + v.toString() + ".png";
   }
-  // fix the plural/singular nonsense for 'basic' and the 3-digit issue with version number
+
 
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
@@ -369,9 +367,8 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(target,alt=0) {
+game_core.prototype.newsampleTrial = function(target) {
   stimlist = this.stimList
-  stimListv2 = this.stimListv2
   var curTarg = target
 
   var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
@@ -383,14 +380,17 @@ game_core.prototype.newsampleTrial = function(target,alt=0) {
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
 
   // sample from each of the distractor categories (first try):
-  // var sampled_distr1 = _.sample(same_number);
-  // var sampled_distr2 = _.sample(same_shape);
-  // var sampled_distr3 = _.sample(same_neither);
+  condition = 'number' // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
+  discriminator = condition == 'number' ? same_number : same_shape;
+
+  var sampled_distr1 = _.sample(discriminator);
+  var sampled_distr2 = _.without(_.sample(discriminator),sampled_distr1);
+  var sampled_distr3 = _.without(_.without(_.sample(discriminator),sampled_distr1),sampled_distr2);
 
   // sample from each of the distractor categories (second try):
-  var sampled_distr1 = _.sample(not_number);
-  var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
-  var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
+  // var sampled_distr1 = _.sample(not_number);
+  // var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
+  // var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
 
 
   var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'});
@@ -398,14 +398,9 @@ game_core.prototype.newsampleTrial = function(target,alt=0) {
   var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'});
   var tg = _.extend({}, curTarg, {target_status: 'target'});
 
-  if(alt == 1){
-    d1 = _.filter(stimListv2, {'subordinate' : sampled_distr1['subordinate']})
-    d2 = _.filter(stimListv2, {'subordinate' : sampled_distr2['subordinate']})
-    d3 = _.filter(stimListv2, {'subordinate' : sampled_distr3['subordinate']})
-    tg = _.filter(stimListv2, {'subordinate' : curTarg['subordinate']})
-  }
-
+  
   var newoutput = [d1,d2,d3,tg]
+  console.log("TRIAL: ", newoutput)
   return newoutput ;
 };
 // sebholt end edit rewrite this function
@@ -479,9 +474,7 @@ game_core.prototype.makeTrialList = function () {
       var target = _.sample(poss_targs)
       ticker = 1
     }
-    
-    console.log("URL HERE: ", this.fetchURL(target))
-    
+        
     // console.log("poss_targs",poss_targs,'\n')
     // console.log(target.subordinate)
     var current_cardinality = target.object
