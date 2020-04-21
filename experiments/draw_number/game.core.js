@@ -270,7 +270,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 //   //console.log("setsize in getRandomizedConditions: " + this.setSize);
 //   // make category array
 //   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-//   var repeatedCat = "bears";
+//   var repeatedCat = "bear";
 //   var controlCat = "deer";
 
 //   var shuffledObjs = _.shuffle(_.range(0,numObjs));
@@ -339,11 +339,12 @@ game_core.prototype.getRandomizedConditions = function() {
 // sebholt end edit, rewriting getRandomizedConditions function
 
 // sebholt begin edit, writing a function to return a random version image url from Amazon given features
-game_core.prototype.fetchURL = function(target) {
+ame_core.prototype.fetchURL = function(target) {
   num_versions = 100
-  random_version_num = Math.floor(Math.random() * Math.floor(num_versions));
-  console.log(random_version_num)
-  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + (target['object']+1)+ '_' + random_version_num.toString() + ".png";
+  v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+  while (v.length < 3) v = "0" + v;
+  console.log(v)
+  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + (target['object']+1)+ '_' + v.toString() + ".png";
   }
   // fix the plural/singular nonsense for 'basic' and the 3-digit issue with version number
 
@@ -433,7 +434,7 @@ game_core.prototype.makeTrialList = function () {
   var currentSetSize = this.setSize;
 
   var possible_targets = this.stimList;  // sebholt addition
-  var available_animals = ['bears','deer','owls'] //,'rabbits','squirrels','wolves'];  // sebholt addition
+  var available_animals = ['bear','deer','owl'] //,'rabbits','squirrels','wolves'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
@@ -502,7 +503,7 @@ game_core.prototype.makeTrialList = function () {
       possible_targets = this.stimList
     }
     if (available_animals.length == 0) {
-      available_animals = ['bears','deer','owls']; //,'rabbits','squirrels','wolves'];
+      available_animals = ['bear','deer','owl']; //,'rabbits','squirrels','wolves'];
     }
     if (available_cardinalities.length == 0) {
       available_cardinalities = [0,1,2,3,4,5,6,7]; //,8,9,10,11];
