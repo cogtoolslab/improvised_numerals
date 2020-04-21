@@ -403,7 +403,6 @@ game_core.prototype.newsampleTrial = function(target) {
 
   
   var newoutput = [d1,d2,d3,tg]
-  console.log("TRIAL: ", newoutput)
   return newoutput ;
 };
 // sebholt end edit rewrite this function
@@ -434,6 +433,14 @@ game_core.prototype.makeTrialList = function () {
   var possible_targets = this.stimList;  // sebholt addition
   var available_animals = ['bear','deer','owl','rabbit'] //,'rabbit','squirrel','wolf'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
+
+  // sebholt trying to make a better trial sequence 21/April/2020
+  first_block_cardinalities = _.shuffle(available_cardinalities)
+  for (var i = 0; i < available_cardinalities.length; i++) {
+    console.log("CARD: ", first_block_cardinalities[i]);
+  }
+
+
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
   for (var i = 0; i < session.length; i++) {  // sebholt addition, to replace above
