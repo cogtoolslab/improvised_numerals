@@ -384,8 +384,8 @@ game_core.prototype.newsampleTrial = function(target) {
   discriminator = condition == 'number' ? same_number : same_shape;
 
   var sampled_distr1 = _.sample(discriminator);
-  var sampled_distr2 = _.without(_.sample(discriminator),sampled_distr1);
-  var sampled_distr3 = _.without(_.without(_.sample(discriminator),sampled_distr1),sampled_distr2);
+  var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
+  var sampled_distr3 = _.sample(_.without(_.without(discriminator,sampled_distr1),sampled_distr2));
 
   // sample from each of the distractor categories (second try):
   // var sampled_distr1 = _.sample(not_number);
