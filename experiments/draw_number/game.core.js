@@ -430,7 +430,7 @@ game_core.prototype.makeTrialList = function () {
   var currentSetSize = this.setSize;
 
   var possible_targets = this.stimList;  // sebholt addition
-  var available_animals = ['bear','deer','owl'] //,'rabbits','squirrels','wolves'];  // sebholt addition
+  var available_animals = ['bear','deer','owl','rabbit'] //,'rabbit','squirrel','wolf'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
@@ -497,7 +497,7 @@ game_core.prototype.makeTrialList = function () {
       possible_targets = this.stimList
     }
     if (available_animals.length == 0) {
-      available_animals = ['bear','deer','owl']; //,'rabbits','squirrels','wolves'];
+      available_animals = ['bear','deer','owl','rabbit']; //,'rabbit','squirrel','wolve'];
     }
     if (available_cardinalities.length == 0) {
       available_cardinalities = [0,1,2,3,4,5,6,7]; //,8,9,10,11];
