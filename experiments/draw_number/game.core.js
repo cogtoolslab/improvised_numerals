@@ -478,7 +478,7 @@ game_core.prototype.makeTrialList = function () {
       ticker = 1
     }
     
-    console.log("URL HERE: ", fetchURL(target))
+    console.log("URL HERE: ", this.fetchURL(target))
     
     // console.log("poss_targs",poss_targs,'\n')
     // console.log(target.subordinate)
