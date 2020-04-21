@@ -339,7 +339,7 @@ game_core.prototype.getRandomizedConditions = function() {
 // sebholt end edit, rewriting getRandomizedConditions function
 
 // sebholt begin edit, writing a function to return a random version image url from Amazon given features
-ame_core.prototype.fetchURL = function(target) {
+game_core.prototype.fetchURL = function(target) {
   num_versions = 100
   v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
   while (v.length < 3) v = "0" + v;
