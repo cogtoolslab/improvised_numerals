@@ -191,8 +191,8 @@ var stimList = [
   owl_5_0, owl_6_0, owl_7_0, owl_8_0,
   // owl_9_0, owl_10_0, owl_11_0, owl_12_0,
 
-  // rabbit_1_0, rabbit_2_0, rabbit_3_0, rabbit_4_0,
-  // rabbit_5_0, rabbit_6_0, rabbit_7_0, rabbit_8_0,
+  rabbit_1_0, rabbit_2_0, rabbit_3_0, rabbit_4_0,
+  rabbit_5_0, rabbit_6_0, rabbit_7_0, rabbit_8_0,
   // rabbit_9_0, rabbit_10_0, rabbit_11_0, rabbit_12_0,
 
   // squirrel_1_0, squirrel_2_0, squirrel_3_0, squirrel_4_0,
