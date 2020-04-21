@@ -74,7 +74,17 @@ var client_onserverupdate_received = function(data){
 	    .value();
 
       var imgObj = new Image(); //initialize object as an image (from HTML5)
-      imgObj.src = customObj.url; // tell client where to find it
+      // imgObj.src = customObj.url; // tell client where to find it
+      // sebholt begin edit, rewriting the above line to randomly get different constellations depending on role of subject
+      num_versions = 100
+      v1 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+      v2 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+      var v = globalGame.my_role == "sketcher" ? v1 : v2;
+      while (v.length < 3) v = "0" + v;
+      imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
+      console.log("versions: ", v1, v2)
+      // sebholt end edit
+      
 
       imgObj.onload = function(){ // Draw image as soon as it loads (this is a callback)
         globalGame.ctx.drawImage(imgObj, parseInt(customObj.trueX), parseInt(customObj.trueY),
@@ -324,10 +334,10 @@ var customSetup = function(game) {
       $('#instructs').html('Thanks for participating in our experiment! ' +
         "Before you submit your HIT, we'd like to ask you a few questions.");
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 1) + " of " + "24"); // sebholt edit; changed 'game.numRounds' to '24'
+        .append("Round\n" + (game.roundNum + 1) + " of " + "32"); // sebholt edit; changed 'game.numRounds' to '32'
     } else {
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 2) + " of " + "24"); // sebholt edit; changed 'game.numRounds' to '24'
+        .append("Round\n" + (game.roundNum + 2) + " of " + "32"); // sebholt edit; changed 'game.numRounds' to '32'
     }
     $('#score').empty().append(score / 3 + ' of ' + (game.roundNum + 1) + ' correct for a bonus of $'
 			       + displaytotal);

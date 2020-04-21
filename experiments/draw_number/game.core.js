@@ -338,11 +338,11 @@ game_core.prototype.getRandomizedConditions = function() {
 // sebholt end edit, rewriting getRandomizedConditions function
 
 // sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
-game_core.prototype.fetchURL = function(target) {
+game_core.prototype.fetchURL = function(item) {
   num_versions = 100
   v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
   while (v.length < 3) v = "0" + v;
-  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + (target['object']+1)+ '_' + v.toString() + ".png";
+  return "https://iternum.s3.amazonaws.com/" + item['basic'] + '_' + (item['object']+1)+ '_' + v.toString() + ".png";
   }
 
 
