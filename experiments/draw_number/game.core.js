@@ -343,9 +343,9 @@ game_core.prototype.fetchURL = function(target) {
   num_versions = 100
   random_version_num = Math.floor(Math.random() * Math.floor(num_versions));
   console.log(random_version_num)
-  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + target['object']+1 + '_' + toString(random_version_num);
+  return "https://iternum.s3.amazonaws.com/" + target['basic'] + '_' + (target['object']+1)+ '_' + random_version_num.toString() + ".png";
   }
-  
+  // fix the plural/singular nonsense for 'basic' and the 3-digit issue with version number
 
 // filter stimList according to numObjs (setSize * 2) 
 // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
