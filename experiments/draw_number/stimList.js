@@ -131,6 +131,14 @@ var owl_6_0 = {filename: "6_0_owl.png" , basic: "owl" , subordinate: "owl_6" , s
 var owl_7_0 = {filename: "7_0_owl.png" , basic: "owl" , subordinate: "owl_7" , subset:"B", object: 6, url: "https://iterated-number.s3.amazonaws.com/7_0_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 var owl_8_0 = {filename: "8_0_owl.png" , basic: "owl" , subordinate: "owl_8" , subset:"B", object: 7, url: "https://iterated-number.s3.amazonaws.com/8_0_owl.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 
+var rabbit_1_0 = {filename: "1_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_1" , subset:"A", object: 0, url: "https://iterated-number.s3.amazonaws.com/1_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_2_0 = {filename: "2_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_2" , subset:"A", object: 1, url: "https://iterated-number.s3.amazonaws.com/2_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_3_0 = {filename: "3_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_3" , subset:"A", object: 2, url: "https://iterated-number.s3.amazonaws.com/3_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_4_0 = {filename: "4_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_4" , subset:"A", object: 3, url: "https://iterated-number.s3.amazonaws.com/4_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_5_0 = {filename: "5_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_5" , subset:"A", object: 4, url: "https://iterated-number.s3.amazonaws.com/5_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_6_0 = {filename: "6_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_6" , subset:"A", object: 5, url: "https://iterated-number.s3.amazonaws.com/6_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_7_0 = {filename: "7_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_7" , subset:"B", object: 6, url: "https://iterated-number.s3.amazonaws.com/7_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
+var rabbit_8_0 = {filename: "8_0_rabbit.png" , basic: "rabbit" , subordinate: "rabbit_8" , subset:"B", object: 7, url: "https://iterated-number.s3.amazonaws.com/8_0_rabbit.png" , width: 256, height: 256} // 'basic' means 'basic level', i.e. category
 
 
 
@@ -166,17 +174,17 @@ var owl_8_1 = {filename: "8_1_owl.png" , basic: "owl" , subordinate: "
 
 
 
-var stimListv2 = [
-  bear_1_1, bear_2_1, bear_3_1, bear_4_1, 
-  bear_5_1, bear_6_1, bear_7_1, bear_8_1,
+// var stimListv2 = [
+//   bear_1_1, bear_2_1, bear_3_1, bear_4_1, 
+//   bear_5_1, bear_6_1, bear_7_1, bear_8_1,
 
-  deer_1_1, deer_2_1, deer_3_1, deer_4_1, 
-  deer_5_1, deer_6_1, deer_7_1, deer_8_1,
+//   deer_1_1, deer_2_1, deer_3_1, deer_4_1, 
+//   deer_5_1, deer_6_1, deer_7_1, deer_8_1,
 
-  owl_1_1, owl_2_1, owl_3_1, owl_4_1, 
-  owl_5_1, owl_6_1, owl_7_1, owl_8_1,
+//   owl_1_1, owl_2_1, owl_3_1, owl_4_1, 
+//   owl_5_1, owl_6_1, owl_7_1, owl_8_1,
 
-]
+// ]
 
 var stimList = [
   bear_1_0, bear_2_0, bear_3_0, bear_4_0, 
