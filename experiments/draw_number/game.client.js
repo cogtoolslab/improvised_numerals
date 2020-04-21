@@ -82,7 +82,6 @@ var client_onserverupdate_received = function(data){
       var v = globalGame.my_role == "sketcher" ? v1 : v2;
       while (v.length < 3) v = "0" + v;
       imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
-      console.log("versions: ", v1, v2)
       // sebholt end edit
       
 
