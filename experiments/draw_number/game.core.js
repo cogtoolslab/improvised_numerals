@@ -519,17 +519,17 @@ game_core.prototype.makeTrialList = function () {
   target_sequence = this.hierarchical_shuffle(target_sequence,[4,2,4])
 
   // just checking to see that it has indeed produced all possible targets without replacement
-  subs = []
-  target_sequence.forEach(element => {
-    console.log(element.object, element.subordinate);
-    subs.push(element.subordinate)
-  });
-  unique_subs = [...new Set(subs)];
-  console.log(unique_subs.length)
+  // subs = []
+  // target_sequence.forEach(element => {
+  //   console.log(element.object, element.subordinate);
+  //   subs.push(element.subordinate)
+  // });
+  // unique_subs = [...new Set(subs)];
+  // console.log(unique_subs.length)
 
-  test = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-  new_test = _.concat(_.shuffle(test.slice(0,4)), _.shuffle(test.slice(4,8)), _.shuffle(test.slice(8,12)));
-  new_test = this.hierarchical_shuffle(test,[3,2]);
+  // test = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  // new_test = _.concat(_.shuffle(test.slice(0,4)), _.shuffle(test.slice(4,8)), _.shuffle(test.slice(8,12)));
+  // new_test = this.hierarchical_shuffle(test,[3,2]);
   // console.log(new_test,new_test.length);//, "length: ",new_test.length, typeof Array.from(new_test));
 
   //console.log(new_test[1][1]);
