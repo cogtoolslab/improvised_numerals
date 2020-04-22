@@ -434,11 +434,33 @@ game_core.prototype.makeTrialList = function () {
   var available_animals = ['bear','deer','owl','rabbit'] //,'rabbit','squirrel','wolf'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
 
+
+
+
   // sebholt trying to make a better trial sequence 21/April/2020
-  first_block_cardinalities = _.shuffle(available_cardinalities)
+  card_anim_pairs = []
+  block1_cardinalities = _.shuffle(available_cardinalities);
+  block1_animals = _.shuffle(block1_cardinalities);
   for (var i = 0; i < available_cardinalities.length; i++) {
-    console.log("CARD: ", first_block_cardinalities[i]);
+
+    // replenish ['bear','deer','owl','rabbit'] if need be
+    available_animals = available_animals.length == 0 ? ['bear','deer','owl','rabbit'] : available_animals;
+    
+    // pick our values and add them to the 
+    cur_animal = _.sample(block1_animals);
+    cur_card = block1_animals[i]
+    card_anim_pairs = card_anim_pairs + (cur_card,cur_card)
+
+    // get rid of the current cardinality-animal combo
+    block1_cardinalities = block1_cardinalities.filter(function(item) {
+      return item !== cur_card
+    });
+    block1_animals = block1_animals.filter(function(item) {
+      return item !== cur_animal
+    });
   }
+  console.log("PAIRS: ", card_anim_pairs);
+
 
 
 
