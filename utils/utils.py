@@ -94,7 +94,7 @@ def render_images(D,
 def render_sketch_gallery(gameids, 
                           sketch_dir = './sketches',
                           gallery_dir = './gallery',
-                          num_trials = 24):
+                          num_trials = 32):
     '''
     input: 
          gameids: list of gameids
