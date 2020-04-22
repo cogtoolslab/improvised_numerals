@@ -566,22 +566,22 @@ game_core.prototype.makeTrialList = function () {
     // var current_cardinality = target.object
     
 
-    // trying it a new way
-    var ticker = 0
-    while (ticker == 0){
-      var poss_targs = _.filter(possible_targets, function(candidate){
-        return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
-      })
-      if (poss_targs.length == 0){
-        console.log("numbers",available_cardinalities)
-        console.log("animals",available_animals)
-      }
-      var target = _.sample(poss_targs)
-      ticker = 1
-    }
+    // trying it a new way. Commented out on 22/April
+    // var ticker = 0
+    // while (ticker == 0){
+    //   var poss_targs = _.filter(possible_targets, function(candidate){
+    //     return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
+    //   })
+    //   if (poss_targs.length == 0){
+    //     console.log("numbers",available_cardinalities)
+    //     console.log("animals",available_animals)
+    //   }
+    //   var target = _.sample(poss_targs)
+    //   ticker = 1
+    // }
 
     // new improved target selection as of 21/April/2020
-    target = target_sequence[i]
+    var target = target_sequence[i]
     
     // console.log("poss_targs",poss_targs,'\n')
     // console.log(target.subordinate)

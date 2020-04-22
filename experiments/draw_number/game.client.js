@@ -426,7 +426,7 @@ var client_onjoingame = function(num_players, role) {
     $("#viewport").css({"height": "25vh","width": "100vh"});
     $("#occluder").css({"height": "25vh","width": "100vh"});
     $("#confirmbutton").css({"top": "95%"});
-    $('#roundnumber').html("Round 1 of 24"); // sebholt edit; switched 40 to 24
+    $('#roundnumber').html("Round 1 of 32"); // sebholt edit; switched 40 to 24 to 32
   } else {
     $("#viewport").css({"height": "20vh","width": "120vh"});
     $("#occluder").css({"height": "20vh","width": "120vh"});
