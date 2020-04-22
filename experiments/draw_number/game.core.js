@@ -438,7 +438,7 @@ game_core.prototype.makeTrialList = function () {
 
 
   // sebholt trying to make a better trial sequence 21/April/2020
-  card_anim_pairs = []
+  card_anim_pairs = [];
   block1_cardinalities = _.shuffle(available_cardinalities);
   block1_animals = _.shuffle(block1_cardinalities);
   for (var i = 0; i < available_cardinalities.length; i++) {
@@ -448,8 +448,8 @@ game_core.prototype.makeTrialList = function () {
     
     // pick our values and add them to the 
     cur_animal = _.sample(block1_animals);
-    cur_card = block1_cardinalities[i]
-    card_anim_pairs = card_anim_pairs + [(cur_animal,cur_card)]
+    cur_card = block1_cardinalities[i];
+    card_anim_pairs.push((cur_animal,cur_card));
 
     // get rid of the current cardinality-animal combo
     block1_cardinalities = block1_cardinalities.filter(function(item) {
