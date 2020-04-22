@@ -448,8 +448,8 @@ game_core.prototype.makeTrialList = function () {
     
     // pick our values and add them to the 
     cur_animal = _.sample(block1_animals);
-    cur_card = block1_animals[i]
-    card_anim_pairs = card_anim_pairs + (cur_card,cur_card)
+    cur_card = block1_cardinalities[i]
+    card_anim_pairs = card_anim_pairs + [(cur_animal,cur_card)]
 
     // get rid of the current cardinality-animal combo
     block1_cardinalities = block1_cardinalities.filter(function(item) {
