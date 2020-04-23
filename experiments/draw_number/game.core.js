@@ -26,13 +26,17 @@ var game_core = function(options){
   // Store a flag if we are the server instance
   this.server = options.server ;
   this.projectName = 'iterated_number';
-  this.experimentName = 'animals';
-  this.iterationName = 'sandboxtest'; 
+  this.experimentName = 'num8_shape4';
+  this.iterationName = 'sandboxtest2'; 
   this.email = 'cogtoolslab.requester@gmail.com';
   // console.log("color randomized");
 
   // save data to the following locations (allowed: 'csv', 'mongo')
   this.dataStore = ['csv', 'mongo'];
+
+  // which condition are we going to use for this game?
+  this.condition = _.sample(['shape','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
+  
   this.anonymizeCSV = true;
 
   // How many players in the game?
@@ -380,8 +384,7 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
 
   // sample from each of the distractor categories (first try):
-  condition = _.sample(['shape','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
-  discriminator = condition == 'number' ?  same_shape : same_number;
+  discriminator = this.condition == 'number' ?  same_shape : same_number;
 
   var sampled_distr1 = _.sample(discriminator);
   var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
