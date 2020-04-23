@@ -380,7 +380,7 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
 
   // sample from each of the distractor categories (first try):
-  condition = 'shape' // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
+  condition = _.sample(['shape','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
   discriminator = condition == 'number' ?  same_shape : same_number;
 
   var sampled_distr1 = _.sample(discriminator);
