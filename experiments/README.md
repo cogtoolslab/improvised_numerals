@@ -1,6 +1,9 @@
 # Communication task
 
-##### 1.0.0 `iterationName` : `livetest0`
+##### 1.0 `iterationName` : `run1`
+Date: 2020 April 23
+
+##### 0.9 `iterationName` : `livetest0`
 Date: 2020 April 3
 - N = 3 (6 subjects: 2 per game for 3 games)
 - Basic summary of experimental design:
