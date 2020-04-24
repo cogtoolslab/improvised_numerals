@@ -2,6 +2,12 @@
 
 ##### 1.0 `iterationName` : `run1`
 Date: 2020 April 23
+- N = X 
+- Summary of major changes to experimental design since version 0.9 (`livetest0`)
+ - XX 
+ - XX
+ - XX
+ - XX (can be copied and pasted from the pre-reg, as appropriate)
 
 ##### 0.9 `iterationName` : `livetest0`
 Date: 2020 April 3
