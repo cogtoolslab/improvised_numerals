@@ -26,13 +26,17 @@ var game_core = function(options){
   // Store a flag if we are the server instance
   this.server = options.server ;
   this.projectName = 'iterated_number';
-  this.experimentName = 'animals';
-  this.iterationName = 'sandboxtest'; 
+  this.experimentName = 'num8_shape4';
+  this.iterationName = 'sandboxtest2'; 
   this.email = 'cogtoolslab.requester@gmail.com';
   // console.log("color randomized");
 
   // save data to the following locations (allowed: 'csv', 'mongo')
   this.dataStore = ['csv', 'mongo'];
+
+  // which condition are we going to use for this game?
+  this.game_condition = _.sample(['shape','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
+  
   this.anonymizeCSV = true;
 
   // How many players in the game?
@@ -99,7 +103,7 @@ var game_core = function(options){
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 24; // sebholt edit; changed 40 to 24
+    this.numRounds = 32; // sebholt edit; changed 40 to 24 to 32
   } else {
     this.numRounds = 48;
   }
@@ -141,7 +145,6 @@ var game_core = function(options){
     // If we're initializing the server game copy, pre-create the list of trials
     // we'll use, make a player object, and tell the player who they are
     this.stimList = _.map(require('./stimList', _.clone))[0];
-    this.stimListv2 = _.map(require('./stimList', _.clone))[1]; // sebholt addition
     this.id = options.id;
     this.expName = options.expName;
     this.player_count = options.player_count;
@@ -270,7 +273,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 //   //console.log("setsize in getRandomizedConditions: " + this.setSize);
 //   // make category array
 //   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-//   var repeatedCat = "bears";
+//   var repeatedCat = "bear";
 //   var controlCat = "deer";
 
 //   var shuffledObjs = _.shuffle(_.range(0,numObjs));
@@ -338,12 +341,21 @@ game_core.prototype.getRandomizedConditions = function() {
 };
 // sebholt end edit, rewriting getRandomizedConditions function
 
-// filter stimList according to numObjs (setSize * 2) 
-// as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
-var filterStimList = function(stimList, numObjs) {
-  // sebholt note: if you change numObjs in the next line to numObjs-2, it takes the first 6 of *each category*
-  return _.filter(stimList, ({object}) => object < numObjs); 
-}
+// sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
+game_core.prototype.fetchURL = function(item) {
+  num_versions = 100
+  v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+  while (v.length < 3) v = "0" + v;
+  return "https://iternum.s3.amazonaws.com/" + item['basic'] + '_' + (item['object']+1)+ '_' + v.toString() + ".png";
+  }
+
+
+// // filter stimList according to numObjs (setSize * 2) 
+// // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
+// var filterStimList = function(stimList, numObjs) {
+//   // sebholt note: if you change numObjs in the next line to numObjs-2, it takes the first 6 of *each category*
+//   return _.filter(stimList, ({object}) => object < numObjs); 
+// }
 
 // game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
 //   var filteredList = filterStimList(this.stimList, currentSetSize*2);
@@ -359,9 +371,8 @@ var filterStimList = function(stimList, numObjs) {
 // };
 
 // sebholt begin edit rewrite this function
-game_core.prototype.newsampleTrial = function(target,alt=0) {
-  stimlist = this.stimList
-  stimListv2 = this.stimListv2
+game_core.prototype.newsampleTrial = function(target,stimlist) {
+  // stimlist = this.stimList // commenting this, so as to ignore the one imported from stimList.js
   var curTarg = target
 
   var same_number = _.without(_.filter(stimlist, {'object' : curTarg['object']}),curTarg);
@@ -373,14 +384,19 @@ game_core.prototype.newsampleTrial = function(target,alt=0) {
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
 
   // sample from each of the distractor categories (first try):
-  // var sampled_distr1 = _.sample(same_number);
-  // var sampled_distr2 = _.sample(same_shape);
-  // var sampled_distr3 = _.sample(same_neither);
+  discriminator = this.condition == 'number' ?  same_shape : same_number;
+
+  var sampled_distr1 = _.sample(discriminator);
+  var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
+  // console.log("sampled: ",_.without(_.without(discriminator,sampled_distr1),sampled_distr2))
+  // var sampled_distr3 = condition == 'number' ? _.sample(_.without(_.without(discriminator,sampled_distr1),sampled_distr2)) : _.without(_.without(discriminator,sampled_distr1),sampled_distr2);
+  var sampled_distr3 = _.sample(_.without(_.without(discriminator,sampled_distr1),sampled_distr2));
+
 
   // sample from each of the distractor categories (second try):
-  var sampled_distr1 = _.sample(not_number);
-  var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
-  var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
+  // var sampled_distr1 = _.sample(not_number);
+  // var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
+  // var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
 
 
   var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'});
@@ -388,13 +404,7 @@ game_core.prototype.newsampleTrial = function(target,alt=0) {
   var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'});
   var tg = _.extend({}, curTarg, {target_status: 'target'});
 
-  if(alt == 1){
-    d1 = _.filter(stimListv2, {'subordinate' : sampled_distr1['subordinate']})
-    d2 = _.filter(stimListv2, {'subordinate' : sampled_distr2['subordinate']})
-    d3 = _.filter(stimListv2, {'subordinate' : sampled_distr3['subordinate']})
-    tg = _.filter(stimListv2, {'subordinate' : curTarg['subordinate']})
-  }
-
+  
   var newoutput = [d1,d2,d3,tg]
   return newoutput ;
 };
@@ -412,8 +422,30 @@ game_core.prototype.sampleStimulusLocs = function() {
 };
 
 
-game_core.prototype.makeTrialList = function () {
+// sebholt adding a function to sort his super annoying list
+// 'binwidths' is a list containing the length, in increasing order, of the constituents you want shuffled
+game_core.prototype.hierarchical_shuffle = function(unshuffled,binwidths) {
+  shuffled_list = unshuffled;
 
+  for (var i = 0; i < binwidths.length; i++) {
+
+    level_consituents = []
+    for (var j = 0; j < shuffled_list.length / binwidths[i]; j++) {
+      new_constituent = _.shuffle(shuffled_list.slice(j*binwidths[i],j*binwidths[i]+binwidths[i]))
+      level_consituents.push(new_constituent)
+    }
+    shuffled_list = level_consituents;
+  }
+
+  for (var i = 0; i < binwidths.length; i++) {
+    shuffled_list = _.flatten(shuffled_list);
+  }
+  return shuffled_list;
+};
+
+
+game_core.prototype.makeTrialList = function () {
+  
   var local_this = this;
   var session = this.getRandomizedConditions(); // added
 
@@ -424,8 +456,89 @@ game_core.prototype.makeTrialList = function () {
   var currentSetSize = this.setSize;
 
   var possible_targets = this.stimList;  // sebholt addition
-  var available_animals = ['bears','deer','owls'] //,'rabbits','squirrels','wolves'];  // sebholt addition
+  var available_animals = ['bear','deer','owl','rabbit'] //,'rabbit','squirrel','wolf'];  // sebholt addition
   var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
+
+
+
+
+  // sebholt trying to make a better trial sequence 21/April/2020
+  block1 = [];
+  block1_cardinalities = _.shuffle(available_cardinalities);
+  block1_animals = _.shuffle(available_animals);
+  for (var i = 0; i < available_cardinalities.length; i++) {
+    
+    // pick our values and add them to the list
+    cur_card = block1_cardinalities[i];
+    cur_animal = i < block1_animals.length ? block1_animals[i] : block1_animals[i-block1_animals.length];
+    cur_sub = cur_animal + '_' + cur_card
+    // console.log("try", cur_card, cur_sub)
+    new_targ = {object: cur_card,
+                basic: cur_animal,
+                subordinate: cur_sub,
+                width: 256,
+                height: 256};
+    block1.push(new_targ);
+  }
+  // come up with a nicer regex for the non-initial blockss
+  block2 = []
+  block1.forEach(element => {
+    ind = block1_cardinalities.indexOf(element.object);
+    cur_card = ind == block1_cardinalities.length-1 ? block1_cardinalities[0] : block1_cardinalities[ind+1];
+    cur_sub = element.basic + '_' + cur_card
+    new_targ = {object: cur_card,
+      basic: element.basic,
+      subordinate: cur_sub,
+      width: 256,
+      height: 256};
+    block2.push(new_targ)
+  });
+  block3 = []
+  block2.forEach(element => {
+    ind = block1_cardinalities.indexOf(element.object);
+    cur_card = ind == block1_cardinalities.length-1 ? block1_cardinalities[0] : block1_cardinalities[ind+1];
+    cur_sub = element.basic + '_' + cur_card
+    new_targ = {object: cur_card,
+      basic: element.basic,
+      subordinate: cur_sub,
+      width: 256,
+      height: 256};
+    block3.push(new_targ)
+  });
+  block4 = []
+  block3.forEach(element => {
+    ind = block1_cardinalities.indexOf(element.object);
+    cur_card = ind == block1_cardinalities.length-1 ? block1_cardinalities[0] : block1_cardinalities[ind+1];
+    cur_sub = element.basic + '_' + cur_card
+    new_targ = {object: cur_card,
+      basic: element.basic,
+      subordinate: cur_sub,
+      width: 256,
+      height: 256};
+    block4.push(new_targ)
+  });
+
+  var target_sequence = _.concat(block1, block2, block3, block4);
+  target_sequence = this.hierarchical_shuffle(target_sequence,[4,2,4])
+
+  // just checking to see that it has indeed produced all possible targets without replacement
+  // subs = []
+  // target_sequence.forEach(element => {
+  //   console.log(element.object, element.subordinate);
+  //   subs.push(element.subordinate)
+  // });
+  // unique_subs = [...new Set(subs)];
+  // console.log(unique_subs.length)
+
+  // test = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  // new_test = _.concat(_.shuffle(test.slice(0,4)), _.shuffle(test.slice(4,8)), _.shuffle(test.slice(8,12)));
+  // new_test = this.hierarchical_shuffle(test,[3,2]);
+  // console.log(new_test,new_test.length);//, "length: ",new_test.length, typeof Array.from(new_test));
+
+  //console.log(new_test[1][1]);
+
+
+
 
   // for (var i = 0; i < session.length; i++) {    // sebholt commented this
   for (var i = 0; i < session.length; i++) {  // sebholt addition, to replace above
@@ -456,21 +569,22 @@ game_core.prototype.makeTrialList = function () {
     // var current_cardinality = target.object
     
 
-    // trying it a new way
-    var ticker = 0
-    while (ticker == 0){
-      var poss_targs = _.filter(possible_targets, function(candidate){
-        return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
-      })
-      if (poss_targs.length == 0){
-        console.log("numbers",available_cardinalities)
-        console.log("animals",available_animals)
-      }
-      var target = _.sample(poss_targs)
-      ticker = 1
-    }
-    
-    
+    // trying it a new way. Commented out on 22/April
+    // var ticker = 0
+    // while (ticker == 0){
+    //   var poss_targs = _.filter(possible_targets, function(candidate){
+    //     return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
+    //   })
+    //   if (poss_targs.length == 0){
+    //     console.log("numbers",available_cardinalities)
+    //     console.log("animals",available_animals)
+    //   }
+    //   var target = _.sample(poss_targs)
+    //   ticker = 1
+    // }
+
+    // new improved target selection as of 21/April/2020
+    var target = target_sequence[i]
     
     // console.log("poss_targs",poss_targs,'\n')
     // console.log(target.subordinate)
@@ -493,7 +607,7 @@ game_core.prototype.makeTrialList = function () {
       possible_targets = this.stimList
     }
     if (available_animals.length == 0) {
-      available_animals = ['bears','deer','owls']; //,'rabbits','squirrels','wolves'];
+      available_animals = ['bear','deer','owl','rabbit']; //,'rabbit','squirrel','wolve'];
     }
     if (available_cardinalities.length == 0) {
       available_cardinalities = [0,1,2,3,4,5,6,7]; //,8,9,10,11];
@@ -501,7 +615,7 @@ game_core.prototype.makeTrialList = function () {
     // sebholt end edit
 
     // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(target); // sebholt edit (addition)    
+    var objList = this.newsampleTrial(target,target_sequence); // sebholt edit (addition)    
 
     // console.log('objList',objList);
 
