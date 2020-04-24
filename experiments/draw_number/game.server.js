@@ -186,7 +186,8 @@ var dataOutput = function() {
       phase : message_data[5],
       repetition : message_data[6],
       previous_score : message_data[7],
-      previous_bonus_score: message_data[8].replace(/~~~/g, '.')
+      previous_bonus_score: message_data[8].replace(/~~~/g, '.'),
+      game_condition: client.game.game_condition
       }
     );
     console.log(JSON.stringify(_.pick(output, ['trialNum','intendedName','clickedName','correct','previous_score','previous_bonus_score','subset']), null, 3));
@@ -208,7 +209,8 @@ var dataOutput = function() {
       previous_score: message_data[5],
       previous_bonus_score: message_data[6].replace(/~~~/g, '.'),
       startStrokeTime: message_data[7],
-      endStrokeTime: message_data[8]
+      endStrokeTime: message_data[8],
+      game_condition: client.game.game_condition
     });
     console.log(JSON.stringify(output, null, 3));
     return output;
