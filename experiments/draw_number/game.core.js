@@ -36,7 +36,7 @@ var game_core = function(options){
 
   // which condition are we going to use for this game?
   this.game_condition = _.sample(['shape','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
-  
+  console.log("CONDITION : ", this.game_condition)
   this.anonymizeCSV = true;
 
   // How many players in the game?
@@ -385,7 +385,7 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
 
   // sample from each of the distractor categories (first try):
   discriminator = this.game_condition == 'number' ?  same_shape : same_number;
-
+  console.log("received condition : ", this.game_condition);
   var sampled_distr1 = _.sample(discriminator);
   var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
   // console.log("sampled: ",_.without(_.without(discriminator,sampled_distr1),sampled_distr2))
