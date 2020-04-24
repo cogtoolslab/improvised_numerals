@@ -384,7 +384,7 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
   var not_number = _.differenceWith(stimlist, _.filter(stimlist, {'object' : curTarg['object']}), _.isEqual);
 
   // sample from each of the distractor categories (first try):
-  discriminator = this.condition == 'number' ?  same_shape : same_number;
+  discriminator = this.game_condition == 'number' ?  same_shape : same_number;
 
   var sampled_distr1 = _.sample(discriminator);
   var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
