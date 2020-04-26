@@ -113,7 +113,7 @@ def render_sketch_gallery(gameids,
         print('Generating sketch gallery for participant: {} | {} of {}'.format(game,gind+1,len(gameids)))
         # get list of all sketch paths JUST from current game
         game_sketch_paths = [path for path in sketch_paths if path.split('_')[0] == game]
-        fig = plt.figure(figsize=(18,12))   
+        fig = plt.figure(figsize=(24,12))   
         for i,f in enumerate(game_sketch_paths):
             # open image
             im = Image.open(os.path.join(sketch_dir,f))
