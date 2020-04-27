@@ -190,7 +190,6 @@ var dataOutput = function() {
 
   var clickedObjOutput = function(client, message_data) {
     var objects = client.game.trialInfo.currStim;
-    console.log("OBJECTS: ", objects)
     var intendedName = getIntendedTargetName(objects);
     var objLocations = _.zipObject(getObjectLocHeaderArray(), getObjectLocs(objects));
     var output =  _.extend(
