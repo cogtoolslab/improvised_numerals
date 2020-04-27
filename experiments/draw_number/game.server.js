@@ -147,6 +147,24 @@ var dataOutput = function() {
     return _.filter(objects, x => x.target_status == 'target')[0]['subordinate'];
   }
 
+  // sebholt edit, adding a mechanism for storing object urls (both sketcher and viewer urls)
+  function getObjectUrls(objects) {
+    targ_s_url = _.filter(objects, x => x.target_status == 'target')[0]['sketcher_url'];
+    targ_v_url = _.filter(objects, x => x.target_status == 'target')[0]['viewer_url'];
+    dis1_s_url = _.filter(objects, x => x.target_status == 'distr1')[0]['sketcher_url'];
+    dis1_v_url = _.filter(objects, x => x.target_status == 'distr1')[0]['viewer_url'];
+    dis2_s_url = _.filter(objects, x => x.target_status == 'distr2')[0]['sketcher_url'];
+    dis2_v_url = _.filter(objects, x => x.target_status == 'distr2')[0]['viewer_url'];
+    dis3_s_url = _.filter(objects, x => x.target_status == 'distr3')[0]['sketcher_url'];
+    dis3_v_url = _.filter(objects, x => x.target_status == 'distr3')[0]['viewer_url'];
+
+    all_urls = {t_s_url: targ_s_url,
+                t_v_url: targ_v_url,
+                dis_s_urls: [dis1_s_url, dis2_s_url, dis3_s_url],
+                dis_v_urls: [dis1_v_url, dis2_v_url, dis3_v_url]}
+    return all_urls;
+  }
+
   function getObjectLocs(objects) {
     return _.flatten(_.map(objects, o => {
       return [o.subordinate, o.speakerCoords.gridX, o.listenerCoords.gridX];
@@ -172,6 +190,7 @@ var dataOutput = function() {
 
   var clickedObjOutput = function(client, message_data) {
     var objects = client.game.trialInfo.currStim;
+    console.log("OBJECTS: ", objects)
     var intendedName = getIntendedTargetName(objects);
     var objLocations = _.zipObject(getObjectLocHeaderArray(), getObjectLocs(objects));
     var output =  _.extend(
@@ -187,7 +206,11 @@ var dataOutput = function() {
       repetition : message_data[6],
       previous_score : message_data[7],
       previous_bonus_score: message_data[8].replace(/~~~/g, '.'),
-      game_condition: client.game.game_condition
+      game_condition: client.game.game_condition,
+      targ_s_url: getObjectUrls(objects)['t_s_url'],
+      targ_v_url: getObjectUrls(objects)['t_v_url'],
+      dis_s_urls: getObjectUrls(objects)['dis_s_urls'],
+      dis_v_urls: getObjectUrls(objects)['dis_v_urls']
       }
     );
     console.log(JSON.stringify(_.pick(output, ['trialNum','intendedName','clickedName','correct','previous_score','previous_bonus_score','subset']), null, 3));
@@ -210,7 +233,11 @@ var dataOutput = function() {
       previous_bonus_score: message_data[6].replace(/~~~/g, '.'),
       startStrokeTime: message_data[7],
       endStrokeTime: message_data[8],
-      game_condition: client.game.game_condition
+      game_condition: client.game.game_condition,
+      targ_s_url: getObjectUrls(objects)['t_s_url'],
+      targ_v_url: getObjectUrls(objects)['t_v_url'],
+      dis_s_urls: getObjectUrls(objects)['dis_s_urls'],
+      dis_v_urls: getObjectUrls(objects)['dis_v_urls']
     });
     console.log(JSON.stringify(output, null, 3));
     return output;

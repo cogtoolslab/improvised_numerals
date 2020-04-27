@@ -27,7 +27,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'num8_shape4';
-  this.iterationName = 'run1'; 
+  this.iterationName = 'sandbox3'; 
   this.email = 'cogtoolslab.requester@gmail.com';
   // console.log("color randomized");
 
@@ -385,7 +385,6 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
 
   // sample from each of the distractor categories (first try):
   discriminator = this.game_condition == 'number' ?  same_shape : same_number;
-  console.log("received condition : ", this.game_condition);
   var sampled_distr1 = _.sample(discriminator);
   var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
   // console.log("sampled: ",_.without(_.without(discriminator,sampled_distr1),sampled_distr2))
@@ -398,11 +397,11 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
   // var sampled_distr2 = _.sample(_.without(not_number,sampled_distr1));
   // var sampled_distr3 = _.sample(_.without(_.without(not_number,sampled_distr1),sampled_distr2));
 
-
-  var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'});
-  var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'});
-  var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'});
-  var tg = _.extend({}, curTarg, {target_status: 'target'});
+  
+  var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'}, {sketcher_url: this.fetchURL(sampled_distr1)}, {viewer_url: this.fetchURL(sampled_distr1)});
+  var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'}, {sketcher_url: this.fetchURL(sampled_distr2)}, {viewer_url: this.fetchURL(sampled_distr2)});
+  var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'}, {sketcher_url: this.fetchURL(sampled_distr3)}, {viewer_url: this.fetchURL(sampled_distr3)});
+  var tg = _.extend({}, curTarg, {target_status: 'target'}, {sketcher_url: this.fetchURL(curTarg)}, {viewer_url: this.fetchURL(curTarg)});
 
   
   var newoutput = [d1,d2,d3,tg]

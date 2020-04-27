@@ -74,15 +74,17 @@ var client_onserverupdate_received = function(data){
 	    .value();
 
       var imgObj = new Image(); //initialize object as an image (from HTML5)
-      // imgObj.src = customObj.url; // tell client where to find it
-      // sebholt begin edit, rewriting the above line to randomly get different constellations depending on role of subject
-      num_versions = 100
-      v1 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      v2 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      var v = globalGame.my_role == "sketcher" ? v1 : v2;
-      while (v.length < 3) v = "0" + v;
-      imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
-      // sebholt end edit
+      imgObj.src = globalGame.my_role == "sketcher" ? customObj.sketcher_url : customObj.viewer_url;; // tell client where to find it
+      
+      // recommented the following, trying to put it into game.core.js
+      // // sebholt begin edit, rewriting the above line to randomly get different constellations depending on role of subject
+      // num_versions = 100
+      // v1 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+      // v2 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
+      // var v = globalGame.my_role == "sketcher" ? v1 : v2;
+      // while (v.length < 3) v = "0" + v;
+      // imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
+      // // sebholt end edit
       
 
       imgObj.onload = function(){ // Draw image as soon as it loads (this is a callback)
