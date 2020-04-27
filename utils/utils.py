@@ -149,6 +149,10 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
     Category = []
     Cardinality = []
     Game_Condition = []
+    Targ_s_Url = []
+    Targ_v_Url = []
+    Dis_s_Urls = []
+    Dis_v_Urls = []
     D1 = [] # Distractor 1. Abbreviating it
     D1_Cat = [] # category
     D1_Car = [] # cardinality
@@ -186,6 +190,10 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
                 clear_output(wait=True)                                
                 counter += 1
                 game_condition = t['game_condition']
+                targ_s_url = t['targ_s_url']
+                targ_v_url = t['targ_v_url']
+                dis_s_urls = t['dis_s_urls']
+                dis_v_urls = t['dis_v_urls']
                 target = t['intendedName']
                 category = target.split('_')[0]
                 cardinality = target.split('_')[1]                
@@ -251,6 +259,10 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
                 Category.append(category)
                 Cardinality.append(cardinality)
                 Game_Condition.append(game_condition)
+                Targ_s_Url.append(targ_s_url)
+                Targ_v_Url.append(targ_v_url)
+                Dis_s_Urls.append(dis_s_urls)
+                Dis_v_Urls.append(dis_v_urls)
                 Response.append(t['clickedName'])
                 Outcome.append(t['correct'])
                 D1.append(distractors[0])
@@ -267,13 +279,13 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
 
 
     ## now actually make dataframe
-    GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition = map(np.array, \
-    [GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut,png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition])
+    GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls = map(np.array, \
+    [GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut,png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls])
 
     Repetition = map(int,Repetition)
 
-    _D = pd.DataFrame([GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition],
-                     index = ['gameID','trialNum', 'target', 'category', 'cardinality', 'drawDuration', 'outcome', 'response', 'numStrokes', 'meanPixelIntensity', 'numCurvesPerSketch', 'numCurvesPerStroke', 'timedOut', 'png','svgString', 'D1', 'D1_Cat', 'D1_Car', 'D2', 'D2_Cat', 'D2_Car', 'D3', 'D3_Cat', 'D3_Car', 'Game_Condition'])
+    _D = pd.DataFrame([GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls],
+                     index = ['gameID','trialNum', 'target', 'category', 'cardinality', 'drawDuration', 'outcome', 'response', 'numStrokes', 'meanPixelIntensity', 'numCurvesPerSketch', 'numCurvesPerStroke', 'timedOut', 'png','svgString', 'D1', 'D1_Cat', 'D1_Car', 'D2', 'D2_Cat', 'D2_Car', 'D3', 'D3_Cat', 'D3_Car', 'Game_Condition', 'Targ_s_Url', 'Targ_v_Url', 'Dis_s_Urls', 'Dis_v_Urls'])
     _D = _D.transpose()    
     
     # tag outlier games (low accuracy)
