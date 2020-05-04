@@ -90,50 +90,94 @@ def render_images(D,
     
     print('Done rendering {} images to {}.'.format(D.shape[0],out_dir))
     
-    
-def render_sketch_gallery(gameids, 
+def row_based_idx(num_rows, num_cols, idx):
+#     print(type(num_rows),'\n',
+#           type(num_cols),'\n',
+#           type(idx),'\n',
+#           type(np.arange(1, num_rows*num_cols + 1)[0]))
+    return np.arange(1, int(num_rows)*int(num_cols) + 1).reshape((int(num_rows), int(num_cols))).transpose().flatten()[idx-1]
+
+def render_sketch_gallery(gameids,
+                          df,
                           sketch_dir = './sketches',
                           gallery_dir = './gallery',
-                          num_trials = 32):
+                          num_trials = 32,
+                          by_trialnum = False,
+                          show_correct = False,
+                          transpose=False):
     '''
     input: 
          gameids: list of gameids
+         df: dataframe – putting this in so we can visualize more about each trial
          sketch_dir: full path to dir containing rendered PNG sketch files (data source)
          gallery_dir: full path to dir where you want to save gallery image out (data destination)
          num_trials: how many trials per game? used to determine subplot arrangement
+         by_trialnum: do we want this plotted so we can see chronological order?
+         show_correct: put a green [red] background on correct [incorrect] trials
     '''
     sketch_paths = sorted([sketch_path for sketch_path in os.listdir(sketch_dir)])
 
     ## make guess about how many rows and columns to use
-    nrows = 3
+    nrows = 4
     ncols = num_trials / nrows if num_trials%nrows==0 else int(np.ceil(num_trials/nrows))
+    
+    if transpose == True:
+        ## make a different guess if we want to visualize the results in chronological order
+        # 1 for each of the current number of blocks in the experiment
+        ncols = 4
+        nrows = num_trials / ncols if num_trials%ncols==0 else int(np.ceil(num_trials/ncols))
     
     ## generate gallery for each participant
     for gind, game in enumerate(gameids): 
         print('Generating sketch gallery for participant: {} | {} of {}'.format(game,gind+1,len(gameids)))
         # get list of all sketch paths JUST from current game
         game_sketch_paths = [path for path in sketch_paths if path.split('_')[0] == game]
-        fig = plt.figure(figsize=(24,12))   
+        
+        if by_trialnum == True:
+            # get the same list, but re-ordered by trial number
+            trial_ordering = []
+            for trial_i in np.arange(len(game_sketch_paths)):
+                trial_ordering.append([path for path in game_sketch_paths if int(path.split('_')[3]) == trial_i+1][0])
+            
+            game_sketch_paths = trial_ordering
+            
+        fig = plt.figure(figsize=(24,12))
+        if transpose == True:
+            fig = plt.figure(figsize=(12,24))
         for i,f in enumerate(game_sketch_paths):
             # open image
             im = Image.open(os.path.join(sketch_dir,f))
             # get metadata
             gameid = f.split('_')[0] 
             category = f.split('_')[1]
-            cardinality = f.split('_')[2]  
+            cardinality = str(int(f.split('_')[2]) + 1)
             trialNum = f.split('_')[3].split('.')[0]
+            
             # make gallery
-            p = plt.subplot(nrows,ncols,i+1)
+            plot_ind = i+1
+            if transpose == True:
+                plot_ind = row_based_idx(nrows,ncols,i+1)
+            p = plt.subplot(nrows,ncols,plot_ind)
             plt.imshow(im)
-            sns.set_style('white')
+            colour = 'white'
+            if show_correct == True:
+                correct = df.loc[df['gameID']==gameid].loc[df['trialNum']==i+1]['outcome'].values[0]
+                title_colour = '#067D1A' if correct == 1 else '#AF180E'
+                
+            sns.set_style(colour)
             k = p.get_xaxis().set_ticklabels([])
             k = p.get_yaxis().set_ticklabels([])
             k = p.get_xaxis().set_ticks([])
             k = p.get_yaxis().set_ticks([])   
             p.axis('off')
             plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
-        plt.suptitle(gameid)
-        fname = '{}.png'.format(gameid)
+            title_obj = plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
+            plt.setp(title_obj, color=title_colour)
+            
+            game_condition = f.split('_')[4].split('.')[0]
+        suptitle = game_condition + "_" + gameid
+        plt.suptitle(suptitle)
+        fname = '{}.png'.format(suptitle)
         plt.savefig(os.path.join(gallery_dir,fname))
         plt.close(fig)
     print('Done!')    

@@ -1,13 +1,33 @@
 # Communication task
 
+
+##### 1.1 `iterationName` : `run3`
+Date: 2020 May 4
+- N = ???
+- Summary of major changes to experimental design since version 1.1 (`run2`)
+ - To address the 30 minute HIT endings, we're extending the HIT time to 40 (and see what happens)
+
+
+##### 1.1 `iterationName` : `run2`
+Date: 2020 April 28
+- N = 7 games
+- Summary of major changes to experimental design since version 1.0 (`run1`)
+ - Started saving version urls of every stim that gets displayed to viewer or sketcher throughout each game
+- Problem: still noticing that people's HITs in progress are suddenly being abandoned right around 30 minutes. This may have something to do with our mturk settings
+
+
 ##### 1.0 `iterationName` : `run1`
 Date: 2020 April 23
-- N = X 
+- N = 1 games
 - Summary of major changes to experimental design since version 0.9 (`livetest0`)
- - XX 
- - XX
- - XX
- - XX (can be copied and pasted from the pre-reg, as appropriate)
+ - Finally set it so that sketcher and viewer see different versions of the stimuli (and are instructed about that at the beginning)
+ - Added another animal (owls), for a total of 4 animals x 8 cardinalities. Now 32 trials per game
+ - Because 8 is conveniently divisible by 4, randomization now happens such that successive windows of 4 contain each animal, of 8 each cardinality, exhausting the whole stim set after 32 trials
+ - Distractors are now drawn such that they match the target in non-selected feature, and vary in the selected feature. This is a stronger constraint than livetest0
+ - Having game_condition also generated at random and stored ('shape' or 'number')
+ 
+ 
+ 
 
 ##### 0.9 `iterationName` : `livetest0`
 Date: 2020 April 3
