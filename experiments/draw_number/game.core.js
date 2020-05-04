@@ -27,7 +27,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'num8_shape4';
-  this.iterationName = 'run2'; 
+  this.iterationName = 'run3'; 
   this.email = 'cogtoolslab.requester@gmail.com';
   // console.log("color randomized");
 
