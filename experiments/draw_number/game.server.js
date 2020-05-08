@@ -213,7 +213,7 @@ var dataOutput = function() {
       }
     );
     //console.log(JSON.stringify(_.pick(output, ['trialNum','intendedName','clickedName','correct','previous_score','previous_bonus_score','subset']), null, 3));
-    console.log(JSON.stringify(_.pick(output, ['game_condition','trialNum']), null, 3));
+    console.log("Game", output['gameid'], ':: Condition', output['game_condition'],':: Trial', output['trialNum'], 'complete.' );
     return output;
   };
 
@@ -240,7 +240,7 @@ var dataOutput = function() {
       dis_v_urls: getObjectUrls(objects)['dis_v_urls']
     });
     //console.log(JSON.stringify(output, null, 3));
-    console.log(output['game_condition']);
+    //console.log(output['game_condition']);
     return output;
   };
 
