@@ -258,6 +258,8 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
                     numCurvesPerStroke.append(float('NaN'))
                     meanPixelIntensity.append('NaN')
                     timedOut.append(True)
+                    
+                    svg_list = 'NaN'
                 else:
                     y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
 
