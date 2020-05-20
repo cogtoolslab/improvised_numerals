@@ -35,7 +35,7 @@ var game_core = function(options){
   this.dataStore = ['csv', 'mongo'];
 
   // which condition are we going to use for this game?
-  this.game_condition = _.sample(['shape','number','number','number','number','number','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
+  this.game_condition = _.sample(['shape','number','number','number','number']); // need to actually set condition somewhere at the beginning of game, right? Or just keep in manual
   console.log("CONDITION : ", this.game_condition)
   this.anonymizeCSV = true;
 
