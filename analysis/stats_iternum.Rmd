@@ -1,0 +1,154 @@
+---
+title: "1st Year Paper Stats for Iterated Number"
+output: html_notebook
+---
+
+```{r libraries, echo=FALSE}
+
+library(lme4) # need for running lmer
+library(tidyverse)
+library(coda)
+library(languageR)
+library(lmerTest) #need this for lmer p values!!! Maybe it's not so important...
+library(emmeans)
+
+```
+
+```{r get_data, echo=FALSE}
+# import the data that was output from internum_analysis.ipynb
+dat = read.csv("all_data.csv", header = TRUE)
+dat_num = filter(dat,Game_Condition == 'number')
+dat_aml = filter(dat,Game_Condition == 'shape')
+```
+
+
+First going to look for main effects of each important IV (number and animal) on each of our four DVs from the pre-reg
+```{r num_main}
+ik_num <- lm(data=dat, meanPixelIntensity ~ cardinality)
+st_num <- lm(data=dat, numStrokes ~ cardinality) # significant of course
+dr_num <- lm(data=dat, drawDuration ~ cardinality)
+ac_num <- lm(data=dat, outcome ~ cardinality, family = 'binomial')
+ik_num_stats <- c(round(anova(ik_num)[1,4],3), round(anova(ik_num)[1,5],3))
+st_num_stats <- c(round(anova(st_num)[1,4],3), round(anova(st_num)[1,5],3))
+dr_num_stats <- c(round(anova(dr_num)[1,4],3), round(anova(dr_num)[1,5],3))
+ac_num_stats <- c(round(anova(ac_num)[1,4],3), round(anova(ac_num)[1,5],3))
+```
+
+
+```{r aml_main}
+ik_aml <- lm(data=dat, meanPixelIntensity ~ category)
+st_aml <- lm(data=dat, numStrokes ~ category) # significant of course
+dr_aml <- lm(data=dat, drawDuration ~ category)
+ac_aml <- lm(data=dat, outcome ~ category, family = 'binomial')
+ik_aml_stats <- c(round(anova(ik_aml)[1,4],3), round(anova(ik_aml)[1,5],3))
+st_aml_stats <- c(round(anova(st_aml)[1,4],3), round(anova(st_aml)[1,5],3))
+dr_aml_stats <- c(round(anova(dr_aml)[1,4],3), round(anova(dr_aml)[1,5],3))
+ac_aml_stats <- c(round(anova(ac_aml)[1,4],3), round(anova(ac_aml)[1,5],3))
+
+# show it in a pretty way; figure out by and by, not sure what's the norm
+# library(knitr)
+# kable(c(as.character(ik_aml_stats),as.character(st_aml_stats)))
+```
+```{r interactions}
+# looking to see what is the interaction of game condition with out main IVs not already explained by that IV
+ik_CrdCnd <- lm(data=dat, meanPixelIntensity ~ cardinality*Game_Condition)
+ik_CatCnd <- lm(data=dat, meanPixelIntensity ~ category*Game_Condition)
+st_CrdCnd <- lm(data=dat, numStrokes ~ cardinality*Game_Condition)
+st_CatCnd <- lm(data=dat, numStrokes ~ category*Game_Condition)
+dr_CrdCnd <- lm(data=dat, drawDuration ~ cardinality*Game_Condition)
+dr_CatCnd <- lm(data=dat, drawDuration ~ category*Game_Condition)
+ac_CrdCnd <- lm(data=dat, outcome ~ cardinality*Game_Condition, family = 'binomial')
+ac_CatCnd <- lm(data=dat, outcome ~ category*Game_Condition, family = 'binomial')
+ik_CrdCnd_stats <- c(round(anova(ik_CrdCnd)[3,4],3), round(anova(ik_CrdCnd)[3,5],3))
+ik_CatCnd_stats <- c(round(anova(ik_CatCnd)[3,4],3), round(anova(ik_CatCnd)[3,5],3))
+st_CrdCnd_stats <- c(round(anova(st_CrdCnd)[3,4],3), round(anova(st_CrdCnd)[3,5],3))
+st_CatCnd_stats <- c(round(anova(st_CatCnd)[3,4],3), round(anova(st_CatCnd)[3,5],3))
+dr_CrdCnd_stats <- c(round(anova(dr_CrdCnd)[3,4],3), round(anova(dr_CrdCnd)[3,5],3))
+dr_CatCnd_stats <- c(round(anova(dr_CatCnd)[3,4],3), round(anova(dr_CatCnd)[3,5],3))
+ac_CrdCnd_stats <- c(round(anova(ac_CrdCnd)[3,4],3), round(anova(ac_CrdCnd)[3,5],3))
+ac_CatCnd_stats <- c(round(anova(ac_CatCnd)[3,4],3), round(anova(ac_CatCnd)[3,5],3))
+
+```
+
+```{r maximal_models}
+# for each DV (total ink, number of strokes, and draw duration) store the lmer
+lmer_ink <- lmer(data = dat,
+                 meanPixelIntensity ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality * category | gameID))
+
+lmer_str <- lmer(data = dat,
+                 numStrokes ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality * category | gameID))
+
+lmer_dur <- lmer(data = dat,
+                 drawDuration ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality * category | gameID))
+
+glmer_ac <- glmer(data=dat,
+                  outcome ~ cardinality * category * Game_Condition * quarter
+                  + (1 + cardinality * category | gameID),
+                  family = 'binomial')
+```
+These appear to not converge. So let's simplify the models
+```{r reduced_models_comparisons}
+# a set of models removing the category (animal) information from random effects
+lmer_ink_car <- lmer(data = dat,
+                 meanPixelIntensity ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality | gameID))
+
+lmer_str_car <- lmer(data = dat,
+                 numStrokes ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality | gameID))
+
+lmer_dur_car <- lmer(data = dat,
+                 drawDuration ~ cardinality * category * Game_Condition * quarter
+                 + (1 + cardinality | gameID))
+
+glmer_ac_car <- glmer(data=dat,
+                  outcome ~ cardinality * category * Game_Condition * quarter
+                  + (1 + cardinality | gameID),
+                  family = 'binomial')
+
+# a set of models removing the cardinality information from random effects
+lmer_ink_cat <- lmer(data = dat,
+                 meanPixelIntensity ~ cardinality * category * Game_Condition * quarter
+                 + (1 + category | gameID))
+
+lmer_str_cat <- lmer(data = dat,
+                 numStrokes ~ cardinality * category * Game_Condition * quarter
+                 + (1 + category | gameID))
+
+lmer_dur_cat <- lmer(data = dat,
+                 drawDuration ~ cardinality * category * Game_Condition * quarter
+                 + (1 + category | gameID))
+
+glmer_ac_cat <- glmer(data=dat,
+                  outcome ~ cardinality * category * Game_Condition * quarter
+                  + (1 + category | gameID),
+                  family = 'binomial')
+
+
+# a set of models removing the any slope in the random effects
+lmer_ink_flat <- lmer(data = dat,
+                 meanPixelIntensity ~ cardinality * category * Game_Condition * quarter
+                 + (1 | gameID))
+
+lmer_str_flat <- lmer(data = dat,
+                 numStrokes ~ cardinality * category * Game_Condition * quarter
+                 + (1 | gameID))
+
+lmer_dur_flat <- lmer(data = dat,
+                 drawDuration ~ cardinality * category * Game_Condition * quarter
+                 + (1 | gameID))
+
+glmer_ac_flat <- glmer(data=dat,
+                  outcome ~ cardinality * category * Game_Condition * quarter
+                  + (1 | gameID),
+                  family = 'binomial')
+
+
+
+```
+
+
+

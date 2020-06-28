@@ -1,11 +1,13 @@
 # Communication task
 
 
-##### 1.1 `iterationName` : `run3`
-Date: 2020 May 4
-- N = ???
+##### 1.1 `iterationName` : `run3` through to `run6`
+Date: 2020 May 4; May 5; May 8; May 19; May 20
+- N = 60
 - Summary of major changes to experimental design since version 1.1 (`run2`)
  - To address the 30 minute HIT endings, we're extending the HIT time to 40 (and see what happens)
+ - May 8 put the time limit back to 30 minutes
+ - There are so many different runs because Sebastian thought that we were supposed to change the run number every time I changed M-Turk HIT parameters / dispatched the HIT
 
 
 ##### 1.1 `iterationName` : `run2`
