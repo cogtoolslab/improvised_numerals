@@ -134,7 +134,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, help='full path to images', \
                         default=sketch_dir)
-    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=5)
+    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=5) # sebholt changed; should by default be 5
     parser.add_argument('--num_pcs', help='number of principal components', default=128)    
     parser.add_argument('--data_type', help='"images" or "sketch"', default='sketch')
     parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/iterated_number/features')    
