@@ -8,6 +8,7 @@ import json
 import re
 from io import BytesIO
 from PIL import Image
+import requests # this is to access the stim urls
 from skimage import io, img_as_float
 import base64
 
@@ -55,9 +56,11 @@ def render_images(D,
                  data = 'pngData',
                  metadata = ['trialNum'],
                  out_dir = './sketches',
+                 targ_dir = './targs',
                  delimiter = '_',
                  overwrite = True,
-                 clear = True):
+                 clear = True,
+                 savetargs = False): # savetargs will expect the last metadata to be part of the target image url
     '''
     input: dataframe D containing png data (see data keyword argument)
            and list of metadata attributes (see metadata keyword argument)
@@ -78,11 +81,22 @@ def render_images(D,
         # create the out_dir if it does not already exist
         if not os.path.exists(out_dir): 
             os.makedirs(out_dir)
+        
+        if savetargs == True:
+            # create the targ_dir if it does not already exist
+            if not os.path.exists(targ_dir): 
+                os.makedirs(targ_dir)
             
         # now save the image out to that directory
         if (overwrite or not os.path.exists(os.path.join(out_dir,fname+'.png'))):
             print('Currently rendering {} | {} of {}'.format(d['trialNum'],i+1,D.shape[0])) 
             im.save(os.path.join(out_dir,fname+'.png'),'PNG')
+            
+            if savetargs == True:
+                url = 'https://iternum.s3.amazonaws.com/' + attributes[-1]
+                response = requests.get(url)
+                targ = Image.open(BytesIO(response.content))
+                targ.save(os.path.join(targ_dir,fname+'.png'),'PNG')
         else:
             print('Skipping {} | {} of {}'.format(d['trialNum'],i+1,D.shape[0])) 
         if clear:
