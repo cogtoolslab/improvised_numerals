@@ -1,5 +1,6 @@
 ---
 title: "1st Year Paper Stats for Iterated Number"
+author: Sebastian Holt
 output: html_notebook
 ---
 
@@ -8,7 +9,7 @@ output: html_notebook
 library(lme4) # need for running lmer
 library(tidyverse)
 library(coda)
-library(languageR)
+require(languageR)
 library(lmerTest) #need this for lmer p values!!! Maybe it's not so important...
 library(emmeans)
 
@@ -16,7 +17,7 @@ library(emmeans)
 
 ```{r get_data, echo=FALSE}
 # import the data that was output from internum_analysis.ipynb
-dat = read.csv("all_data.csv", header = TRUE)
+dat = read_csv("../results/csv/iterated_number_group_data_run3.csv")
 dat_num = filter(dat,Game_Condition == 'number')
 dat_aml = filter(dat,Game_Condition == 'shape')
 ```
@@ -70,6 +71,18 @@ ac_CatCnd_stats <- c(round(anova(ac_CatCnd)[3,4],3), round(anova(ac_CatCnd)[3,5]
 
 ```
 
+
+### predicting strokes from cardinality, category, and condition
+```{r}
+model.strokes <- lmer(data = dat,
+                 numStrokes ~ cardinality * Game_Condition 
+                 + (1 | gameID))
+summary(model.strokes)
+
+```
+
+
+### several other maximal models
 ```{r maximal_models}
 # for each DV (total ink, number of strokes, and draw duration) store the lmer
 lmer_ink <- lmer(data = dat,
@@ -89,7 +102,7 @@ glmer_ac <- glmer(data=dat,
                   + (1 + cardinality * category | gameID),
                   family = 'binomial')
 ```
-These appear to not converge. So let's simplify the models
+### These appear to not converge. So let's simplify the models
 ```{r reduced_models_comparisons}
 # a set of models removing the category (animal) information from random effects
 lmer_ink_car <- lmer(data = dat,
