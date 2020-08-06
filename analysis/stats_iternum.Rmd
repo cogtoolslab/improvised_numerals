@@ -102,7 +102,7 @@ glmer_ac <- glmer(data=dat,
                   + (1 + cardinality * category | gameID),
                   family = 'binomial')
 ```
-These appear to not converge. So let's simplify the models
+### These appear to not converge. So let's simplify the models
 ```{r reduced_models_comparisons}
 # a set of models removing the category (animal) information from random effects
 lmer_ink_car <- lmer(data = dat,
