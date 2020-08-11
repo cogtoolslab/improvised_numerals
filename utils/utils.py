@@ -118,7 +118,8 @@ def render_sketch_gallery(gameids,
                           num_trials = 32,
                           by_trialnum = False,
                           show_correct = False,
-                          transpose=False):
+                          transpose=False,
+                          delimiter = '_'):
     '''
     input: 
          gameids: list of gameids
@@ -145,13 +146,28 @@ def render_sketch_gallery(gameids,
     for gind, game in enumerate(gameids): 
         print('Generating sketch gallery for participant: {} | {} of {}'.format(game,gind+1,len(gameids)))
         # get list of all sketch paths JUST from current game
-        game_sketch_paths = [path for path in sketch_paths if path.split('_')[0] == game]
+        game_sketch_paths = [path for path in sketch_paths if path.split(delimiter)[0] == game]
         
         if by_trialnum == True:
             # get the same list, but re-ordered by trial number
             trial_ordering = []
             for trial_i in np.arange(len(game_sketch_paths)):
-                trial_ordering.append([path for path in game_sketch_paths if int(path.split('_')[3]) == trial_i+1][0])
+                trial_ordering.append([path for path in game_sketch_paths if int(path.split(delimiter)[3]) == trial_i+1][0])
+                
+                
+                
+                
+                ### Sebastian has to redo this whole mess because of changing the sketch metadata. FIO later (7/Aug/2020)
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
             
             game_sketch_paths = trial_ordering
             
@@ -162,10 +178,10 @@ def render_sketch_gallery(gameids,
             # open image
             im = Image.open(os.path.join(sketch_dir,f))
             # get metadata
-            gameid = f.split('_')[0] 
-            category = f.split('_')[1]
-            cardinality = str(int(f.split('_')[2]) + 1)
-            trialNum = f.split('_')[3].split('.')[0]
+            gameid = f.split(delimiter)[0] 
+            category = f.split(delimiter)[1]
+            cardinality = str(int(f.split(delimiter)[2]) + 1)
+            trialNum = f.split(delimiter)[3].split('.')[0]
             
             # make gallery
             plot_ind = i+1
@@ -188,8 +204,11 @@ def render_sketch_gallery(gameids,
             title_obj = plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
             plt.setp(title_obj, color=title_colour)
             
-            game_condition = f.split('_')[4].split('.')[0]
-        suptitle = game_condition + "_" + gameid
+        print(len(game_sketch_paths))
+        f = game_sketch_paths[1] # had to make this up; every game only has one condition, so okay for now
+        game_condition = f.split(delimiter)[4].split('.')[0] # this used to be indented, but it's only useful unindented....
+        
+        suptitle = game_condition + delimiter + gameid
         plt.suptitle(suptitle)
         fname = '{}.png'.format(suptitle)
         plt.savefig(os.path.join(gallery_dir,fname))

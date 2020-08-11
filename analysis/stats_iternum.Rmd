@@ -12,14 +12,76 @@ library(coda)
 require(languageR)
 library(lmerTest) #need this for lmer p values!!! Maybe it's not so important...
 library(emmeans)
+library(data.table)
+
 
 ```
 
 ```{r get_data, echo=FALSE}
 # import the data that was output from internum_analysis.ipynb
-dat = read_csv("../results/csv/iterated_number_group_data_run3.csv")
+# dat1 = read_csv("../results/csv/iterated_number_group_data_run1.csv")
+# dat2 = read_csv("../results/csv/iterated_number_group_data_run2.csv")
+# dat3 = read_csv("../results/csv/iterated_number_group_data_run3.csv")
+# dat4 = read_csv("../results/csv/iterated_number_group_data_run4.csv")
+# dat5 = read_csv("../results/csv/iterated_number_group_data_run5.csv")
+dat6 = read_csv("../results/csv/iterated_number_group_data_run6.csv")
+# dat = rbind(dat2, dat3, dat4, dat5, dat6)
+# games = unique(dat$gameID)
+
+dud_games = c(#"6769-3ee1e797-2c5b-4441-8d67-5ccd1c6b9a73",    #number
+             "8369-76e6f73d-922a-4aca-b98a-8c96026aa48a",    #number
+             "1372-60cdfd55-28bb-411c-b777-c51eaadee7a9",    #shape
+             "2949-1e579088-8493-4c07-873c-7bd6d00685e3",    #shape
+             "7197-6d1f3fda-040a-455c-aef0-279ba9aef053",    #shape
+             "9237-4cc76e85-9955-4cef-b03c-5c68f46321ca",    #shape
+             "1947-29382ba4-5747-456d-ba8b-276812fc1fb3")    #shape
+bad_games <- dat6[ dat6$gameID %in% dud_games, ]
+dat <- dat6[ ! dat6$gameID %in% dud_games, ]
+
+
 dat_num = filter(dat,Game_Condition == 'number')
 dat_aml = filter(dat,Game_Condition == 'shape')
+
+```
+
+Before beginning any analyses, just some summary statistics:
+```{r accuracy_ttest}
+
+# get accuracy data by game for all games
+acc <- dat %>% group_by(Game_Condition, gameID) %>%
+  count(outcome) %>% filter(outcome == TRUE)
+  
+# count up the accuracy by game in each condition, then store all in one dataframe
+number_acc <- data.frame((acc %>% filter(Game_Condition == 'number'))$n)
+shape_acc <- data.frame((acc %>% filter(Game_Condition == 'shape'))$n)
+number_acc$cond <- 'number'
+shape_acc$cond <- 'shape'
+colnames(number_acc) <- c("N","cond")
+colnames(shape_acc) <- c("N","cond")
+all_accs <- rbind.data.frame(number_acc, shape_acc)
+
+# now do the t-test comparing accuracy in each condition
+acc_ttest <- t.test((acc %>% filter(Game_Condition == 'number'))$n,
+                    (acc %>% filter(Game_Condition == 'shape'))$n)
+
+# and plot the two distributions
+ggplot(all_accs, aes(N, fill = cond)) + geom_density(alpha = 0.2)
+
+```
+
+Now look at average stroke count by condition and see if they differ:
+```{r strokecount_ttest}
+dat$numStrokes <- dat$numStrokes %>% as.numeric()
+
+typeof(dat$numStrokes)
+strokes <- dat %>% group_by(Game_Condition, gameID) %>% 
+  summarise_at(vars(numStrokes), funs(mean(., na.rm=TRUE)))
+
+aggregate(dat[, numStrokes], list(dat$Game_Condition), mean)
+  
+t.test((acc %>% filter(Game_Condition == 'number'))$n,
+       (acc %>% filter(Game_Condition == 'shape'))$n)
+
 ```
 
 
@@ -163,5 +225,18 @@ glmer_ac_flat <- glmer(data=dat,
 
 ```
 
+```{r CLF_probabilities}
+clf_dat = read_csv("../results/csv/CLF_targ_probs.csv")
+clf_6 = clf_dat %>% filter(layer==6)
+setnames(clf_6, "prob", "logprob")
 
+test1 <- lm(data=clf_6, logprob ~ condition*clf) #  +  (1 | sketch_id)
+summary(test1)
+
+# https://vasishth-statistics.blogspot.com/2018/04/a-little-known-fact-paired-t-test-is.html
+test2 <- lmer(data=clf_6, logprob ~ condition  +  (1 | sketch_id))
+summary(test2)
+
+ggplot(clf_6, aes(logprob, fill = condition)) + geom_density(alpha = 0.2)
+```
 
