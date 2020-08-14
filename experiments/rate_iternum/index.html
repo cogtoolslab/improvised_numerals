@@ -35,7 +35,14 @@
       display: block;
     }
 
-    #dists {
+    #animals {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      margin-bottom: auto;
+    }
+
+    #cardinalities {
       margin-left: auto;
       margin-right: auto;
       margin-top: 50px;
@@ -43,6 +50,7 @@
     }
 
 
+/* don't think we need to arrange the stimuli using this, but keeping it around just in case: */
     /* #dists #A {position: absolute; left:100%; transform: translateX(-0%);
   -webkit-transform: translateX(-100%);}
     #dists #B {position: absolute; left:75%; transform: translateX(-0%);
@@ -52,10 +60,10 @@
     #dists #D {position: absolute; left:0%; transform: translateX(-0%);
   -webkit-transform: translateX(-0%);} */
 
-    #dists #A {padding-left: 5px; padding-right: 5px;}
-    #dists #B {padding-left: 5px; padding-right: 5px;}
-    #dists #C {padding-left: 5px; padding-right: 5px;}
-    #dists #D {padding-left: 5px; padding-right: 5px;}
+    /* #animals #A {padding-left: 5px; padding-right: 5px;}
+    #animals #B {padding-left: 5px; padding-right: 5px;}
+    #animals #C {padding-left: 5px; padding-right: 5px;}
+    #animals #D {padding-left: 5px; padding-right: 5px;} */
 
     </style>
     
@@ -83,6 +91,7 @@
     <script>
       window.onload = function() {
         setupGame();
+        console.log("This was it")
       }
 
       // window.onbeforeunload = function() {
@@ -107,8 +116,8 @@
     click the button -->
     <div id="instructions">
       <p>
-        You will see a series of images and sketches that may or may not be depicting it.
-        Please click the sketches that were made to depict the image!
+        You will see a series of sketches.
+        Please click the animal that you think each sketch was depicting!
       </p>
       <button id="startExperimentButton">
         Click here to begin
@@ -121,36 +130,67 @@
     </div>
 
 
-    <div id="dists">
+    <div id="cardinalities">
       <center>
-        <img id="A" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-        width="180" height="180" background="#FFFFFF" alt="Choice 1"/>
-        <img id="B" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-        width="180" height="180" alt="Choice 2"/>
-        <img id="C" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-        width="180" height="180" alt="Choice 3"/>
-        <img id="D" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-        width="180" height="180" alt="Choice 4"/>
+        <img id="one" src="rating_buttons/button_1.png"
+        width="100" height="100" background="#FFFFFF" alt="Choice 1"/>
+        <img id="two" src="rating_buttons/button_2.png"
+        width="100" height="100" alt="Choice 2"/>
+        <img id="three" src="rating_buttons/button_3.png"
+        width="100" height="100" alt="Choice 3"/>
+        <img id="four" src="rating_buttons/button_4.png"
+        width="100" height="100" alt="Choice 4"/>
+        <img id="five" src="rating_buttons/button_5.png"
+        width="100" height="100" background="#FFFFFF" alt="Choice 1"/>
+        <img id="six" src="rating_buttons/button_6.png"
+        width="100" height="100" alt="Choice 2"/>
+        <img id="seven" src="rating_buttons/button_7.png"
+        width="100" height="100" alt="Choice 3"/>
+        <img id="eight" src="rating_buttons/button_8.png"
+        width="100" height="100" alt="Choice 4"/>
+      </center>
+    </div>
+
+    <div id="animals">
+      <center>
+        <img id="bear" src="rating_buttons/button_bear.png"
+        width="180" height="180" alt="Choice Bear"/>
+        <img id="deer" src="rating_buttons/button_deer.png"
+        width="180" height="180" alt="Choice Deer"/>
+        <img id="owl" src="rating_buttons/button_owl.png"
+        width="180" height="180" alt="Choice Owl"/>
+        <img id="rabbit" src="rating_buttons/button_rabbit.png"
+        width="180" height="180" alt="Choice Rabbit"/>
       </center>
     </div>
 
 
   
     <script>
-      dummy = 0;
+      var curTrial = 0; /* we want to use this as 
+          index into trialList, so start at 0 */
+      var curTrialTimeStarted = 0;
+      
       $("#main_image").hide();
-      $("#dists").hide();
+      $("#animals").hide();
+      $("#cardinalities").hide();
 
       $("#startExperimentButton").on("click", StartExperiment);
-      $("#A").on("click", AdvanceSlide);
-      $("#B").on("click", AdvanceSlide);
-      $("#C").on("click", AdvanceSlide);
-      $("#D").on("click", AdvanceSlide);
+      // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
+      $("#bear").on("click", function(){HapticFeedback($("#bear"))});
+      $("#deer").on("click", function(){HapticFeedback($("#deer"))});
+      $("#owl").on("click", function(){HapticFeedback($("#owl"))});
+      $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
 
-      $("#A").on("click", function(){HapticFeedback($("#A"))});
-      $("#B").on("click", function(){HapticFeedback($("#B"))});
-      $("#C").on("click", function(){HapticFeedback($("#C"))});
-      $("#D").on("click", function(){HapticFeedback($("#D"))});
+      $("#one").on("click", function(){HapticFeedback($("#one"))});
+      $("#two").on("click", function(){HapticFeedback($("#two"))});
+      $("#three").on("click", function(){HapticFeedback($("#three"))});
+      $("#four").on("click", function(){HapticFeedback($("#four"))});
+      $("#five").on("click", function(){HapticFeedback($("#five"))});
+      $("#six").on("click", function(){HapticFeedback($("#six"))});
+      $("#seven").on("click", function(){HapticFeedback($("#seven"))});
+      $("#eight").on("click", function(){HapticFeedback($("#eight"))});
+
 
       /* This gets called when they click the button 
         on the instructions page */
@@ -160,26 +200,64 @@
         };
 
         function AdvanceSlide() {
-          if (dummy == 0){
+          // sample images:
+          // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
+          // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
+          var curTime = new Date();
+          var reaction_time = curTime - curTrialTimeStarted;
+
+          var output = {
+            trial_num : curTrial, 
+            condition : 'game_cond', // is the rater being asked to select cardinalities or animals?
+            sketch_id : 'SketchID',
+            sketch_animal : 'animal',
+            sketch_cardinality : 'cardinality',
+            RT : reaction_time,
+            label : 'something'}; // which label did the rater select?
+
+          console.log(output)
+          
+          if (curTrial == 0){
             $("#stim").attr("src",
             "https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg"
             );
-            dummy = 1;
+            curTrial = 1;
           } else {
             $("#stim").attr("src",
             "https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
             );
-            dummy = 0;
+            curTrial = 0;
           }
+
+          
+
+          
+
+
+
+
+
           $("#main_image").show();
-          $("#dists").show();
+          $("#cardinalities").show();
+          curTrialTimeStarted = new Date();
         };
 
         function HapticFeedback(thing) {
-          thing.fadeTo(1, 0);
-          thing.fadeTo(350, 1);
-          // thing.slideUp( 300 ).delay( 0 ).fadeIn( 400 );
+
+          // want to make accidental double clicks irrelevant by setting off the sensitivity
+          thing.off("click")
+          thing.fadeTo(1, 0); // and also make it visually obvious what the choice was
+          thing.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
+          setTimeout(function(){thing.on("click",function(){HapticFeedback(thing)})}, 500); // make it clickable after 500ms
+          
+          AdvanceSlide() // the actual function that will change the sketch and trial number
         };
+
+
+        // function setupGame() {
+        //   // first we want to generate the list of images. 1 image from each game
+
+        // }
     </script>
 
 

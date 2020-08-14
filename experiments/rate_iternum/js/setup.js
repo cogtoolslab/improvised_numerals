@@ -18,6 +18,7 @@ function setupGame () {
     var num_trials = meta.num_trials;
 
     // randomize object list within category
+    console.log("HEY HEY", object_list) ;
     var object_list_shuffled = _.flatten(_.map(_.chunk(object_list,8), _.shuffle));
 
     // define trial list
