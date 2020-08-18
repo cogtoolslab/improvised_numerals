@@ -88,15 +88,15 @@ def render_images(D,
                 os.makedirs(targ_dir)
             
         # now save the image out to that directory
-        if (overwrite or not os.path.exists(os.path.join(out_dir,fname+'.png'))):
+        if (overwrite or not os.path.exists(os.path.join(out_dir,fname))):  # used to have +'.png' after fname
             print('Currently rendering {} | {} of {}'.format(d['trialNum'],i+1,D.shape[0])) 
-            im.save(os.path.join(out_dir,fname+'.png'),'PNG')
+            im.save(os.path.join(out_dir,fname),'PNG')  # used to have +'.png' after fname
             
             if savetargs == True:
                 url = 'https://iternum.s3.amazonaws.com/' + attributes[-1]
                 response = requests.get(url)
                 targ = Image.open(BytesIO(response.content))
-                targ.save(os.path.join(targ_dir,fname+'.png'),'PNG')
+                targ.save(os.path.join(targ_dir,fname),'PNG') # used to have +'.png' after fname
         else:
             print('Skipping {} | {} of {}'.format(d['trialNum'],i+1,D.shape[0])) 
         if clear:
