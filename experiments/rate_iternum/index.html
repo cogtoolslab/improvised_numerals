@@ -71,7 +71,10 @@
       // window.onbeforeunload = function() {
       //   return "Data will be lost if you leave the page, are you sure?";
       // };
-      var batch = "batch_1.txt"
+      var batch = "../stimuli/batches/batch_1.txt"
+      var batches = "../../stimuli/batches"
+      var paradigm = fetch(batch) ; 
+      console.log(paradigm) ; 
       var condition = _.sample(['shape','number']);
     </script>
   </head>
