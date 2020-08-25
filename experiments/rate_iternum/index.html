@@ -1,15 +1,6 @@
 <!doctype html>
 <html>
-
-
-
-
-
-
   <style>
-    
-
-
     #instructions {
       color: #FFFFFF;
       width: 70%;
@@ -20,8 +11,6 @@
       margin-bottom: auto;
       text-align: center;
     }
-
-
     #main_image {
       /* width: 10%; */
       margin-left: auto;
@@ -34,47 +23,20 @@
       margin-right: auto;
       display: block;
     }
-
     #animals {
       margin-left: auto;
       margin-right: auto;
       margin-top: 50px;
       margin-bottom: auto;
     }
-
     #cardinalities {
       margin-left: auto;
       margin-right: auto;
       margin-top: 50px;
       margin-bottom: auto;
     }
-
-
-/* don't think we need to arrange the stimuli using this, but keeping it around just in case: */
-    /* #dists #A {position: absolute; left:100%; transform: translateX(-0%);
-  -webkit-transform: translateX(-100%);}
-    #dists #B {position: absolute; left:75%; transform: translateX(-0%);
-  -webkit-transform: translateX(-75%);}
-    #dists #C {position: absolute; left:25%; transform: translateX(-0%);
-  -webkit-transform: translateX(-25%);}
-    #dists #D {position: absolute; left:0%; transform: translateX(-0%);
-  -webkit-transform: translateX(-0%);} */
-
-    /* #animals #A {padding-left: 5px; padding-right: 5px;}
-    #animals #B {padding-left: 5px; padding-right: 5px;}
-    #animals #C {padding-left: 5px; padding-right: 5px;}
-    #animals #D {padding-left: 5px; padding-right: 5px;} */
-
     </style>
     
-
-
-
-
-
-
-
-
   <head>
     <title> Sketch Matching </title>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -89,6 +51,18 @@
     <link rel="stylesheet" href="./custom.css"></link>
 
     <script>
+
+      // make sure we have lodash; if we don't, then import it
+      var has_require = typeof require !== 'undefined';
+      if( typeof _ === 'undefined' ) {
+        if( has_require ) {
+          _ = require('lodash');
+          utils  = require(__base + 'utils/sharedUtils.js');
+        }
+        else throw 'mymodule requires underscore, see http://underscorejs.org';
+      };
+
+      // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
       window.onload = function() {
         setupGame();
         console.log("This was it")
@@ -97,28 +71,29 @@
       // window.onbeforeunload = function() {
       //   return "Data will be lost if you leave the page, are you sure?";
       // };
-
+      var batch = "batch_1.txt"
+      var condition = _.sample(['shape','number']);
     </script>
   </head>
-
-
-
 
 
   <body>
     <div id="display-area"></div>
 
-
-
-
-
     <!-- Instructions DIV is hidden once they 
-    click the button -->
+    click the button. Default instruction text is for number condition -->
     <div id="instructions">
       <p>
         You will see a series of sketches.
-        Please click the animal that you think each sketch was depicting!
+        Please click the number that you think each sketch was depicting!
       </p>
+
+      <!-- different text if the condition is actually shape -->
+      <script>
+        if (condition == 'shape'){$( "p" ).text( "You will see a series of sketches.\
+        Please click the animal that you think each sketch was depicting!" )};
+      </script>
+
       <button id="startExperimentButton">
         Click here to begin
       </button>
@@ -126,7 +101,7 @@
 
     <div id="main_image">
       <img id="stim" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-      width="240" height="240" alt="Image" />
+      width="240" height="240" alt="Image"/>
     </div>
 
 
@@ -167,10 +142,14 @@
 
   
     <script>
+      
       var curTrial = 0; /* we want to use this as 
           index into trialList, so start at 0 */
       var curTrialTimeStarted = 0;
       
+      // $("#instructions").text("You will see a series of sketches. \
+      //   Please click the animal that you think each sketch was depicting!");
+
       $("#main_image").hide();
       $("#animals").hide();
       $("#cardinalities").hide();
@@ -203,9 +182,11 @@
           // sample images:
           // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
           // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
-          var curTime = new Date();
-          var reaction_time = curTime - curTrialTimeStarted;
 
+          var curTime = new Date(); // for measuring RT
+          var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
+
+          // now create the data structure we want to store for this trial on mongodb:
           var output = {
             trial_num : curTrial, 
             condition : 'game_cond', // is the rater being asked to select cardinalities or animals?
@@ -215,42 +196,59 @@
             RT : reaction_time,
             label : 'something'}; // which label did the rater select?
 
-          console.log(output)
           
+          // a bit of nonsense filler at the moment. We want to fill this in with the actual sketches
           if (curTrial == 0){
             $("#stim").attr("src",
-            "https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg"
+            "https://iternum-sketches.s3.amazonaws.com/2824-66e43315-075a-431f-86d4-6eea7f135aa2•owl_4•6•shape•owl_5_012.png"
             );
+            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
             curTrial = 1;
           } else {
             $("#stim").attr("src",
             "https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
             );
+            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
             curTrial = 0;
-          }
-
-          
-
-          
+          };
 
 
-
-
-
+          // displaying the new sketch for them to rate, and all the buttons
           $("#main_image").show();
-          $("#cardinalities").show();
-          curTrialTimeStarted = new Date();
+          if (condition == 'number') {
+            $("#cardinalities").show();
+          };
+          if (condition == 'shape') {
+            $("#animals").show();
+          };
+          
+          curTrialTimeStarted = new Date(); // for measuring RT
         };
 
-        function HapticFeedback(thing) {
+        function HapticFeedback(button) {
 
           // want to make accidental double clicks irrelevant by setting off the sensitivity
-          thing.off("click")
-          thing.fadeTo(1, 0); // and also make it visually obvious what the choice was
-          thing.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
-          setTimeout(function(){thing.on("click",function(){HapticFeedback(thing)})}, 500); // make it clickable after 500ms
+          button.off("click")
+          button.fadeTo(1, 0); // and also make it visually obvious what the choice was
+          button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
+          setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
           
           AdvanceSlide() // the actual function that will change the sketch and trial number
+
+
+
+
+          // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
+          // import fs module in which writeFile function is defined. 
+          const fsLibrary  = require('fs')
+          // Data which will need to add in a file. 
+          let data = "Slide has been advanced"
+          // Write data in 'newfile.txt' . 
+          fsLibrary.writeFile('testing.txt', data, (error) => { 
+              // In case of a error throw err exception. 
+              if (error) throw err; 
+          });
+  
         };
 
 
@@ -259,13 +257,6 @@
 
         // }
     </script>
-
-
-
-
-
-
-
 
 
 
