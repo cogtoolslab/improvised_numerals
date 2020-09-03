@@ -71,10 +71,25 @@
       // window.onbeforeunload = function() {
       //   return "Data will be lost if you leave the page, are you sure?";
       // };
-      var batch = "../stimuli/batches/batch_1.txt"
-      var batches = "../../stimuli/batches"
-      var paradigm = fetch(batch) ; 
-      console.log(paradigm) ; 
+
+      // set the batch number and read the corresponding data structure
+      var batch = "../rate_iternum/batches/batch_1.js"
+      var urls = []
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var paradigm = JSON.parse(JSON.parse(this.response)); // idk why this has to be parsed twice
+          urls = paradigm.URL
+          // URLS = JSON.parse(this.response)
+          console.log("why is this not printing?")
+        }
+      };
+      xmlhttp.open("GET", batch, true);
+      xmlhttp.send();      
+
+      console.log("urls", urls)
+      // console.log("URLS", URLS)
       var condition = _.sample(['shape','number']);
     </script>
   </head>
