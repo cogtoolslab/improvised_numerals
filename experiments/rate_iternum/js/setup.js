@@ -11,6 +11,7 @@ function setupGame () {
   var socket = io.connect();
 
   socket.on('onConnected', function(d) {
+    console.log("Yeah we're hitting this")
     var meta = d.meta;
     var id = d.id;
 
@@ -23,7 +24,7 @@ function setupGame () {
     // define trial list
     var tmp = {
       type: 'nAFC-circle',
-      iterationName: 'pilot2',
+      iterationName: 'pilot1',
       num_trials: num_trials,
       sketch_size: [200,200],
       object_size: [100,100],

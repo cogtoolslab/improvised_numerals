@@ -11,6 +11,26 @@
       margin-bottom: auto;
       text-align: center;
     }
+    #thankyou {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #RoundNumDiv {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
     #main_image {
       /* width: 10%; */
       margin-left: auto;
@@ -23,6 +43,16 @@
       margin-right: auto;
       display: block;
     }
+    #main_image #intertitle {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
     #animals {
       margin-left: auto;
       margin-right: auto;
@@ -34,6 +64,15 @@
       margin-right: auto;
       margin-top: 50px;
       margin-bottom: auto;
+    }
+    #exit_survey {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      text-align: center;
     }
     </style>
     
@@ -62,10 +101,10 @@
         else throw 'mymodule requires underscore, see http://underscorejs.org';
       };
 
+      
       // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
       window.onload = function() {
         setupGame();
-        console.log("This was it")
       }
 
       // window.onbeforeunload = function() {
@@ -73,24 +112,52 @@
       // };
 
       // set the batch number and read the corresponding data structure
-      var batch = "../rate_iternum/batches/batch_1.js"
-      var urls = []
+      var batch = "../rate_iternum/batches/batch_1.csv"  
 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          var paradigm = JSON.parse(JSON.parse(this.response)); // idk why this has to be parsed twice
-          urls = paradigm.URL
-          // URLS = JSON.parse(this.response)
-          console.log("why is this not printing?")
+      var indexes = [];
+      var GameID = [];
+      var Animal = [];
+      var Cardinality = [];
+      var Trial = [];
+      var Cond = [];
+      var Version = [];
+      var URL = [];
+
+      $(document).ready(function() { // https://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript
+    // AJAX in the data file
+        $.ajax({
+            type: "GET",
+            url: batch,
+            dataType: "text",
+            success: function(data) {processData(data);}
+            });
+        // Let's process the data from the data file
+        function processData(data) {
+          
+            var lines = data.split(/\r\n|\n/);
+            var shuffled_lines = lines.slice(1,lines.length-1); // get rid of headings and vacuous last line
+            shuffled_lines = _.shuffle(shuffled_lines); // now shuffle shuffled_lines!
+
+            //Set up the data arrays
+            var headings = lines[0].split(','); // Splice up the first row to get the headings
+            for (var j=0; j<shuffled_lines.length; j++) {
+            var values = shuffled_lines[j].split(','); // Split up the comma seperated values
+              // We read the key,1st, 2nd and 3rd rows 
+              indexes.push(values[0]); // Read in as string
+              // Recommended to read in as float, since we'll be doing some operations on this later.
+              GameID.push(values[1]);
+              Animal.push(values[2]);
+              Cardinality.push(values[3]);
+              Trial.push(values[4]);
+              Cond.push(values[5]);
+              Version.push(values[6]);
+              URL.push(values[7]); 
+            }
         }
-      };
-      xmlhttp.open("GET", batch, true);
-      xmlhttp.send();      
+    });
 
-      console.log("urls", urls)
-      // console.log("URLS", URLS)
       var condition = _.sample(['shape','number']);
+
     </script>
   </head>
 
@@ -102,14 +169,14 @@
     click the button. Default instruction text is for number condition -->
     <div id="instructions">
       <p>
-        You will see a series of sketches.
-        Please click the number that you think each sketch was depicting!
+        You will see a series of symbols.
+        Please click the number that you think each symbol was conveying!
       </p>
 
       <!-- different text if the condition is actually shape -->
       <script>
-        if (condition == 'shape'){$( "p" ).text( "You will see a series of sketches.\
-        Please click the animal that you think each sketch was depicting!" )};
+        if (condition == 'shape'){$( "p" ).text( "You will see a series of symbols.\
+        Please click the animal that you think each symbol was conveying!" )};
       </script>
 
       <button id="startExperimentButton">
@@ -120,57 +187,138 @@
     <div id="main_image">
       <img id="stim" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
       width="240" height="240" alt="Image"/>
+      
+      <!-- when people's internet crashes, we don't want them in the dark! -->
+      <img id="error_stim" src="/rate_iternum/forms/images/no_image.png"
+      width="240" height="240" alt="Error_Stim"/>
+
+      <div id="intertitle"> <p id="intertitle_text">(FYI, your total bonus so far is <b id="bonus_val">___</b>) 
+        <br> Click to continue: <br> </p>
+         <button id="intertitle_button"> Continue </button>
+      </div>
     </div>
 
 
     <div id="cardinalities">
       <center>
         <img id="one" src="rating_buttons/button_1.png"
-        width="100" height="100" background="#FFFFFF" alt="Choice 1"/>
+        width="100" height="100" background="#FFFFFF" alt="1"/>
         <img id="two" src="rating_buttons/button_2.png"
-        width="100" height="100" alt="Choice 2"/>
+        width="100" height="100" alt="2"/>
         <img id="three" src="rating_buttons/button_3.png"
-        width="100" height="100" alt="Choice 3"/>
+        width="100" height="100" alt="3"/>
         <img id="four" src="rating_buttons/button_4.png"
-        width="100" height="100" alt="Choice 4"/>
+        width="100" height="100" alt="4"/>
         <img id="five" src="rating_buttons/button_5.png"
-        width="100" height="100" background="#FFFFFF" alt="Choice 1"/>
+        width="100" height="100" background="#FFFFFF" alt="5"/>
         <img id="six" src="rating_buttons/button_6.png"
-        width="100" height="100" alt="Choice 2"/>
+        width="100" height="100" alt="6"/>
         <img id="seven" src="rating_buttons/button_7.png"
-        width="100" height="100" alt="Choice 3"/>
+        width="100" height="100" alt="7"/>
         <img id="eight" src="rating_buttons/button_8.png"
-        width="100" height="100" alt="Choice 4"/>
+        width="100" height="100" alt="8"/>
       </center>
     </div>
 
     <div id="animals">
       <center>
         <img id="bear" src="rating_buttons/button_bear.png"
-        width="180" height="180" alt="Choice Bear"/>
+        width="180" height="180" alt="bear"/>
         <img id="deer" src="rating_buttons/button_deer.png"
-        width="180" height="180" alt="Choice Deer"/>
+        width="180" height="180" alt="deer"/>
         <img id="owl" src="rating_buttons/button_owl.png"
-        width="180" height="180" alt="Choice Owl"/>
+        width="180" height="180" alt="owl"/>
         <img id="rabbit" src="rating_buttons/button_rabbit.png"
-        width="180" height="180" alt="Choice Rabbit"/>
+        width="180" height="180" alt="rabbit"/>
       </center>
     </div>
 
+    <div id="RoundNumDiv">
+      <p id="RoundNumText">
+        Round 0
+      </p>
+    </div>
 
+    <div id="thankyou">
+      <p id="thankyouText">
+        Thank you!
+      </p>
+      <button id="submitButton">
+        Submit HIT
+      </button>
+    </div>
+
+    <div id="exit_survey" style="display:none">
+      <br><br><br>
+      <p> What is your gender? </p>
+      <select onChange="dropdownTip('gender::' + this.value)">
+        <option value =""></option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <br><br>
+
+      <p> What is your age? </p>
+      <textarea id='age' rows="1" cols="8"></textarea>
+      <br><br>
+
+      <p> Did you read the instructions and do you think you did the
+  HIT correctly? </p>
+      <select onChange="dropdownTip('confused::' + this.value)">
+        <option value = ""></option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+        <option value="confused">I was confused</option>
+      </select>
+
+      <p> Do you have any comments on the experiment? </p>
+      <textarea id='comments' rows="4" cols="50"></textarea>
+      <br>
+
+      <p> Note: Clicking this button should automatically submit the HIT and close this tab. There is no need to input a code.<p>
+      <p> If you experience a problem submitting, please contact ladlab.ucsd@gmail.com for compensation. </p>
+
+      <div><button id="surveySubmit" onclick="dropdownTip('submit')" type="button">Submit HIT</button></div>
+    </div>
   
     <script>
-      
-      var curTrial = 0; /* we want to use this as 
+      var totalBonus = 0;
+      var curTrial = -1; /* we want to use this as 
           index into trialList, so start at 0 */
       var curTrialTimeStarted = 0;
+      var last_clicked = 'nothing';
       
       // $("#instructions").text("You will see a series of sketches. \
       //   Please click the animal that you think each sketch was depicting!");
 
       $("#main_image").hide();
+      $("#intertitle").hide();
       $("#animals").hide();
       $("#cardinalities").hide();
+      $("#thankyou").hide();
+      $("#RoundNumDiv").hide();
+      
+      // We want to add some precautions in case people's internet crashes!
+      // so below, if there's an error retrieving the stim, we hide everything
+      // and show them an error message. They can wait til the internet works,
+      // and click the error message when they're able to get back to the game
+      // Consulted: https://stackoverflow.com/questions/92720/jquery-javascript-to-replace-broken-images
+      $("#error_stim").hide();
+      $("#stim").error(
+        function(){
+          $("#stim").hide();
+          $("#error_stim").show();
+          $("#cardinalities").hide();
+          $("#animals").hide();
+        });
+      $("#error_stim").on("click", function(){
+        $("#error_stim").hide();
+        $("#stim").show();
+        $("#stim").attr("src", URL[curTrial]);
+        if (condition == 'shape'){$("#animals").show()}
+        if (condition == 'number'){$("#cardinalities").show()}
+      });
 
       $("#startExperimentButton").on("click", StartExperiment);
       // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
@@ -188,11 +336,26 @@
       $("#seven").on("click", function(){HapticFeedback($("#seven"))});
       $("#eight").on("click", function(){HapticFeedback($("#eight"))});
 
+      $("#submitButton").on("click", function(){
+        $("#submitButton").hide()
+        $("#exit_survey").show()
+        $("#thankyou").hide()
+        $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+      });
+
+      $("#surveySubmit").on("click", function(){
+        $("#exit_survey").hide()
+        $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+        $("#thankyou").show()
+      });
+      
+
 
       /* This gets called when they click the button 
         on the instructions page */
         function StartExperiment() {
         $("#instructions").hide();
+        $("#RoundNumDiv").show();
           AdvanceSlide();
         };
 
@@ -204,33 +367,6 @@
           var curTime = new Date(); // for measuring RT
           var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
 
-          // now create the data structure we want to store for this trial on mongodb:
-          var output = {
-            trial_num : curTrial, 
-            condition : 'game_cond', // is the rater being asked to select cardinalities or animals?
-            sketch_id : 'SketchID',
-            sketch_animal : 'animal',
-            sketch_cardinality : 'cardinality',
-            RT : reaction_time,
-            label : 'something'}; // which label did the rater select?
-
-          
-          // a bit of nonsense filler at the moment. We want to fill this in with the actual sketches
-          if (curTrial == 0){
-            $("#stim").attr("src",
-            "https://iternum-sketches.s3.amazonaws.com/2824-66e43315-075a-431f-86d4-6eea7f135aa2•owl_4•6•shape•owl_5_012.png"
-            );
-            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
-            curTrial = 1;
-          } else {
-            $("#stim").attr("src",
-            "https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
-            );
-            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
-            curTrial = 0;
-          };
-
-
           // displaying the new sketch for them to rate, and all the buttons
           $("#main_image").show();
           if (condition == 'number') {
@@ -239,6 +375,54 @@
           if (condition == 'shape') {
             $("#animals").show();
           };
+
+          // now store the data depending on what trial we're at
+          if (curTrial > -1 & curTrial < URL.length){
+          // now create the data structure we want to store for this trial on mongodb:
+            var output = {
+              // first, info about the rating task
+              rating_trial_num : curTrial+1,
+              rate_condition : condition, // is the rater being asked to select cardinalities or animals?
+              rating : last_clicked, // which label did the rater select?
+              RT : reaction_time,
+
+              // next, info about the original conditions under which the sketch was produced
+              game_id : GameID[curTrial],
+              sketch_animal : Animal[curTrial],
+              sketch_cardinality : Cardinality[curTrial],
+              game_trial_num : Trial[curTrial],
+              game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
+              stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
+              sketch_url : URL[curTrial]};
+          
+
+            // update the bonus depending on whether they got it right or not
+            if (condition == 'shape' & last_clicked == Animal[curTrial]){
+              totalBonus = totalBonus + .03
+            }
+            if (condition == 'number' & last_clicked == Cardinality[curTrial]){
+              totalBonus = totalBonus + .03
+            }
+          
+          } if (curTrial == URL.length - 1){
+            console.log("The End")
+            $("#main_image").hide();
+            $("#cardinalities").hide();
+            $("#animals").hide();
+            $("#RoundNumDiv").hide();
+            $("#intertitle").hide();
+            $("#thankyou").show();
+          };
+
+          // replace the stim image with whatever is next in the list
+          curTrial = curTrial + 1
+          $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + URL.length);
+          $("#stim").attr("src", URL[curTrial]);
+          document.getElementById("stim").style.backgroundColor = "#FFFFFF";
+          
+
+
+          
           
           curTrialTimeStarted = new Date(); // for measuring RT
         };
@@ -251,21 +435,47 @@
           button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
           setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
           
-          AdvanceSlide() // the actual function that will change the sketch and trial number
+          last_clicked = button[0].alt;
+
+          AdvanceSlide()
+
+          $("#intertitle_button").on('click',function(){
+              $("#intertitle").hide();
+              $("#stim").show();
+              if (condition == 'shape'){
+                $("#animals").show();
+              }
+              if (condition == 'number'){
+                $("#cardinalities").show();
+              }
+            });
+
+          if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == URL.length){
+            $("#stim").hide();
+            $("#cardinalities").hide();
+            $("#animals").hide();
+            $("#bonus_val").text("$" + totalBonus.toFixed(2));
+            $("#intertitle").show();
+          };
 
 
 
 
-          // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
-          // import fs module in which writeFile function is defined. 
-          const fsLibrary  = require('fs')
-          // Data which will need to add in a file. 
-          let data = "Slide has been advanced"
-          // Write data in 'newfile.txt' . 
-          fsLibrary.writeFile('testing.txt', data, (error) => { 
-              // In case of a error throw err exception. 
-              if (error) throw err; 
-          });
+          
+
+
+
+
+          // // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
+          // // import fs module in which writeFile function is defined. 
+          // const fsLibrary  = require('fs')
+          // // Data which will need to add in a file. 
+          // let data = "Slide has been advanced"
+          // // Write data in 'newfile.txt' . 
+          // fsLibrary.writeFile('testing.txt', data, (error) => { 
+          //     // In case of a error throw err exception. 
+          //     if (error) throw err; 
+          // });
   
         };
 
