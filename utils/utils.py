@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 import os, sys
 
 import pymongo as pm
@@ -30,6 +33,12 @@ import os, sys
 import numpy as np
 import re
 
+try:
+    from bezier import curve
+    from svg.path import Path, Line, Arc, CubicBezier, QuadraticBezier, Close, parse_path
+except:
+    print('Something went wrong while trying to import bezier and svg modules, sorry!')
+    pass
     
 def list_files(path, ext='png'):
     result = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.%s' % ext))]
@@ -123,7 +132,7 @@ def render_sketch_gallery(gameids,
     '''
     input: 
          gameids: list of gameids
-         df: dataframe – putting this in so we can visualize more about each trial
+         df: dataframe: putting this in so we can visualize more about each trial
          sketch_dir: full path to dir containing rendered PNG sketch files (data source)
          gallery_dir: full path to dir where you want to save gallery image out (data destination)
          num_trials: how many trials per game? used to determine subplot arrangement
@@ -214,6 +223,30 @@ def render_sketch_gallery(gameids,
         plt.savefig(os.path.join(gallery_dir,fname))
         plt.close(fig)
     print('Done!')    
+    
+def GetArcLenData(df):
+    """
+    Thought having this measure might be helpful for naive quantitative analyses.
+    
+    This function requires the dataframe to have a ['svgString'] column to analyse.
+    It returns the same dataframe, but with an extra column of 'stroke_len_means'.
+    Currently just taking the total arc length of each stroke, and averaging them per sketch.
+    
+    If not already done, import Path, Arc, CubicBezier, and parse_path from svg.path
+    Used this: https://pypi.org/project/svg.path/
+    """
+    stroke_len_means = []
+    for row_num in range(len(df['svgString'])):
+        stroke_lengths = []
+        for stroke_num in range(len(df['svgString'][row_num])):
+            stroke_length = 0
+            for curve in parse_path(D['svgString'][row_num][stroke_num]):
+                stroke_length += curve.length(error=1e-5)
+            stroke_lengths.append(stroke_length)
+        stroke_len_means.append(np.mean(stroke_lengths))
+    new_df = df
+    new_df['stroke_len_means'] = stroke_len_means
+    return new_df
     
     
 def generate_dataframe(coll, complete_games, iterationName, csv_dir):
