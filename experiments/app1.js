@@ -55,7 +55,8 @@ io.on('connection', function (socket) {
   var isResearcher = _.includes(researchers, id);
 
   if (!id || isResearcher && !blockResearcher){
-    initializeWithTrials(socket)
+    // initializeWithTrials(socket)
+    console.log("")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
