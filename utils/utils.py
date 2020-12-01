@@ -85,7 +85,9 @@ def render_images(D,
 
         # construct the filename by concatenating attributes
         attributes = [str(d[attr]) for  attr in metadata]
-        fname = delimiter.join(attributes)        
+        name = delimiter.join(attributes)        
+        name = name.split(delimiter)
+        fname = name[0] + delimiter + name[1] + delimiter + str(int(name[2])+1) + delimiter + name[3] + delimiter + name[4] + delimiter + name[7]#.split('.')[0]
         
         # create the out_dir if it does not already exist
         if not os.path.exists(out_dir): 
