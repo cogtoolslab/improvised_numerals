@@ -111,8 +111,11 @@
       //   return "Data will be lost if you leave the page, are you sure?";
       // };
 
-      // set the batch number and read the corresponding data structure
-      var batch = "../rate_iternum/batches/batch_1.csv"  
+      // // set the batch number and read the corresponding data structure
+      // var batch = "../classify_iternum/batches/batch_1.csv"  
+
+      // nevermind batches, actually look for the stimList
+      var stimListPath = "stimList/stimList.js"
 
       var indexes = [];
       var GameID = [];
@@ -127,7 +130,7 @@
     // AJAX in the data file
         $.ajax({
             type: "GET",
-            url: batch,
+            url: stimListPath,
             dataType: "text",
             success: function(data) {processData(data);}
             });
@@ -189,7 +192,7 @@
       width="240" height="240" alt="Image"/>
       
       <!-- when people's internet crashes, we don't want them in the dark! -->
-      <img id="error_stim" src="/rate_iternum/forms/images/no_image.png"
+      <img id="error_stim" src="/classify_iternum/forms/images/no_image.png"
       width="240" height="240" alt="Error_Stim"/>
 
       <div id="intertitle"> <p id="intertitle_text">(FYI, your total bonus so far is <b id="bonus_val">___</b>) 
@@ -201,34 +204,34 @@
 
     <div id="cardinalities">
       <center>
-        <img id="one" src="rating_buttons/button_1.png"
+        <img id="one" src="classifier_buttons/button_1.png"
         width="100" height="100" background="#FFFFFF" alt="1"/>
-        <img id="two" src="rating_buttons/button_2.png"
+        <img id="two" src="classifier_buttons/button_2.png"
         width="100" height="100" alt="2"/>
-        <img id="three" src="rating_buttons/button_3.png"
+        <img id="three" src="classifier_buttons/button_3.png"
         width="100" height="100" alt="3"/>
-        <img id="four" src="rating_buttons/button_4.png"
+        <img id="four" src="classifier_buttons/button_4.png"
         width="100" height="100" alt="4"/>
-        <img id="five" src="rating_buttons/button_5.png"
+        <img id="five" src="classifier_buttons/button_5.png"
         width="100" height="100" background="#FFFFFF" alt="5"/>
-        <img id="six" src="rating_buttons/button_6.png"
+        <img id="six" src="classifier_buttons/button_6.png"
         width="100" height="100" alt="6"/>
-        <img id="seven" src="rating_buttons/button_7.png"
+        <img id="seven" src="classifier_buttons/button_7.png"
         width="100" height="100" alt="7"/>
-        <img id="eight" src="rating_buttons/button_8.png"
+        <img id="eight" src="classifier_buttons/button_8.png"
         width="100" height="100" alt="8"/>
       </center>
     </div>
 
     <div id="animals">
       <center>
-        <img id="bear" src="rating_buttons/button_bear.png"
+        <img id="bear" src="classifier_buttons/button_bear.png"
         width="180" height="180" alt="bear"/>
-        <img id="deer" src="rating_buttons/button_deer.png"
+        <img id="deer" src="classifier_buttons/button_deer.png"
         width="180" height="180" alt="deer"/>
-        <img id="owl" src="rating_buttons/button_owl.png"
+        <img id="owl" src="classifier_buttons/button_owl.png"
         width="180" height="180" alt="owl"/>
-        <img id="rabbit" src="rating_buttons/button_rabbit.png"
+        <img id="rabbit" src="classifier_buttons/button_rabbit.png"
         width="180" height="180" alt="rabbit"/>
       </center>
     </div>
