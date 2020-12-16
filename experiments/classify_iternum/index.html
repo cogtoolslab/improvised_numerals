@@ -1,4 +1,7 @@
 <!doctype html>
+
+<link rel="shortcut icon" href="#" />
+
 <html>
   <style>
     #instructions {
@@ -205,8 +208,8 @@
       <img id="error_stim" src="/classify_iternum/forms/images/no_image.png"
       width="240" height="240" alt="Error_Stim"/>
 
-      <div id="intertitle"> <p id="intertitle_text">(FYI, your total bonus so far is <b id="bonus_val">___</b>) 
-        <br> Click to continue: <br> </p>
+      <div id="intertitle"> <p id="intertitle_text">(FYI, your total bonus so far is <b id="bonus_val">___</b>)
+        <br> (MAYBE REPLACE WITH ATTENTION CHECK) <br> Click to continue: <br> </p>
          <button id="intertitle_button"> Continue </button>
       </div>
     </div>
@@ -412,6 +415,9 @@
             if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
             // now create the data structure we want to store for this trial on mongodb:
               var output = {
+                dbname : 'iterated_number',
+                colname : 'num8_shape4_recognition',
+                iterationName : 'testing1',
                 // first, info about the rating task
                 rating_trial_num : curTrial+1,
                 rate_condition : condition, // is the rater being asked to select cardinalities or animals?

@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
 
   // write data to db upon getting current data
   socket.on('currentData', function(data) {
-    console.log('currentData received: ' + JSON.stringify(data));
+    // console.log('currentData received: ' + JSON.stringify(data));
     // Increment games list in mongo here
     writeDataToMongo(data);
   });
@@ -98,7 +98,7 @@ var handleInvalidID = function (socket) {
 function checkPreviousParticipant(workerId, callback) {
   var p = { 'workerId': workerId };
   var postData = {
-    dbname: 'causaldraw',
+    dbname: 'iterated_number',
     query: p,
     projection: { '_id': 1 }
   };
@@ -168,16 +168,16 @@ var UUID = function() {
 
 var utils = require(__base + 'utils/sharedUtils.js');
 var writeDataToMongo = function(data) {
-    console.log(data)
-//   sendPostRequest(
-//     'http://localhost:7000/db/insert',
-//     { json: data },
-//     (error, res, body) => {
-//       if (!error && res.statusCode === 200) {
-//         console.log(`sent data to store`);
-//       } else {
-// 	      console.log(`error sending data to store: ${error} ${body}`);
-//       }
-//     }
-//   );
+  console.log(data)
+  sendPostRequest(
+    'http://localhost:8980/db/insert',
+    { json: data },
+    (error, res, body) => {
+      if (!error && res.statusCode === 200) {
+        console.log(`sent data to store`);
+      } else {
+	      console.log(`error sending data to store: ${error} ${body}`);
+      }
+    }
+  );
 };

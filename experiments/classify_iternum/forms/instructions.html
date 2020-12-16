@@ -4,6 +4,7 @@
 <!-- url is at: https://cogtoolslab.org:8889/rate_iternum/forms/instructions.html  -->
 <!DOCTYPE html>
 <html lang="en">
+  <link rel="shortcut icon" href="#" />
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,23 +47,24 @@
 
 	<p>
 
-    In this experiment you will be shown hand-drawn symbols and asked to infer their original meaning.
-    In each trial, a symbol will appear in the top part of the screen, and several buttons will appear below it.
-    Your task is to select whichever button you think conveys the meaning of the symbol. The meaning might be a number, as in this example:
+    In this experiment you will be shown 61 hand-drawn symbols and asked what they mean.
+    On each trial, one of these symbols will appear in the top part of the screen, and several options will appear below it.
+    Your task is to click the option that best matches the symbol. For example, you might be asked which <b>number</b> best matches the symbol:
 </p>
     <p>
       <center><img src="images/number_rate.png" alt="Example number" style="width:400px;height:200px"></center>
     </p>
 
   <p>
-    …or it might be an animal, as in this example:
+    Or you might be asked which <b>animal</b> best matches the symbol:
 </p>
   <p>
     <center><img src="images/animal_rate.png" alt="Example shape" style="width:400px;height:240px"></center>
   </p>
   <p>
-    You will only be presented with one set of buttons (numbers or animals) for the entire task – meaning that either you will only ever interpret the number conveyed by every drawing, or only ever interpret the animal.
-</p>
+    <!-- You will only be presented with one set of buttons (numbers or animals) for the entire task – meaning that either you will only ever interpret the number conveyed by every drawing, or only ever interpret the animal. -->
+    It may not always be clear what the symbol means. In that case, give your best guess!
+  </p>
 
 
     <p>
@@ -90,14 +92,14 @@
 
  <div class="well" style="width:800px; margin: 0 auto">
 
-  You should click whichever button you think encodes the same meaning as the hand-drawn symbol.
+  You should click the option you think best matches the meaning of the hand-drawn symbol.
     </br>
     <input type="radio" name="dgoal" value="no"> False
     </br>
     <input type="radio" name="dgoal" value="yes"> True
     </br>
   </br>
-  On some trials you will be asked rate the number encoded by a symbol, and on some trials, you will be asked rate the animal.
+  On some trials you will be asked what number a symbol refers to, and on other trials, you will be asked what animal it refers to.
       </br>
       <input type="radio" name="mgoal" value="yes"> False
       </br>
@@ -130,7 +132,7 @@
         var ans1 = $('input[name="dgoal"]:checked').val();
         var ans2 = $('input[name="mgoal"]:checked').val();
 
-        if(ans1 == "yes" && ans2 == "yes") {
+        if(ans1 == "yes" && ans2 == "yes" && urlParams.workerId != undefined) {
            var workerId = urlParams.workerId;
            var assignmentId = urlParams.assignmentId;
            var hitId = urlParams.hitId;
@@ -138,6 +140,8 @@
            location.replace("../index.html?workerId=" + workerId
                             + "&assignmentId=" + assignmentId
                             + "&hitId=" + hitId + "&turkSubmitTo=" + turkSubmitTo);
+        } else if(ans1 == "yes" && ans2 == "yes" && urlParams.workerId == undefined) {
+          location.replace("../index.html");
         } else if(counter == 2) {
           location.replace("./fail.html");
         } else {
