@@ -11,7 +11,7 @@ function setupGame () {
   var socket = io.connect();
 
   socket.on('onConnected', function(d) {
-    console.log("Yeah we're hitting this")
+    
     var meta = d.meta;
     var id = d.id;
 
@@ -23,8 +23,8 @@ function setupGame () {
 
     // define trial list
     var tmp = {
-      type: 'nAFC-circle',
-      iterationName: 'pilot1',
+      type: 'iterated_number_recog',
+      iterationName: 'testing1',
       num_trials: num_trials,
       sketch_size: [200,200],
       object_size: [100,100],
@@ -128,5 +128,5 @@ function setupGame () {
       default_iti: 1000,
       show_progress_bar: true
     });
-  });
-}
+  }); // close socket.on('onConnected') function
+} // close setupGame

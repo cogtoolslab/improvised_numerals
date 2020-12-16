@@ -101,22 +101,6 @@
         else throw 'mymodule requires underscore, see http://underscorejs.org';
       };
 
-      
-      // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
-      window.onload = function() {
-        setupGame();
-      }
-
-      // window.onbeforeunload = function() {
-      //   return "Data will be lost if you leave the page, are you sure?";
-      // };
-
-      // // set the batch number and read the corresponding data structure
-      // var batch = "../classify_iternum/batches/batch_1.csv"  
-
-      // nevermind batches, actually look for the stimList
-      var stimListPath = "stimList/stimList.js"
-
       var indexes = [];
       var GameID = [];
       var Animal = [];
@@ -126,40 +110,66 @@
       var Version = [];
       var URL = [];
 
-      $(document).ready(function() { // https://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript
-    // AJAX in the data file
-        $.ajax({
-            type: "GET",
-            url: stimListPath,
-            dataType: "text",
-            success: function(data) {processData(data);}
-            });
-        // Let's process the data from the data file
-        function processData(data) {
-          
-            var lines = data.split(/\r\n|\n/);
-            var shuffled_lines = lines.slice(1,lines.length-1); // get rid of headings and vacuous last line
-            shuffled_lines = _.shuffle(shuffled_lines); // now shuffle shuffled_lines!
+      
+      
+      window.onbeforeunload = function() {
+        return "Data will be lost if you leave the page, are you sure?";
+      };
 
-            //Set up the data arrays
-            var headings = lines[0].split(','); // Splice up the first row to get the headings
-            for (var j=0; j<shuffled_lines.length; j++) {
-            var values = shuffled_lines[j].split(','); // Split up the comma seperated values
-              // We read the key,1st, 2nd and 3rd rows 
-              indexes.push(values[0]); // Read in as string
-              // Recommended to read in as float, since we'll be doing some operations on this later.
-              GameID.push(values[1]);
-              Animal.push(values[2]);
-              Cardinality.push(values[3]);
-              Trial.push(values[4]);
-              Cond.push(values[5]);
-              Version.push(values[6]);
-              URL.push(values[7]); 
-            }
-        }
-    });
+      
 
-      var condition = _.sample(['shape','number']);
+      // // ALL OF THE FOLLOWING IS FOR WHEN stimList.js IS STORED LOCALY (it doesn't work btw), BUT WE'RE USING MONGO NOW!
+      // // look for the local stimList
+      // var stimListPath = "stimList/stimList.js"
+
+      // // A function to process process the data from the data file from ttps://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript
+      // function processData(data) {
+      //       var lines = data.split(/\r\n|\n/)[0];
+      //       var shuffled_lines = lines.slice(1,lines.length-1); // get rid of headings and vacuous last line
+      //       shuffled_lines = _.shuffle(shuffled_lines); // now shuffle shuffled_lines!
+      //       //Set up the data arrays
+      //       var headings = lines[0].split(','); // Splice up the first row to get the headings
+      //       // console.log("Thing I want:",headings)
+      //       for (var j=0; j<shuffled_lines.length; j++) {
+      //         var values = shuffled_lines[j].split(','); // Split up the comma seperated values
+              
+      //         // We read the key,1st, 2nd and 3rd rows 
+      //         indexes.push(values[0]); // Read in as string
+      //         // Recommended to read in as float, since we'll be doing some operations on this later.
+      //         GameID.push(values[1]);
+      //         Animal.push(values[2]);
+      //         Cardinality.push(values[3]);
+      //         Trial.push(values[4]);
+      //         Cond.push(values[5]);
+      //         Version.push(values[6]);
+      //         URL.push(values[7]);
+      //       };
+      //     };
+      // // Now, using that function we just defined, we'll read in the locally stored stimList.js file and parse it
+      // // btw code for this is from https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
+      // function readTextFile(file){
+      //     var rawFile = new XMLHttpRequest();
+      //     rawFile.open("GET", file, false);
+      //     rawFile.onreadystatechange = function ()
+      //     {
+      //         if(rawFile.readyState === 4)
+      //         {
+      //             if(rawFile.status === 200 || rawFile.status == 0)
+      //             {
+      //                 console.log("Thing I want", rawFile.response.json())
+      //                 var allText = rawFile.responseText;
+      //                 processData(allText);
+      //             }
+      //         }
+      //     }
+      //     rawFile.send(null);
+      // };
+      // readTextFile(stimListPath);
+      // console.log("THIS??",URL);
+      // // ALL OF THE ABOVE IS FOR WHEN stimList.js IS STORED LOCALY (it doesn't work btw), BUT WE'RE USING MONGO NOW!
+
+
+      // var condition = _.sample(['shape','number']);
 
     </script>
   </head>
@@ -171,16 +181,16 @@
     <!-- Instructions DIV is hidden once they 
     click the button. Default instruction text is for number condition -->
     <div id="instructions">
-      <p>
+      <p id="instruction_text">
         You will see a series of symbols.
         Please click the number that you think each symbol was conveying!
       </p>
 
       <!-- different text if the condition is actually shape -->
-      <script>
+      <!-- <script>
         if (condition == 'shape'){$( "p" ).text( "You will see a series of symbols.\
         Please click the animal that you think each symbol was conveying!" )};
-      </script>
+      </script> -->
 
       <button id="startExperimentButton">
         Click here to begin
@@ -204,34 +214,34 @@
 
     <div id="cardinalities">
       <center>
-        <img id="one" src="classifier_buttons/button_1.png"
+        <img id="one" class="classifier_button" src="classifier_buttons/button_1.png"
         width="100" height="100" background="#FFFFFF" alt="1"/>
-        <img id="two" src="classifier_buttons/button_2.png"
+        <img id="two" class="classifier_button" src="classifier_buttons/button_2.png"
         width="100" height="100" alt="2"/>
-        <img id="three" src="classifier_buttons/button_3.png"
+        <img id="three" class="classifier_button" src="classifier_buttons/button_3.png"
         width="100" height="100" alt="3"/>
-        <img id="four" src="classifier_buttons/button_4.png"
+        <img id="four" class="classifier_button" src="classifier_buttons/button_4.png"
         width="100" height="100" alt="4"/>
-        <img id="five" src="classifier_buttons/button_5.png"
+        <img id="five" class="classifier_button" src="classifier_buttons/button_5.png"
         width="100" height="100" background="#FFFFFF" alt="5"/>
-        <img id="six" src="classifier_buttons/button_6.png"
+        <img id="six" class="classifier_button" src="classifier_buttons/button_6.png"
         width="100" height="100" alt="6"/>
-        <img id="seven" src="classifier_buttons/button_7.png"
+        <img id="seven" class="classifier_button" src="classifier_buttons/button_7.png"
         width="100" height="100" alt="7"/>
-        <img id="eight" src="classifier_buttons/button_8.png"
+        <img id="eight" class="classifier_button" src="classifier_buttons/button_8.png"
         width="100" height="100" alt="8"/>
       </center>
     </div>
 
     <div id="animals">
       <center>
-        <img id="bear" src="classifier_buttons/button_bear.png"
+        <img id="bear" class="classifier_button" src="classifier_buttons/button_bear.png"
         width="180" height="180" alt="bear"/>
-        <img id="deer" src="classifier_buttons/button_deer.png"
+        <img id="deer" class="classifier_button" src="classifier_buttons/button_deer.png"
         width="180" height="180" alt="deer"/>
-        <img id="owl" src="classifier_buttons/button_owl.png"
+        <img id="owl" class="classifier_button" src="classifier_buttons/button_owl.png"
         width="180" height="180" alt="owl"/>
-        <img id="rabbit" src="classifier_buttons/button_rabbit.png"
+        <img id="rabbit" class="classifier_button" src="classifier_buttons/button_rabbit.png"
         width="180" height="180" alt="rabbit"/>
       </center>
     </div>
@@ -301,6 +311,7 @@
       $("#cardinalities").hide();
       $("#thankyou").hide();
       $("#RoundNumDiv").hide();
+      $("#instructions").hide();
       
       // We want to add some precautions in case people's internet crashes!
       // so below, if there's an error retrieving the stim, we hide everything
@@ -318,26 +329,26 @@
       $("#error_stim").on("click", function(){
         $("#error_stim").hide();
         $("#stim").show();
-        $("#stim").attr("src", URL[curTrial]);
+        $("#stim").attr("src", meta[curTrial].sketch_url);
         if (condition == 'shape'){$("#animals").show()}
         if (condition == 'number'){$("#cardinalities").show()}
       });
 
-      $("#startExperimentButton").on("click", StartExperiment);
-      // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
-      $("#bear").on("click", function(){HapticFeedback($("#bear"))});
-      $("#deer").on("click", function(){HapticFeedback($("#deer"))});
-      $("#owl").on("click", function(){HapticFeedback($("#owl"))});
-      $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
+      // $("#startExperimentButton").on("click", StartExperiment);
+      // // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
+      // $("#bear").on("click", function(){HapticFeedback($("#bear"))});
+      // $("#deer").on("click", function(){HapticFeedback($("#deer"))});
+      // $("#owl").on("click", function(){HapticFeedback($("#owl"))});
+      // $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
 
-      $("#one").on("click", function(){HapticFeedback($("#one"))});
-      $("#two").on("click", function(){HapticFeedback($("#two"))});
-      $("#three").on("click", function(){HapticFeedback($("#three"))});
-      $("#four").on("click", function(){HapticFeedback($("#four"))});
-      $("#five").on("click", function(){HapticFeedback($("#five"))});
-      $("#six").on("click", function(){HapticFeedback($("#six"))});
-      $("#seven").on("click", function(){HapticFeedback($("#seven"))});
-      $("#eight").on("click", function(){HapticFeedback($("#eight"))});
+      // $("#one").on("click", function(){HapticFeedback($("#one"))});
+      // $("#two").on("click", function(){HapticFeedback($("#two"))});
+      // $("#three").on("click", function(){HapticFeedback($("#three"))});
+      // $("#four").on("click", function(){HapticFeedback($("#four"))});
+      // $("#five").on("click", function(){HapticFeedback($("#five"))});
+      // $("#six").on("click", function(){HapticFeedback($("#six"))});
+      // $("#seven").on("click", function(){HapticFeedback($("#seven"))});
+      // $("#eight").on("click", function(){HapticFeedback($("#eight"))});
 
       $("#submitButton").on("click", function(){
         $("#submitButton").hide()
@@ -351,136 +362,302 @@
         $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
         $("#thankyou").show()
       });
-      
+
+
+      // very janky way of getting the results of setup game into the experiment without redoing the whole thing in JSPsych
+      // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
+      window.onload = function() {
+        // setupGame();
+
+        // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
+        var socket = io.connect();
+        socket.on('onConnected', function(d) {
+          var meta = d.meta;
+          meta = _.shuffle(meta);
+          console.log("Partition number: ",d.whole_structure.versionID);
+          console.log("Recog condition: ",d.whole_structure);
+
+          var condition = d.whole_structure.classify_condition;
+          if (condition == 'shape'){$("#instruction_text").text( "You will see a series of symbols.\
+        Please click the animal that you think each symbol was conveying!" )};
+          $("#instructions").show();
+
+          function StartExperiment() {
+            $("#instructions").hide();
+            $("#RoundNumDiv").show();
+            AdvanceSlide();
+          };
+          $("#startExperimentButton").on("click", StartExperiment);
+
+
+
+          function AdvanceSlide() {
+            // sample images:
+            // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
+            // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
+
+            var curTime = new Date(); // for measuring RT
+            var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
+
+            // displaying the new sketch for them to rate, and all the buttons
+            $("#main_image").show();
+            if (condition == 'number') {
+              $("#cardinalities").show();
+            };
+            if (condition == 'shape') {
+              $("#animals").show();
+            };
+
+            // now store the data depending on what trial we're at
+            if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
+            // now create the data structure we want to store for this trial on mongodb:
+              var output = {
+                // first, info about the rating task
+                rating_trial_num : curTrial+1,
+                rate_condition : condition, // is the rater being asked to select cardinalities or animals?
+                rating : last_clicked, // which label did the rater select?
+                RT : reaction_time,
+
+                // next, info about the original conditions under which the sketch was produced
+                game_id : GameID[curTrial],
+                sketch_animal : Animal[curTrial],
+                sketch_cardinality : Cardinality[curTrial],
+                game_trial_num : Trial[curTrial],
+                game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
+                stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
+                sketch_url : meta[curTrial].sketch_url};
+            
+              // update the bonus depending on whether they got it right or not
+              if (condition == 'shape' & last_clicked == Animal[curTrial]){
+                totalBonus = totalBonus + .03
+              }
+              if (condition == 'number' & last_clicked == Cardinality[curTrial]){
+                totalBonus = totalBonus + .03
+              }
+
+            } if (curTrial == meta.length - 1){
+              console.log("The End")
+              $("#main_image").hide();
+              $("#cardinalities").hide();
+              $("#animals").hide();
+              $("#RoundNumDiv").hide();
+              $("#intertitle").hide();
+              $("#thankyou").show();
+            };
+
+            // send that data to mongo! By way of app1.js of course, it needs to get to the server first
+            socket.emit('currentData', output); // this 'emits' the current trial info onto socket where app1.js is listening for it    
+
+            // replace the stim image with whatever is next in the list
+            curTrial = curTrial + 1
+            $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
+            $("#stim").attr("src", meta[curTrial].sketch_url);
+            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
+            
+
+
+            
+            
+            curTrialTimeStarted = new Date(); // for measuring RT
+          };
+
+
+
+
+
+          function HapticFeedback(button) {
+
+            // want to make accidental double clicks irrelevant by setting off the sensitivity
+            // button.off("click")
+            $(".classifier_button").off("click")
+
+            button.fadeTo(1, 0); // and also make it visually obvious what the choice was
+            button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
+            
+            // setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
+            setTimeout(function(){$(".classifier_button").each( function() {
+              var this_button = $(this);
+              this_button.on("click",function(){HapticFeedback(this_button)}); }
+            )}, 500); // for every classifier_button, make it clickable after 500ms
+
+            last_clicked = button[0].alt;
+
+            AdvanceSlide()
+
+            $("#intertitle_button").on('click',function(){
+                $("#intertitle").hide();
+                $("#stim").show();
+                if (condition == 'shape'){
+                  $("#animals").show();
+                }
+                if (condition == 'number'){
+                  $("#cardinalities").show();
+                }
+              });
+
+            if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == meta.length){
+              $("#stim").hide();
+              $("#cardinalities").hide();
+              $("#animals").hide();
+              $("#bonus_val").text("$" + totalBonus.toFixed(2));
+              $("#intertitle").show();
+            };
+
+          };
+          
+          // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
+          $("#bear").on("click", function(){HapticFeedback($("#bear"))});
+          $("#deer").on("click", function(){HapticFeedback($("#deer"))});
+          $("#owl").on("click", function(){HapticFeedback($("#owl"))});
+          $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
+
+          $("#one").on("click", function(){HapticFeedback($("#one"))});
+          $("#two").on("click", function(){HapticFeedback($("#two"))});
+          $("#three").on("click", function(){HapticFeedback($("#three"))});
+          $("#four").on("click", function(){HapticFeedback($("#four"))});
+          $("#five").on("click", function(){HapticFeedback($("#five"))});
+          $("#six").on("click", function(){HapticFeedback($("#six"))});
+          $("#seven").on("click", function(){HapticFeedback($("#seven"))});
+          $("#eight").on("click", function(){HapticFeedback($("#eight"))});
+
+
+
+
+
+
+
+
+        });
+      }
 
 
       /* This gets called when they click the button 
         on the instructions page */
-        function StartExperiment() {
-        $("#instructions").hide();
-        $("#RoundNumDiv").show();
-          AdvanceSlide();
-        };
+        // function StartExperiment() {
+        // $("#instructions").hide();
+        // $("#RoundNumDiv").show();
+        //   AdvanceSlide();
+        // };
 
-        function AdvanceSlide() {
-          // sample images:
-          // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
-          // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
+        // function AdvanceSlide() {
+        //   // sample images:
+        //   // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
+        //   // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
 
-          var curTime = new Date(); // for measuring RT
-          var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
+        //   var curTime = new Date(); // for measuring RT
+        //   var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
 
-          // displaying the new sketch for them to rate, and all the buttons
-          $("#main_image").show();
-          if (condition == 'number') {
-            $("#cardinalities").show();
-          };
-          if (condition == 'shape') {
-            $("#animals").show();
-          };
+        //   // displaying the new sketch for them to rate, and all the buttons
+        //   $("#main_image").show();
+        //   if (condition == 'number') {
+        //     $("#cardinalities").show();
+        //   };
+        //   if (condition == 'shape') {
+        //     $("#animals").show();
+        //   };
 
-          // now store the data depending on what trial we're at
-          if (curTrial > -1 & curTrial < URL.length){
-          // now create the data structure we want to store for this trial on mongodb:
-            var output = {
-              // first, info about the rating task
-              rating_trial_num : curTrial+1,
-              rate_condition : condition, // is the rater being asked to select cardinalities or animals?
-              rating : last_clicked, // which label did the rater select?
-              RT : reaction_time,
+        //   // now store the data depending on what trial we're at
+        //   if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
+        //   // now create the data structure we want to store for this trial on mongodb:
+        //     var output = {
+        //       // first, info about the rating task
+        //       rating_trial_num : curTrial+1,
+        //       rate_condition : condition, // is the rater being asked to select cardinalities or animals?
+        //       rating : last_clicked, // which label did the rater select?
+        //       RT : reaction_time,
 
-              // next, info about the original conditions under which the sketch was produced
-              game_id : GameID[curTrial],
-              sketch_animal : Animal[curTrial],
-              sketch_cardinality : Cardinality[curTrial],
-              game_trial_num : Trial[curTrial],
-              game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
-              stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
-              sketch_url : URL[curTrial]};
+        //       // next, info about the original conditions under which the sketch was produced
+        //       game_id : GameID[curTrial],
+        //       sketch_animal : Animal[curTrial],
+        //       sketch_cardinality : Cardinality[curTrial],
+        //       game_trial_num : Trial[curTrial],
+        //       game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
+        //       stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
+        //       sketch_url : meta[curTrial].sketch_url};
           
 
-            // update the bonus depending on whether they got it right or not
-            if (condition == 'shape' & last_clicked == Animal[curTrial]){
-              totalBonus = totalBonus + .03
-            }
-            if (condition == 'number' & last_clicked == Cardinality[curTrial]){
-              totalBonus = totalBonus + .03
-            }
+        //     // update the bonus depending on whether they got it right or not
+        //     if (condition == 'shape' & last_clicked == Animal[curTrial]){
+        //       totalBonus = totalBonus + .03
+        //     }
+        //     if (condition == 'number' & last_clicked == Cardinality[curTrial]){
+        //       totalBonus = totalBonus + .03
+        //     }
           
-          } if (curTrial == URL.length - 1){
-            console.log("The End")
-            $("#main_image").hide();
-            $("#cardinalities").hide();
-            $("#animals").hide();
-            $("#RoundNumDiv").hide();
-            $("#intertitle").hide();
-            $("#thankyou").show();
-          };
+        //   } if (curTrial == 61 - 1){ // this used to say "URL.length"
+        //     console.log("The End")
+        //     $("#main_image").hide();
+        //     $("#cardinalities").hide();
+        //     $("#animals").hide();
+        //     $("#RoundNumDiv").hide();
+        //     $("#intertitle").hide();
+        //     $("#thankyou").show();
+        //   };
 
-          // replace the stim image with whatever is next in the list
-          curTrial = curTrial + 1
-          $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + URL.length);
-          $("#stim").attr("src", URL[curTrial]);
-          document.getElementById("stim").style.backgroundColor = "#FFFFFF";
-          
-
-
-          
-          
-          curTrialTimeStarted = new Date(); // for measuring RT
-        };
-
-        function HapticFeedback(button) {
-
-          // want to make accidental double clicks irrelevant by setting off the sensitivity
-          button.off("click")
-          button.fadeTo(1, 0); // and also make it visually obvious what the choice was
-          button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
-          setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
-          
-          last_clicked = button[0].alt;
-
-          AdvanceSlide()
-
-          $("#intertitle_button").on('click',function(){
-              $("#intertitle").hide();
-              $("#stim").show();
-              if (condition == 'shape'){
-                $("#animals").show();
-              }
-              if (condition == 'number'){
-                $("#cardinalities").show();
-              }
-            });
-
-          if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == URL.length){
-            $("#stim").hide();
-            $("#cardinalities").hide();
-            $("#animals").hide();
-            $("#bonus_val").text("$" + totalBonus.toFixed(2));
-            $("#intertitle").show();
-          };
-
-
-
-
+        //   // replace the stim image with whatever is next in the list
+        //   curTrial = curTrial + 1
+        //   $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
+        //   $("#stim").attr("src", meta[curTrial].sketch_url);
+        //   document.getElementById("stim").style.backgroundColor = "#FFFFFF";
           
 
 
+          
+          
+        //   curTrialTimeStarted = new Date(); // for measuring RT
+        // };
+
+        // function HapticFeedback(button) {
+
+        //   // want to make accidental double clicks irrelevant by setting off the sensitivity
+        //   button.off("click")
+        //   button.fadeTo(1, 0); // and also make it visually obvious what the choice was
+        //   button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
+        //   setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
+          
+        //   last_clicked = button[0].alt;
+
+        //   AdvanceSlide()
+
+        //   $("#intertitle_button").on('click',function(){
+        //       $("#intertitle").hide();
+        //       $("#stim").show();
+        //       if (condition == 'shape'){
+        //         $("#animals").show();
+        //       }
+        //       if (condition == 'number'){
+        //         $("#cardinalities").show();
+        //       }
+        //     });
+
+        //   if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == meta.length){
+        //     $("#stim").hide();
+        //     $("#cardinalities").hide();
+        //     $("#animals").hide();
+        //     $("#bonus_val").text("$" + totalBonus.toFixed(2));
+        //     $("#intertitle").show();
+        //   };
 
 
-          // // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
-          // // import fs module in which writeFile function is defined. 
-          // const fsLibrary  = require('fs')
-          // // Data which will need to add in a file. 
-          // let data = "Slide has been advanced"
-          // // Write data in 'newfile.txt' . 
-          // fsLibrary.writeFile('testing.txt', data, (error) => { 
-          //     // In case of a error throw err exception. 
-          //     if (error) throw err; 
-          // });
+
+
+          
+
+
+
+
+        //   // // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
+        //   // // import fs module in which writeFile function is defined. 
+        //   // const fsLibrary  = require('fs')
+        //   // // Data which will need to add in a file. 
+        //   // let data = "Slide has been advanced"
+        //   // // Write data in 'newfile.txt' . 
+        //   // fsLibrary.writeFile('testing.txt', data, (error) => { 
+        //   //     // In case of a error throw err exception. 
+        //   //     if (error) throw err; 
+        //   // });
   
-        };
+        // };
 
 
         // function setupGame() {

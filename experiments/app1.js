@@ -55,14 +55,15 @@ io.on('connection', function (socket) {
   var isResearcher = _.includes(researchers, id);
 
   if (!id || isResearcher && !blockResearcher){
-    // initializeWithTrials(socket)
-    console.log("")
+    initializeWithTrials(socket)
+    console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
     checkPreviousParticipant(id, (exists) => {
       return exists ? handleDuplicate(socket) : initializeWithTrials(socket);
     });
+    console.log("ID appears valid");
   }
 
   // write data to db upon getting current data
@@ -122,31 +123,35 @@ function checkPreviousParticipant(workerId, callback) {
   );
 };
 
-// // This was from Holly's experiment, our stimuli are elsewhere and accessed from index.html
-// function initializeWithTrials(socket) {
-//   var gameid = UUID();
-//   var colname = 'causaldraw_annotations_patching'; // experiment name is 'causaldraw_annotations' but patching is called 'causaldraw_annotations_patching'
-//   sendPostRequest('http://localhost:7000/db/getbatchstims', {
-//     json: {
-//       dbname: 'stimuli',
-//       colname: colname,
-//       //numTrials: 1,
-//       gameid: gameid
-//     }
-//   }, (error, res, body) => {
-//     if (!error && res.statusCode === 200) {
-//       // send trial list (and id) to client
-//       var packet = {
-//         gameid: gameid,
-//         meta: body.meta,
-//         version: body.experimentVersion
-//       };
-//       socket.emit('onConnected', packet);
-//     } else {
-//       console.log(`error getting stims: ${error} ${body}`);
-//     }
-//   });
-// }
+// This was from Holly's experiment, our stimuli are elsewhere and accessed from index.html
+function initializeWithTrials(socket) {
+  
+  var gameid = UUID();
+  var colname = 'iternum_classification';
+  
+  sendPostRequest('http://localhost:8980/db/getstims', {
+    json: {
+      dbname: 'stimuli',
+      colname: colname,
+      //numTrials: 1,
+      gameid: gameid
+    }
+  }, (error, res, body) => {
+    if (!error && res.statusCode === 200) {
+      // send trial list (and id) to client
+      var packet = {
+        gameid: gameid,
+        meta: body.meta,
+        version: body.experimentVersion,
+        whole_structure: body
+      };
+      
+      socket.emit('onConnected', packet);
+    } else {
+      console.log(`error getting stims: ${error} ${body}`);
+    }
+  });
+}
 
 var UUID = function() {
   var baseName = (Math.floor(Math.random() * 10) + '' +
@@ -161,7 +166,7 @@ var UUID = function() {
   return id;
 };
 
-
+var utils = require(__base + 'utils/sharedUtils.js');
 var writeDataToMongo = function(data) {
     console.log(data)
 //   sendPostRequest(
