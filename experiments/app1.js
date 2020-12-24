@@ -1,3 +1,5 @@
+const { isUndefined } = require('lodash');
+
 global.__base = __dirname + '/';
 
 var
@@ -54,12 +56,14 @@ io.on('connection', function (socket) {
 
   var isResearcher = _.includes(researchers, id);
 
-  if (!id || isResearcher && !blockResearcher){
+  if (!id || isResearcher && !blockResearcher || id === 'undefined'){
+    var turkerStatus = false;
     initializeWithTrials(socket)
     console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
+    var turkerStatus = true;
     checkPreviousParticipant(id, (exists) => {
       return exists ? handleDuplicate(socket) : initializeWithTrials(socket);
     });
@@ -143,7 +147,8 @@ function initializeWithTrials(socket) {
         gameid: gameid,
         meta: body.meta,
         version: body.experimentVersion,
-        whole_structure: body
+        whole_structure: body,
+        turker: turkerStatus
       };
       
       socket.emit('onConnected', packet);

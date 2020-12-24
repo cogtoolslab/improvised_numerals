@@ -91,34 +91,73 @@
     <!-- <script src="js/object_list.js"></script> -->
     <script src="js/setup.js"></script>
     <link rel="stylesheet" href="./custom.css"></link>
+    
 
     <script>
-
       // make sure we have lodash; if we don't, then import it
       var has_require = typeof require !== 'undefined';
       if( typeof _ === 'undefined' ) {
         if( has_require ) {
           _ = require('lodash');
           utils  = require(__base + 'utils/sharedUtils.js');
+          // fs = require('fs');
         }
         else throw 'mymodule requires underscore, see http://underscorejs.org';
       };
 
-      var indexes = [];
-      var GameID = [];
-      var Animal = [];
-      var Cardinality = [];
-      var Trial = [];
-      var Cond = [];
-      var Version = [];
-      var URL = [];
+      // var animal_catch_paths = fs.readdirSync('/classify_iternum/forms/images/catch_stims/animal_catch_stims/');
+      // var number_catch_paths = fs.readdirSync('/classify_iternum/forms/images/catch_stims/number_catch_stims/');
+      var animal_catch_paths = ['/classify_iternum/forms/images/catch_stims/animal_catch_stims/bear.png',
+      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/deer.png',
+      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/owl.png',
+      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/rabbit.png']
 
-      
+      var number_catch_paths = ['/classify_iternum/forms/images/catch_stims/number_catch_stims/1.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/2.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/3.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/4.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/5.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/6.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/7.png',
+      '/classify_iternum/forms/images/catch_stims/number_catch_stims/8.png']
+
+      function sendData() {
+        console.log('sending data to mturk');
+        jsPsych.turk.submitToTurk({'score':score});
+      };
       
       window.onbeforeunload = function() {
         return "Data will be lost if you leave the page, are you sure?";
       };
 
+      
+      // io.connect().on('disconnect', function(){
+      //   // Redirect to exit survey
+      //   console.log("server booted");
+      //   var failMsg = [
+      //     '<h3>Oops! It looks your connection timed out!</h3>',
+      //     '<p> Completing this survey will submit your HIT so you will still receive full ',
+      //     'compensation.</p> <p>If you experience any problems, please email us</p>'
+      //   ].join('');
+      //   var successMsg = [
+      //     "<h3>Thanks for participating in our experiment!</h3>",
+      //     "<p>Before you submit your HIT, we'd like to ask you a few questions.</p>"
+      //   ].join('');
+
+      //   // if(globalGame.roundNum + 2 > globalGame.numRounds) {
+      //   //   $('#exit_survey').prepend(successMsg);
+      //   // } else {
+      //   //   $('#exit_survey').prepend(failMsg);
+      //   // }
+      //   $('#exit_survey').prepend(failMsg)
+
+      //   $('#exit_survey').show();
+      //   $('#main').hide();
+      //   $('#header').hide();
+      //   $('#message_panel').hide();
+      //   $('#submitbutton').hide();
+
+      // });
       
 
       // // ALL OF THE FOLLOWING IS FOR WHEN stimList.js IS STORED LOCALY (it doesn't work btw), BUT WE'RE USING MONGO NOW!
@@ -212,6 +251,10 @@
         <br> (MAYBE REPLACE WITH ATTENTION CHECK) <br> Click to continue: <br> </p>
          <button id="intertitle_button"> Continue </button>
       </div>
+
+      <!-- <img id="catch_stim" src="/classify_iternum/forms/images/no_image.png"
+      width="240" height="240" alt="Catch_Stim"/> -->
+
     </div>
 
 
@@ -259,9 +302,9 @@
       <p id="thankyouText">
         Thank you!
       </p>
-      <button id="submitButton">
+      <!-- <button id="submitButton">
         Submit HIT
-      </button>
+      </button> -->
     </div>
 
     <div id="exit_survey" style="display:none">
@@ -299,6 +342,7 @@
     </div>
   
     <script>
+      var turkerStatus = false;
       var totalBonus = 0;
       var curTrial = -1; /* we want to use this as 
           index into trialList, so start at 0 */
@@ -336,6 +380,7 @@
         if (condition == 'shape'){$("#animals").show()}
         if (condition == 'number'){$("#cardinalities").show()}
       });
+      
 
       // $("#startExperimentButton").on("click", StartExperiment);
       // // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
@@ -353,12 +398,12 @@
       // $("#seven").on("click", function(){HapticFeedback($("#seven"))});
       // $("#eight").on("click", function(){HapticFeedback($("#eight"))});
 
-      $("#submitButton").on("click", function(){
-        $("#submitButton").hide()
-        $("#exit_survey").show()
-        $("#thankyou").hide()
-        $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
-      });
+      // $("#submitButton").on("click", function(){
+      //   $("#submitButton").hide()
+      //   $("#exit_survey").show()
+      //   $("#thankyou").hide()
+      //   $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+      // });
 
       $("#surveySubmit").on("click", function(){
         $("#exit_survey").hide()
@@ -366,7 +411,50 @@
         $("#thankyou").show()
       });
 
+      var subject_information = [];
+      // This gets called when someone selects something in the menu during the exit survey...
+      // collects data from drop-down menus and submits using mmturkey
+      function dropdownTip(data){
+        var commands = data.split('::');
+        switch(commands[0]) {
+        case 'human' :
+          $('#humanResult').show();
+          subject_information = _.extend(subject_information,
+                    {'thinksHuman' : commands[1]}); break;
+        case 'gender' :
+          subject_information = _.extend(subject_information,
+                    {'gender' : commands[1]}); break;
+        case 'age' :
+          subject_information = _.extend(subject_information,
+                    {'age' : commands[1]}); break;
+        case 'medium' :
+          subject_information = _.extend(subject_information,
+                    {'medium' : commands[1]}); break;
+        case 'partner' :
+          subject_information = _.extend(subject_information,
+                    {'ratePartner' : commands[1]}); break;
+        case 'confused' :
+          subject_information = _.extend(subject_information,
+                    {'confused' : commands[1]}); break;
+        case 'submit' :
+          subject_information = _.extend(subject_information,
+                    {'comments' : $('#comments').val(),
+                      'strategy' : $('#strategy').val(),
+                  'totalLength' : new Date() - startTime});
+          console.log("data is...");
+          console.log(subject_information);
+          if(turkerStatus == true) {
+            window.opener.turk.submit(subject_information, true);
+            window.close();
+          } else {
+            console.log("would have submitted the following :")
+            console.log(subject_information);
+          }
+          break;
+        }
+      }
 
+      var startTime = new Date()
       // very janky way of getting the results of setup game into the experiment without redoing the whole thing in JSPsych
       // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
       window.onload = function() {
@@ -375,8 +463,30 @@
         // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
         var socket = io.connect();
         socket.on('onConnected', function(d) {
+          
+          socket.removeListener('onConnected');
+          turkerStatus = d.turker;
           var meta = d.meta;
           meta = _.shuffle(meta);
+          var URLs = [];
+          var origAnimals = [];
+          var origCardinalities = [];
+          var orig_conds = [];
+          var orig_gameIDs = [];
+          var orig_gametrials = [];
+          var orig_stim_versions = [];
+          var catch_trial_val = [];
+
+          for (var j=0; j<meta.length; j++) {
+            URLs.push(meta[j].sketch_url)
+            origAnimals.push(meta[j].orig_animal)
+            origCardinalities.push(meta[j].orig_cardinality)
+            orig_conds.push(meta[j].orig_cond)
+            orig_gameIDs.push(meta[j].orig_gameid)
+            orig_gametrials.push(meta[j].orig_trial)
+            orig_stim_versions.push(meta[j].orig_version)
+            catch_trial_val.push(false)
+          };
           console.log("Partition number: ",d.whole_structure.versionID);
           console.log("Recog condition: ",d.whole_structure);
 
@@ -389,6 +499,7 @@
             $("#instructions").hide();
             $("#RoundNumDiv").show();
             AdvanceSlide();
+            startTime = new Date();
           };
           $("#startExperimentButton").on("click", StartExperiment);
 
@@ -425,19 +536,19 @@
                 RT : reaction_time,
 
                 // next, info about the original conditions under which the sketch was produced
-                game_id : GameID[curTrial],
-                sketch_animal : Animal[curTrial],
-                sketch_cardinality : Cardinality[curTrial],
-                game_trial_num : Trial[curTrial],
-                game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
-                stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
-                sketch_url : meta[curTrial].sketch_url};
+                orig_game_id : orig_gameIDs[curTrial],
+                orig_sketch_animal : origAnimals[curTrial],
+                orig_sketch_cardinality : origCardinalities[curTrial],
+                orig_game_trial_num : orig_gametrials[curTrial],
+                orig_game_condition : orig_conds[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
+                orig_stim_version : orig_stim_versions[curTrial], // which version of the target stim was used to elicit the sketch?
+                sketch_url : URLs[curTrial]};
             
               // update the bonus depending on whether they got it right or not
-              if (condition == 'shape' & last_clicked == Animal[curTrial]){
+              if (condition == 'shape' & last_clicked == origAnimals[curTrial]){
                 totalBonus = totalBonus + .03
               }
-              if (condition == 'number' & last_clicked == Cardinality[curTrial]){
+              if (condition == 'number' & last_clicked == origCardinalities[curTrial]){
                 totalBonus = totalBonus + .03
               }
 
@@ -448,7 +559,8 @@
               $("#animals").hide();
               $("#RoundNumDiv").hide();
               $("#intertitle").hide();
-              $("#thankyou").show();
+              // $("#thankyou").show();
+              $("#exit_survey").show()
             };
 
             // send that data to mongo! By way of app1.js of course, it needs to get to the server first
@@ -457,7 +569,7 @@
             // replace the stim image with whatever is next in the list
             curTrial = curTrial + 1
             $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
-            $("#stim").attr("src", meta[curTrial].sketch_url);
+            $("#stim").attr("src", URLs[curTrial]);
             document.getElementById("stim").style.backgroundColor = "#FFFFFF";
             
 
@@ -472,6 +584,7 @@
 
 
           function HapticFeedback(button) {
+            // $("#catch_stim").hide();
 
             // want to make accidental double clicks irrelevant by setting off the sensitivity
             // button.off("click")
@@ -490,24 +603,38 @@
 
             AdvanceSlide()
 
-            $("#intertitle_button").on('click',function(){
-                $("#intertitle").hide();
-                $("#stim").show();
-                if (condition == 'shape'){
-                  $("#animals").show();
-                }
-                if (condition == 'number'){
-                  $("#cardinalities").show();
-                }
-              });
 
-            if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == meta.length){
-              $("#stim").hide();
-              $("#cardinalities").hide();
-              $("#animals").hide();
-              $("#bonus_val").text("$" + totalBonus.toFixed(2));
-              $("#intertitle").show();
-            };
+            // stuff that was relevant before building in catch trials to the original list on MTurk:
+            // $("#intertitle_button").on('click',function(){
+            //     $("#intertitle").hide();
+            //     $("#stim").show();
+            //     if (condition == 'shape'){
+            //       $("#animals").show();
+            //     }
+            //     if (condition == 'number'){
+            //       $("#cardinalities").show();
+            //     }
+            //   });
+
+            //   // this used to be an intertitle where participants could see their bonus
+            // if ((curTrial+1) % 12 == 0 && curTrial < 50 || curTrial == meta.length){
+            //   $("#stim").hide();
+            //   // $("#cardinalities").hide();
+            //   // $("#animals").hide();
+            //   $("#bonus_val").text("$" + totalBonus.toFixed(2));
+            //   // $("#intertitle").show();
+              
+            //   $("#stim").hide();
+              
+            //   if (condition == 'shape'){
+            //       catch_source = _.sample(animal_catch_paths);
+            //     }
+            //     if (condition == 'number'){
+            //       catch_source = _.sample(number_catch_paths);
+            //     };
+            //   $("#catch_stim").attr("src", catch_source);
+            //   $("#catch_stim").show();
+            // };
 
           };
           
@@ -534,6 +661,35 @@
 
 
         });
+
+
+      //   socket.on('disconnect', function(){
+      //   // Redirect to exit survey
+      //   console.log("server booted");
+      //   $("#main_image").hide();
+      //   $("#cardinalities").hide();
+      //   $("#animals").hide();
+      //   $("#RoundNumDiv").hide();
+      //   $("#intertitle").hide();
+
+      //   var failMsg = [
+      //     '<h3>Oops! It looks your connection timed out!</h3>',
+      //     '<p> Completing this survey will submit your HIT so you will still receive full ',
+      //     'compensation.</p> <p>If you experience any problems, please email us</p>'
+      //   ].join('');
+      //   var successMsg = [
+      //     "<h3>Thanks for participating in our experiment!</h3>",
+      //     "<p>Before you submit your HIT, we'd like to ask you a few questions.</p>"
+      //   ].join('');
+
+      //   // if(globalGame.roundNum + 2 > globalGame.numRounds) {
+      //   //   $('#exit_survey').prepend(successMsg);
+      //   // } else {
+      //   //   $('#exit_survey').prepend(failMsg);
+      //   // }
+      //   $('#exit_survey').prepend(failMsg)
+      //   $('#exit_survey').show();
+      // });
       }
 
 
