@@ -332,9 +332,11 @@
           catches = meta.filter(function(X) {    // extract catch trials
             return X.catchTrial == true
           });
+          console.log("Catches: ",catches.length);
           meta = meta.filter(function(X) {    // and make another structure of the non-catch trials
-            return X.catchTrial != false
+            return X.catchTrial == false
           });
+          console.log("Meta: ",meta.length);
 
           meta = _.shuffle(meta);    // shuffle all those real trials
 
