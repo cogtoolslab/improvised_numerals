@@ -100,26 +100,9 @@
         if( has_require ) {
           _ = require('lodash');
           utils  = require(__base + 'utils/sharedUtils.js');
-          // fs = require('fs');
         }
         else throw 'mymodule requires underscore, see http://underscorejs.org';
       };
-
-      // var animal_catch_paths = fs.readdirSync('/classify_iternum/forms/images/catch_stims/animal_catch_stims/');
-      // var number_catch_paths = fs.readdirSync('/classify_iternum/forms/images/catch_stims/number_catch_stims/');
-      var animal_catch_paths = ['/classify_iternum/forms/images/catch_stims/animal_catch_stims/bear.png',
-      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/deer.png',
-      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/owl.png',
-      '/classify_iternum/forms/images/catch_stims/animal_catch_stims/rabbit.png']
-
-      var number_catch_paths = ['/classify_iternum/forms/images/catch_stims/number_catch_stims/1.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/2.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/3.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/4.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/5.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/6.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/7.png',
-      '/classify_iternum/forms/images/catch_stims/number_catch_stims/8.png']
 
       function sendData() {
         console.log('sending data to mturk');
@@ -129,89 +112,6 @@
       window.onbeforeunload = function() {
         return "Data will be lost if you leave the page, are you sure?";
       };
-
-      
-      // io.connect().on('disconnect', function(){
-      //   // Redirect to exit survey
-      //   console.log("server booted");
-      //   var failMsg = [
-      //     '<h3>Oops! It looks your connection timed out!</h3>',
-      //     '<p> Completing this survey will submit your HIT so you will still receive full ',
-      //     'compensation.</p> <p>If you experience any problems, please email us</p>'
-      //   ].join('');
-      //   var successMsg = [
-      //     "<h3>Thanks for participating in our experiment!</h3>",
-      //     "<p>Before you submit your HIT, we'd like to ask you a few questions.</p>"
-      //   ].join('');
-
-      //   // if(globalGame.roundNum + 2 > globalGame.numRounds) {
-      //   //   $('#exit_survey').prepend(successMsg);
-      //   // } else {
-      //   //   $('#exit_survey').prepend(failMsg);
-      //   // }
-      //   $('#exit_survey').prepend(failMsg)
-
-      //   $('#exit_survey').show();
-      //   $('#main').hide();
-      //   $('#header').hide();
-      //   $('#message_panel').hide();
-      //   $('#submitbutton').hide();
-
-      // });
-      
-
-      // // ALL OF THE FOLLOWING IS FOR WHEN stimList.js IS STORED LOCALY (it doesn't work btw), BUT WE'RE USING MONGO NOW!
-      // // look for the local stimList
-      // var stimListPath = "stimList/stimList.js"
-
-      // // A function to process process the data from the data file from ttps://stackoverflow.com/questions/7431268/how-to-read-data-from-csv-file-using-javascript
-      // function processData(data) {
-      //       var lines = data.split(/\r\n|\n/)[0];
-      //       var shuffled_lines = lines.slice(1,lines.length-1); // get rid of headings and vacuous last line
-      //       shuffled_lines = _.shuffle(shuffled_lines); // now shuffle shuffled_lines!
-      //       //Set up the data arrays
-      //       var headings = lines[0].split(','); // Splice up the first row to get the headings
-      //       // console.log("Thing I want:",headings)
-      //       for (var j=0; j<shuffled_lines.length; j++) {
-      //         var values = shuffled_lines[j].split(','); // Split up the comma seperated values
-              
-      //         // We read the key,1st, 2nd and 3rd rows 
-      //         indexes.push(values[0]); // Read in as string
-      //         // Recommended to read in as float, since we'll be doing some operations on this later.
-      //         GameID.push(values[1]);
-      //         Animal.push(values[2]);
-      //         Cardinality.push(values[3]);
-      //         Trial.push(values[4]);
-      //         Cond.push(values[5]);
-      //         Version.push(values[6]);
-      //         URL.push(values[7]);
-      //       };
-      //     };
-      // // Now, using that function we just defined, we'll read in the locally stored stimList.js file and parse it
-      // // btw code for this is from https://stackoverflow.com/questions/14446447/how-to-read-a-local-text-file
-      // function readTextFile(file){
-      //     var rawFile = new XMLHttpRequest();
-      //     rawFile.open("GET", file, false);
-      //     rawFile.onreadystatechange = function ()
-      //     {
-      //         if(rawFile.readyState === 4)
-      //         {
-      //             if(rawFile.status === 200 || rawFile.status == 0)
-      //             {
-      //                 console.log("Thing I want", rawFile.response.json())
-      //                 var allText = rawFile.responseText;
-      //                 processData(allText);
-      //             }
-      //         }
-      //     }
-      //     rawFile.send(null);
-      // };
-      // readTextFile(stimListPath);
-      // console.log("THIS??",URL);
-      // // ALL OF THE ABOVE IS FOR WHEN stimList.js IS STORED LOCALY (it doesn't work btw), BUT WE'RE USING MONGO NOW!
-
-
-      // var condition = _.sample(['shape','number']);
 
     </script>
   </head>
@@ -228,19 +128,13 @@
         Please click the number that you think each symbol was conveying!
       </p>
 
-      <!-- different text if the condition is actually shape -->
-      <!-- <script>
-        if (condition == 'shape'){$( "p" ).text( "You will see a series of symbols.\
-        Please click the animal that you think each symbol was conveying!" )};
-      </script> -->
-
       <button id="startExperimentButton">
         Click here to begin
       </button>
     </div>
 
     <div id="main_image">
-      <img id="stim" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg"
+      <img id="stim"
       width="240" height="240" alt="Image"/>
       
       <!-- when people's internet crashes, we don't want them in the dark! -->
@@ -251,9 +145,6 @@
         <br> (MAYBE REPLACE WITH ATTENTION CHECK) <br> Click to continue: <br> </p>
          <button id="intertitle_button"> Continue </button>
       </div>
-
-      <!-- <img id="catch_stim" src="/classify_iternum/forms/images/no_image.png"
-      width="240" height="240" alt="Catch_Stim"/> -->
 
     </div>
 
@@ -302,9 +193,6 @@
       <p id="thankyouText">
         Thank you!
       </p>
-      <!-- <button id="submitButton">
-        Submit HIT
-      </button> -->
     </div>
 
     <div id="exit_survey" style="display:none">
@@ -349,9 +237,6 @@
       var curTrialTimeStarted = 0;
       var last_clicked = 'nothing';
       
-      // $("#instructions").text("You will see a series of sketches. \
-      //   Please click the animal that you think each sketch was depicting!");
-
       $("#main_image").hide();
       $("#intertitle").hide();
       $("#animals").hide();
@@ -381,30 +266,6 @@
         if (condition == 'number'){$("#cardinalities").show()}
       });
       
-
-      // $("#startExperimentButton").on("click", StartExperiment);
-      // // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
-      // $("#bear").on("click", function(){HapticFeedback($("#bear"))});
-      // $("#deer").on("click", function(){HapticFeedback($("#deer"))});
-      // $("#owl").on("click", function(){HapticFeedback($("#owl"))});
-      // $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
-
-      // $("#one").on("click", function(){HapticFeedback($("#one"))});
-      // $("#two").on("click", function(){HapticFeedback($("#two"))});
-      // $("#three").on("click", function(){HapticFeedback($("#three"))});
-      // $("#four").on("click", function(){HapticFeedback($("#four"))});
-      // $("#five").on("click", function(){HapticFeedback($("#five"))});
-      // $("#six").on("click", function(){HapticFeedback($("#six"))});
-      // $("#seven").on("click", function(){HapticFeedback($("#seven"))});
-      // $("#eight").on("click", function(){HapticFeedback($("#eight"))});
-
-      // $("#submitButton").on("click", function(){
-      //   $("#submitButton").hide()
-      //   $("#exit_survey").show()
-      //   $("#thankyou").hide()
-      //   $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
-      // });
-
       $("#surveySubmit").on("click", function(){
         $("#exit_survey").hide()
         $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
@@ -467,7 +328,21 @@
           socket.removeListener('onConnected');
           turkerStatus = d.turker;
           var meta = d.meta;
-          meta = _.shuffle(meta);
+
+          catches = meta.filter(function(X) {    // extract catch trials
+            return X.catchTrial == true
+          });
+          meta = meta.filter(function(X) {    // and make another structure of the non-catch trials
+            return X.catchTrial != false
+          });
+
+          meta = _.shuffle(meta);    // shuffle all those real trials
+
+          for (var j=0; j<catches.length; j++){ // now reinsert the catch trials into the real ones at regular intervals
+            interval = Math.round(meta.length / catches.length)
+            meta.splice(interval*j, 0, catches[j]); // https://stackoverflow.com/questions/586182/how-to-insert-an-item-into-an-array-at-a-specific-index-javascript  
+          };
+
           var URLs = [];
           var origAnimals = [];
           var origCardinalities = [];
@@ -503,13 +378,7 @@
           };
           $("#startExperimentButton").on("click", StartExperiment);
 
-
-
           function AdvanceSlide() {
-            // sample images:
-            // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
-            // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
-
             var curTime = new Date(); // for measuring RT
             var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
 
@@ -572,10 +441,6 @@
             $("#stim").attr("src", URLs[curTrial]);
             document.getElementById("stim").style.backgroundColor = "#FFFFFF";
             
-
-
-            
-            
             curTrialTimeStarted = new Date(); // for measuring RT
           };
 
@@ -584,10 +449,7 @@
 
 
           function HapticFeedback(button) {
-            // $("#catch_stim").hide();
-
             // want to make accidental double clicks irrelevant by setting off the sensitivity
-            // button.off("click")
             $(".classifier_button").off("click")
 
             button.fadeTo(1, 0); // and also make it visually obvious what the choice was
@@ -602,40 +464,6 @@
             last_clicked = button[0].alt;
 
             AdvanceSlide()
-
-
-            // stuff that was relevant before building in catch trials to the original list on MTurk:
-            // $("#intertitle_button").on('click',function(){
-            //     $("#intertitle").hide();
-            //     $("#stim").show();
-            //     if (condition == 'shape'){
-            //       $("#animals").show();
-            //     }
-            //     if (condition == 'number'){
-            //       $("#cardinalities").show();
-            //     }
-            //   });
-
-            //   // this used to be an intertitle where participants could see their bonus
-            // if ((curTrial+1) % 12 == 0 && curTrial < 50 || curTrial == meta.length){
-            //   $("#stim").hide();
-            //   // $("#cardinalities").hide();
-            //   // $("#animals").hide();
-            //   $("#bonus_val").text("$" + totalBonus.toFixed(2));
-            //   // $("#intertitle").show();
-              
-            //   $("#stim").hide();
-              
-            //   if (condition == 'shape'){
-            //       catch_source = _.sample(animal_catch_paths);
-            //     }
-            //     if (condition == 'number'){
-            //       catch_source = _.sample(number_catch_paths);
-            //     };
-            //   $("#catch_stim").attr("src", catch_source);
-            //   $("#catch_stim").show();
-            // };
-
           };
           
           // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
@@ -653,182 +481,9 @@
           $("#seven").on("click", function(){HapticFeedback($("#seven"))});
           $("#eight").on("click", function(){HapticFeedback($("#eight"))});
 
-
-
-
-
-
-
-
         });
-
-
-      //   socket.on('disconnect', function(){
-      //   // Redirect to exit survey
-      //   console.log("server booted");
-      //   $("#main_image").hide();
-      //   $("#cardinalities").hide();
-      //   $("#animals").hide();
-      //   $("#RoundNumDiv").hide();
-      //   $("#intertitle").hide();
-
-      //   var failMsg = [
-      //     '<h3>Oops! It looks your connection timed out!</h3>',
-      //     '<p> Completing this survey will submit your HIT so you will still receive full ',
-      //     'compensation.</p> <p>If you experience any problems, please email us</p>'
-      //   ].join('');
-      //   var successMsg = [
-      //     "<h3>Thanks for participating in our experiment!</h3>",
-      //     "<p>Before you submit your HIT, we'd like to ask you a few questions.</p>"
-      //   ].join('');
-
-      //   // if(globalGame.roundNum + 2 > globalGame.numRounds) {
-      //   //   $('#exit_survey').prepend(successMsg);
-      //   // } else {
-      //   //   $('#exit_survey').prepend(failMsg);
-      //   // }
-      //   $('#exit_survey').prepend(failMsg)
-      //   $('#exit_survey').show();
-      // });
       }
-
-
-      /* This gets called when they click the button 
-        on the instructions page */
-        // function StartExperiment() {
-        // $("#instructions").hide();
-        // $("#RoundNumDiv").show();
-        //   AdvanceSlide();
-        // };
-
-        // function AdvanceSlide() {
-        //   // sample images:
-        //   // https://pm1.narvii.com/7595/d24a5bc3694025c77ff69cec25ebe8d5e542dc4er1-256-256v2_00.jpg
-        //   // https://upload.wikimedia.org/wikipedia/commons/7/75/Herdwick_sheep_-_geograph.org.uk_-_7096_%28cropped%29.jpg
-
-        //   var curTime = new Date(); // for measuring RT
-        //   var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
-
-        //   // displaying the new sketch for them to rate, and all the buttons
-        //   $("#main_image").show();
-        //   if (condition == 'number') {
-        //     $("#cardinalities").show();
-        //   };
-        //   if (condition == 'shape') {
-        //     $("#animals").show();
-        //   };
-
-        //   // now store the data depending on what trial we're at
-        //   if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
-        //   // now create the data structure we want to store for this trial on mongodb:
-        //     var output = {
-        //       // first, info about the rating task
-        //       rating_trial_num : curTrial+1,
-        //       rate_condition : condition, // is the rater being asked to select cardinalities or animals?
-        //       rating : last_clicked, // which label did the rater select?
-        //       RT : reaction_time,
-
-        //       // next, info about the original conditions under which the sketch was produced
-        //       game_id : GameID[curTrial],
-        //       sketch_animal : Animal[curTrial],
-        //       sketch_cardinality : Cardinality[curTrial],
-        //       game_trial_num : Trial[curTrial],
-        //       game_condition : Cond[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
-        //       stim_version : Version[curTrial], // which version of the target stim was used to elicit the sketch?
-        //       sketch_url : meta[curTrial].sketch_url};
-          
-
-        //     // update the bonus depending on whether they got it right or not
-        //     if (condition == 'shape' & last_clicked == Animal[curTrial]){
-        //       totalBonus = totalBonus + .03
-        //     }
-        //     if (condition == 'number' & last_clicked == Cardinality[curTrial]){
-        //       totalBonus = totalBonus + .03
-        //     }
-          
-        //   } if (curTrial == 61 - 1){ // this used to say "URL.length"
-        //     console.log("The End")
-        //     $("#main_image").hide();
-        //     $("#cardinalities").hide();
-        //     $("#animals").hide();
-        //     $("#RoundNumDiv").hide();
-        //     $("#intertitle").hide();
-        //     $("#thankyou").show();
-        //   };
-
-        //   // replace the stim image with whatever is next in the list
-        //   curTrial = curTrial + 1
-        //   $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
-        //   $("#stim").attr("src", meta[curTrial].sketch_url);
-        //   document.getElementById("stim").style.backgroundColor = "#FFFFFF";
-          
-
-
-          
-          
-        //   curTrialTimeStarted = new Date(); // for measuring RT
-        // };
-
-        // function HapticFeedback(button) {
-
-        //   // want to make accidental double clicks irrelevant by setting off the sensitivity
-        //   button.off("click")
-        //   button.fadeTo(1, 0); // and also make it visually obvious what the choice was
-        //   button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
-        //   setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
-          
-        //   last_clicked = button[0].alt;
-
-        //   AdvanceSlide()
-
-        //   $("#intertitle_button").on('click',function(){
-        //       $("#intertitle").hide();
-        //       $("#stim").show();
-        //       if (condition == 'shape'){
-        //         $("#animals").show();
-        //       }
-        //       if (condition == 'number'){
-        //         $("#cardinalities").show();
-        //       }
-        //     });
-
-        //   if ((curTrial+1) % 20 == 0 && curTrial < 50 || curTrial == meta.length){
-        //     $("#stim").hide();
-        //     $("#cardinalities").hide();
-        //     $("#animals").hide();
-        //     $("#bonus_val").text("$" + totalBonus.toFixed(2));
-        //     $("#intertitle").show();
-        //   };
-
-
-
-
-          
-
-
-
-
-        //   // // a function to write to a textfile from https://www.thecrazyprogrammer.com/2019/12/javascript-read-and-write-to-text-file.html    
-        //   // // import fs module in which writeFile function is defined. 
-        //   // const fsLibrary  = require('fs')
-        //   // // Data which will need to add in a file. 
-        //   // let data = "Slide has been advanced"
-        //   // // Write data in 'newfile.txt' . 
-        //   // fsLibrary.writeFile('testing.txt', data, (error) => { 
-        //   //     // In case of a error throw err exception. 
-        //   //     if (error) throw err; 
-        //   // });
-  
-        // };
-
-
-        // function setupGame() {
-        //   // first we want to generate the list of images. 1 image from each game
-
-        // }
     </script>
-
-
 
 
   </body>
