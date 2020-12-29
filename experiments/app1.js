@@ -58,14 +58,14 @@ io.on('connection', function (socket) {
 
   if (!id || isResearcher && !blockResearcher || id === 'undefined'){
     var turkerStatus = false;
-    initializeWithTrials(socket)
+    initializeWithTrials(socket,turkerStatus)
     console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
     var turkerStatus = true;
     checkPreviousParticipant(id, (exists) => {
-      return exists ? handleDuplicate(socket) : initializeWithTrials(socket);
+      return exists ? handleDuplicate(socket) : initializeWithTrials(socket,turkerStatus);
     });
     console.log("ID appears valid");
   }
@@ -128,8 +128,8 @@ function checkPreviousParticipant(workerId, callback) {
 };
 
 // This was from Holly's experiment, our stimuli are elsewhere and accessed from index.html
-function initializeWithTrials(socket) {
-  
+function initializeWithTrials(socket,status) {
+  turkerStatus = status;
   var gameid = UUID();
   var colname = 'iternum_classification';
   
