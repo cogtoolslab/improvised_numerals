@@ -51,21 +51,21 @@ io.on('connection', function (socket) {
 
   // Recover query string information and set condition
   var hs = socket.request;
-  var query = require('url').parse(hs.headers.referer, true).query;
+  var query = require('url').parse(hs.headers.referer, true).query; // this has all the MTurk params we want (workerID, assignmentID, hitID, turkSubmitTo)    
   var id = query.workerId;
 
   var isResearcher = _.includes(researchers, id);
 
   if (!id || isResearcher && !blockResearcher || id === 'undefined'){
     var turkerStatus = false;
-    initializeWithTrials(socket,turkerStatus)
+    initializeWithTrials(socket,turkerStatus,query)
     console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
     var turkerStatus = true;
     checkPreviousParticipant(id, (exists) => {
-      return exists ? handleDuplicate(socket) : initializeWithTrials(socket,turkerStatus);
+      return exists ? handleDuplicate(socket) : initializeWithTrials(socket,turkerStatus,query);
     });
     console.log("ID appears valid");
   }
@@ -128,7 +128,7 @@ function checkPreviousParticipant(workerId, callback) {
 };
 
 // This was from Holly's experiment, our stimuli are elsewhere and accessed from index.html
-function initializeWithTrials(socket,status) {
+function initializeWithTrials(socket,status,query) {
   turkerStatus = status;
   var gameid = UUID();
   var colname = 'iternum_classification';
@@ -148,7 +148,11 @@ function initializeWithTrials(socket,status) {
         meta: body.meta,
         version: body.experimentVersion,
         whole_structure: body,
-        turker: turkerStatus
+        turker: turkerStatus,
+        workerID: query.workerId,
+        assignmentID: query.assignmentId,
+        hitID: query.hitId,
+        turkSubmitTO: query.turkSubmitTo
       };
       
       socket.emit('onConnected', packet);

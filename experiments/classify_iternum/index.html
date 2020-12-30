@@ -141,11 +141,6 @@
       <img id="error_stim" src="/classify_iternum/forms/images/no_image.png"
       width="240" height="240" alt="Error_Stim"/>
 
-      <div id="intertitle"> <p id="intertitle_text">(FYI, your total bonus so far is <b id="bonus_val">___</b>)
-        <br> (MAYBE REPLACE WITH ATTENTION CHECK) <br> Click to continue: <br> </p>
-         <button id="intertitle_button"> Continue </button>
-      </div>
-
     </div>
 
 
@@ -231,7 +226,6 @@
   
     <script>
       var turkerStatus = false;
-      var totalBonus = 0;
       var curTrial = -1; /* we want to use this as 
           index into trialList, so start at 0 */
       var curTrialTimeStarted = 0;
@@ -402,6 +396,10 @@
                 iterationName : 'testing1',
                 // first, info about the rating task
                 recog_gameID : d.gameid,
+                workerID: d.workerID,
+                assignmentID: d.assignmentID,
+                hitID: d.hitID,
+                turkSubmitTO: d.turkSubmitTO,
                 recog_version : d.experimentVersion,
                 rating_trial_num : curTrial+1,
                 rate_condition : condition, // is the rater being asked to select cardinalities or animals?
@@ -418,13 +416,6 @@
                 sketch_url : URLs[curTrial],
                 catch_trial : catch_trial_val[curTrial]};
             
-              // update the bonus depending on whether they got it right or not
-              if (condition == 'shape' & last_clicked == origAnimals[curTrial]){
-                totalBonus = totalBonus + .03
-              }
-              if (condition == 'number' & last_clicked == origCardinalities[curTrial]){
-                totalBonus = totalBonus + .03
-              }
 
             } if (curTrial == meta.length - 1){
               console.log("The End")
