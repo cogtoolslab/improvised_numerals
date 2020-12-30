@@ -362,7 +362,7 @@
             orig_gameIDs.push(meta[j].orig_gameid)
             orig_gametrials.push(meta[j].orig_trial)
             orig_stim_versions.push(meta[j].orig_version)
-            catch_trial_val.push(false)
+            catch_trial_val.push(meta[j].catchTrial)
           };
           console.log("Partition number: ",d.whole_structure.versionID);
           console.log("Recog condition: ",d.whole_structure);
@@ -401,6 +401,8 @@
                 colname : 'num8_shape4_recognition',
                 iterationName : 'testing1',
                 // first, info about the rating task
+                recog_gameID : d.gameid,
+                recog_version : d.experimentVersion,
                 rating_trial_num : curTrial+1,
                 rate_condition : condition, // is the rater being asked to select cardinalities or animals?
                 rating : last_clicked, // which label did the rater select?
@@ -413,7 +415,8 @@
                 orig_game_trial_num : orig_gametrials[curTrial],
                 orig_game_condition : orig_conds[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
                 orig_stim_version : orig_stim_versions[curTrial], // which version of the target stim was used to elicit the sketch?
-                sketch_url : URLs[curTrial]};
+                sketch_url : URLs[curTrial],
+                catch_trial : catch_trial_val[curTrial]};
             
               // update the bonus depending on whether they got it right or not
               if (condition == 'shape' & last_clicked == origAnimals[curTrial]){
