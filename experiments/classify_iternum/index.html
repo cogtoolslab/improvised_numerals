@@ -299,7 +299,8 @@
           console.log("data is...");
           console.log(subject_information);
           if(turkerStatus == true) {
-            window.opener.turk.submit(subject_information, true);
+            jsPsych.turk.submitToTurk({'info':subject_information}); // this seemed like it might work, but it doesn't. It does not belonng here      
+            // window.opener.turk.submit(subject_information, true);
             window.close();
           } else {
             console.log("would have submitted the following :")
@@ -314,7 +315,7 @@
       // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
       window.onload = function() {
         // setupGame();
-
+        console.log("Window: ",window)
         // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
         var socket = io.connect();
         socket.on('onConnected', function(d) {
