@@ -99,7 +99,7 @@
     <input type="radio" name="dgoal" value="yes"> True
     </br>
   </br>
-  On some trials you will be asked what number a symbol refers to, and on other trials, you will be asked what animal it refers to.
+  You can exit the page any time and return later to continue the task.
       </br>
       <input type="radio" name="mgoal" value="yes"> False
       </br>
@@ -124,8 +124,6 @@
       urlParams = {};
       while (match = search.exec(query))
       urlParams[decode(match[1])] = decode(match[2]);
-
-      console.log(urlParams)
 
       var counter = 0;
       document.getElementById("quiz_submit").onclick = function () {
