@@ -192,6 +192,7 @@
 
     <div id="exit_survey" style="display:none">
       <br><p> Thanks for participating! Please fill out this optional demographic survey and submit your HIT at the bottom of the page. </p><br>
+      (When you click "Submit HIT", a pop-up window will appear; feel free to click "Leave" at that prompt) <br>
       <p> What is your gender? </p>
       <select onChange="dropdownTip('gender::' + this.value)">
         <option value =""></option>
@@ -202,7 +203,7 @@
       <br><br>
 
       <p> What is your age? </p>
-      <textarea id='age' rows="1" cols="8"></textarea>
+      <textarea id='age' onChange="dropdownTip('age::' + this.value)" rows="1" cols="8"></textarea>
       <br><br>
 
       <p> Did you read the instructions and do you think you did the
@@ -268,7 +269,7 @@
 
       var subject_information = [];
       // This gets called when someone selects something in the menu during the exit survey...
-      // collects data from drop-down menus and submits using mmturkey
+      // collects data from drop-down menus and submits using not mmturkey, but JSPsych
       function dropdownTip(data){
         var commands = data.split('::');
         switch(commands[0]) {
@@ -299,7 +300,7 @@
           console.log("data is...");
           console.log(subject_information);
           if(turkerStatus == true) {
-            jsPsych.turk.submitToTurk({'info':subject_information}); // this seemed like it might work, but it doesn't. It does not belonng here      
+            jsPsych.turk.submitToTurk(subject_information); // this seems like it works, while the line below does not...         
             // window.opener.turk.submit(subject_information, true);
             window.close();
           } else {
@@ -315,7 +316,6 @@
       // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
       window.onload = function() {
         // setupGame();
-        console.log("Window: ",window)
         // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
         var socket = io.connect();
         socket.on('onConnected', function(d) {
@@ -327,11 +327,9 @@
           catches = meta.filter(function(X) {    // extract catch trials
             return X.catchTrial == true
           });
-          console.log("Catches: ",catches.length);
           meta = meta.filter(function(X) {    // and make another structure of the non-catch trials
             return X.catchTrial == false
           });
-          console.log("Meta: ",meta.length);
 
           meta = _.shuffle(meta);    // shuffle all those real trials
 
@@ -360,7 +358,6 @@
             catch_trial_val.push(meta[j].catchTrial)
           };
           console.log("Partition number: ",d.whole_structure.versionID);
-          console.log("Recog condition: ",d.whole_structure);
 
           var condition = d.whole_structure.classify_condition;
           if (condition == 'shape'){$("#instruction_text").text( "You will see a series of symbols.\
@@ -394,7 +391,7 @@
               var output = {
                 dbname : 'iterated_number',
                 colname : 'num8_shape4_recognition',
-                iterationName : 'testing1',
+                iterationName : 'run1',
                 // first, info about the rating task
                 recog_gameID : d.gameid,
                 workerID: d.workerID,
