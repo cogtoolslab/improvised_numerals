@@ -216,7 +216,7 @@
       </select>
 
       <p> Do you have any comments on the experiment? </p>
-      <textarea id='comments' rows="4" cols="50"></textarea>
+      <textarea id='comments' onChange="dropdownTip('comments::' + this.value)" rows="4" cols="50"></textarea>
       <br>
 
       <p> Note: Clicking this button should automatically submit the HIT and close this tab. There is no need to input a code.<p>
@@ -273,29 +273,21 @@
       function dropdownTip(data){
         var commands = data.split('::');
         switch(commands[0]) {
-        case 'human' :
-          $('#humanResult').show();
-          subject_information = _.extend(subject_information,
-                    {'thinksHuman' : commands[1]}); break;
         case 'gender' :
           subject_information = _.extend(subject_information,
                     {'gender' : commands[1]}); break;
         case 'age' :
           subject_information = _.extend(subject_information,
                     {'age' : commands[1]}); break;
-        case 'medium' :
+        case 'comments' :
           subject_information = _.extend(subject_information,
-                    {'medium' : commands[1]}); break;
-        case 'partner' :
-          subject_information = _.extend(subject_information,
-                    {'ratePartner' : commands[1]}); break;
+                    {'comments' : commands[1]}); break;
         case 'confused' :
           subject_information = _.extend(subject_information,
                     {'confused' : commands[1]}); break;
         case 'submit' :
           subject_information = _.extend(subject_information,
                     {'comments' : $('#comments').val(),
-                      'strategy' : $('#strategy').val(),
                   'totalLength' : new Date() - startTime});
           console.log("data is...");
           console.log(subject_information);
