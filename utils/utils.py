@@ -158,7 +158,6 @@ def render_sketch_gallery(gameids,
         print('Generating sketch gallery for participant: {} | {} of {}'.format(game,gind+1,len(gameids)))
         # get list of all sketch paths JUST from current game
         game_sketch_paths = [path for path in sketch_paths if path.split(delimiter)[0] == game]
-        
         if by_trialnum == True:
             # get the same list, but re-ordered by trial number
             trial_ordering = []
@@ -215,7 +214,6 @@ def render_sketch_gallery(gameids,
             title_obj = plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
             plt.setp(title_obj, color=title_colour)
             
-        print(len(game_sketch_paths))
         f = game_sketch_paths[1] # had to make this up; every game only has one condition, so okay for now
         game_condition = f.split(delimiter)[4].split('.')[0] # this used to be indented, but it's only useful unindented....
         

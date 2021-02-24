@@ -1,0 +1,73 @@
+---
+title: "Stats from Recognition Study and Classifier Data"
+author: Sebastian Holt
+output: html_notebook
+---
+
+```{r libraries, echo=FALSE}
+
+library(lme4) # need for running lmer
+library(tidyverse)
+library(coda)
+require(languageR)
+library(lmerTest) #need this for lmer p values!!! Maybe it's not so important...
+library(emmeans)
+library(data.table)
+
+```
+
+
+```{r get_data, echo=FALSE}
+
+CLFdf <- read_csv("datastructures/clfD.csv")
+
+# remove the stuff that's not relevant for analysis
+CLFdf$correct_aml <- CLFdf$animal == CLFdf$clfScore_animal
+CLFdf$correct_num <- CLFdf$cardinality == CLFdf$clfScore_cardinality
+
+CLFdf_firstHalf <- CLFdf
+names(CLFdf_firstHalf)[names(CLFdf_firstHalf) == "correct_aml"] <- "correct"
+CLFdf_firstHalf$correct_num <- NULL
+CLFdf_firstHalf$rate_condition <- 'shape'
+CLFdf_secondHalf <- CLFdf
+names(CLFdf_secondHalf)[names(CLFdf_secondHalf) == "correct_num"] <- "correct"
+CLFdf_secondHalf$correct_aml <- NULL
+CLFdf_secondHalf$rate_condition <- 'number'
+
+CLFdf <- rbind(CLFdf_firstHalf,CLFdf_secondHalf)
+```
+
+### Start with some maximal models
+```{r maximal_models}
+# condition * rate_condition * cardinality * animal + block    # BIC 4401.535  # didn't converge
+# remove all interactions except for condition:
+# condition * rate_condition + cardinality + animal + block    # BIC 4266.927  # didn't converge
+# remove block:
+# condition * rate_condition + cardinality + animal            # BIC 4261.409
+# remove animal as well:
+# condition * rate_condition + cardinality                     # BIC 4240.271  # winner?
+# remove cardinality as well:
+# condition * rate_condition                                   # BIC 4249.919
+# remove random intercepts:
+# condition * rate_condition + cardinality                     # BIC 4240.389
+# add back random intercepts, remove interaction:
+# condition + rate_condition + cardinality                     # BIC 4726.945
+# only interaction:
+# condition : rate_condition + cardinality                     # BIC 4240.271
+# only interaction:
+# condition * rate_condition + cardinality + rate_condition : cardinality                  # BIC 4229.46  # winner!!
+
+
+correct <- glmer(data=CLFdf,
+                  correct ~ condition * rate_condition * cardinality
+                  + (1 | game_id),
+                  family = 'binomial')
+BIC(correct)
+summary(correct)
+```
+
+### Start with some maximal models
+```{r display}
+summary(aml)
+anova(aml)
+```
