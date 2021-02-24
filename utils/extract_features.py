@@ -101,7 +101,7 @@ def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/iterat
     layers = ['P1','P2','P3','P4','P5','FC6','FC7']
     
     np.save(os.path.join(out_dir,'FEATURES_{}_{}_{}.npy'.format(layers[int(layer_num)], data_type, channel_norm_flag)), Features)
-    np.savetxt(os.path.join(out_dir,'FEATURES_{}_{}.txt'.format(layers[int(layer_num)], data_type, channel_norm_flag)), Features, delimiter=',') ## also save as txt file
+#     np.savetxt(os.path.join(out_dir,'FEATURES_{}_{}.txt'.format(layers[int(layer_num)], data_type, channel_norm_flag)), Features, delimiter=',') ## also save as txt file    ## this was producing an error and not working, don't know why
     Y.to_csv(os.path.join(out_dir,'METADATA_{}.csv'.format(data_type)), index=True, index_label='feature_ind')
     print('Saved features out to {} Channel norm is {}'.format(out_dir, channel_norm))
     return layers[int(layer_num)]
@@ -114,7 +114,7 @@ def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/a
     pca.fit(F)
     print('Applying PCA and transforming data, using {} components'.format(num_pcs))
     F_ = pca.fit_transform(F)      
-    # apply channel-wise normalization yet, is do it here, AFTER applying PCA, if channle_norm==True
+    # apply channel-wise normalization yet, is do it here, AFTER applying PCA, if channel_norm==True
     if channel_norm==True:
         F_ = normalize(F_) 
         channel_norm_flag = 'channel-norm'        
@@ -122,7 +122,7 @@ def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/a
         channel_norm_flag = 'no-channel-norm'        
     ## now actually save out
     np.save(os.path.join(out_dir,'FEATURES_{}_{}_PCA_{}_{}.npy'.format(layers[int(layer_num)], data_type, num_pcs, channel_norm_flag)), F_)
-    np.savetxt(os.path.join(out_dir,'FEATURES_{}_{}_PCA_{}_{}.txt'.format(layers[int(layer_num)], data_type, num_pcs, channel_norm_flag)), F_, delimiter=',')    
+#     np.savetxt(os.path.join(out_dir,'FEATURES_{}_{}_PCA_{}_{}.txt'.format(layers[int(layer_num)], data_type, num_pcs, channel_norm_flag)), F_, delimiter=',')    ## this was producing an error and not working, don't know why
     print('Saved PC-transformed features out to {} Channel norm is {}').format(out_dir, channel_norm)
     return F_  
 
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, help='full path to images', \
                         default=sketch_dir)
-    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=5) # sebholt changed; should by default be 5
+    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=2) # sebholt changed; should by default be 5
     parser.add_argument('--num_pcs', help='number of principal components', default=128)    
     parser.add_argument('--data_type', help='"images" or "sketch"', default='sketch')
     parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/iterated_number/features')    

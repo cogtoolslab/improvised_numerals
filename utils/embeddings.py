@@ -83,7 +83,7 @@ class VGG19Embeddings(nn.Module):
 
 class FeatureExtractor():
 
-    def __init__(self,paths,layer=6, use_cuda=False, imsize=224, batch_size=64, cuda_device=2, data_type='images',spatial_avg=True,crop_sketch=False): # sebholt: use_cuda used to be 'True' here
+    def __init__(self,paths,layer=6, use_cuda=False, imsize=224, batch_size=32, cuda_device=2, data_type='images',spatial_avg=True,crop_sketch=False): # sebholt: use_cuda used to be 'True' here
         self.layer = layer
         self.paths = paths
         self.num_images = len(self.paths)
@@ -228,6 +228,7 @@ class FeatureExtractor():
                 n += 1
 
                 # extract features from batch
+                # re-deleted the below four lines of code upon revisiting it because now it's suddenly causing a fatal error
                 if quit == False: # sebholt added this condition because I think it's giving an error when quit == True at end
                     sketch_batch = extractor(sketch_batch)
                 if len(sketch_batch) != 0: # sebholt added condition because of a trivial final empty sketch_batch giving errors
@@ -238,9 +239,13 @@ class FeatureExtractor():
                 if len(Features)==0:
                     Features = sketch_batch
                 elif len(sketch_batch) != 0: #sebholt changed, used to be 'else'
-                    Features = np.vstack((Features,sketch_batch))
+                    try:
+                        Features = np.vstack((Features,sketch_batch))
+                    except:
+                        print("Some issue is occuring where Features and sketch_batch have different number of dimensions")       
 
                 SketchIDs.append(sketchid_batch)
+                print("Shape of 'sketch_batch': ", np.shape(sketch_batch))
                 print('Shape of Features',np.shape(Features))
                 #print('Length of shapeids',len(flatten_list(SketchIDs)))
 

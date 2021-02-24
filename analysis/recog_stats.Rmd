@@ -1,0 +1,89 @@
+---
+title: "Stats from Recognition Study and Classifier Data"
+author: Sebastian Holt
+output: html_notebook
+---
+
+```{r libraries, echo=FALSE}
+
+library(lme4) # need for running lmer
+library(tidyverse)
+library(coda)
+require(languageR)
+library(lmerTest) #need this for lmer p values!!! Maybe it's not so important...
+library(emmeans)
+library(data.table)
+library(ggplot2)
+# install.packages('sjPlot')
+library(sjPlot)
+
+
+```
+
+
+```{r get_data, echo=FALSE}
+Rdf <- read_csv("datastructures/recogData.csv")
+Rdf$block <- floor((Rdf$orig_game_trial_num - 1) / 8) + 1 # get block number from trial number of original game
+Rdf <- Rdf[!is.na(Rdf$block),]
+
+# remove the stuff that's not relevant for analysis
+Rdf[2] <- NULL # gets rid of the column called "_id" that won't delete by name because of the underscore
+Rdf$iterationName <- NULL
+Rdf$assignmentID <- NULL
+Rdf$hitID <- NULL
+Rdf$turkSubmitTO <- NULL
+Rdf$orig_stim_version <- NULL
+Rdf$sketch_url <- NULL
+Rdf$catch_trial <- NULL
+
+# just rename everything for compactness's sake:
+names(Rdf)[names(Rdf) == "recog_gameID"] <- "RgameID"
+names(Rdf)[names(Rdf) == "orig_game_id"] <- "OgameID"
+names(Rdf)[names(Rdf) == "rating_trial_num"] <- "Rtrial"
+names(Rdf)[names(Rdf) == "orig_game_trial_num"] <- "Otrial"
+names(Rdf)[names(Rdf) == "rate_condition"] <- "Rcond"
+names(Rdf)[names(Rdf) == "orig_game_condition"] <- "Ocond"
+names(Rdf)[names(Rdf) == "orig_sketch_animal"] <- "shape"
+names(Rdf)[names(Rdf) == "orig_sketch_cardinality"] <- "cardinality"
+
+
+```
+
+### Start with accuracy
+```{r acc}
+# first look at all interactions:
+# Ocond * Rcond * block * cardinality * shape    # BIC ??        # didn't converge
+# remove most interactions except O vs R condition:
+# Ocond * Rcond * block + cardinality + shape    # BIC 7279.312  # didn't converge
+# remove block interaction:
+# Ocond * Rcond + block + cardinality + shape    # BIC 7293.432
+# all interactions but no cardinality or shape:
+# Ocond * Rcond * block                          # BIC 7267.827  # winner?
+# remove random effects?:
+# Ocond * Rcond * block                          # BIC 7456.075
+# add back cardinality + random effects:
+# Ocond * Rcond * block + cardinality            # BIC 7266.359  # didn't converge
+# same thing but no interaction with block:
+# Ocond * Rcond + block + cardinality            # BIC 7280.744
+# same thing but with shape:
+# Ocond * Rcond + block + shape                  # BIC 7294.657
+# remove all interactions:
+# Ocond + Rcond + block + cardinality + shape    # BIC 8804.541
+
+correct <- glmer(data=Rdf,
+                  correct ~ Ocond * Rcond * block
+                  + (1  | workerID),
+                  family = 'binomial')
+BIC(correct)
+summary(correct)
+
+```
+
+### Look at reaction time
+```{r RT}
+RT <- lmer(data=Rdf,
+                  RT ~ Ocond * Rcond + block + cardinality  + shape
+                  + (1  | workerID))
+BIC(RT)
+summary(RT)
+```
