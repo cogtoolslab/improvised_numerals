@@ -88,7 +88,7 @@ var serveFile = function(req, res) {
 
 var handleDuplicate = function (socket) {
   console.log("duplicate id: blocking request");
-  socket.emit('redirect', '/duplicate.html');
+  socket.emit('redirect', 'https://cogtoolslab.org:' + gameport.toString() +  '/utils/duplicate.html');
 };
 
 var valid_id = function (id) {
@@ -108,7 +108,7 @@ function checkPreviousParticipant(workerId, callback) {
     projection: { '_id': 1 }
   };
   sendPostRequest(
-    'http://localhost:7000/db/exists',
+    'http://localhost:8980/db/exists', // make sure this matches the gameport in store.js??
     { json: postData },
     (error, res, body) => {
       try {
