@@ -310,6 +310,15 @@
         // setupGame();
         // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
         var socket = io.connect();
+
+        // the following line is important for if the worker has already done the task and we have to redirect them
+        // https://stackoverflow.com/questions/33321792/how-to-redirect-a-client-after-a-socket-io-event
+        socket.on('redirect', function(destination) {
+            window.location.href = destination;
+
+            // attention: can we put in an alert here? People are currently redirected without explanation
+          });
+
         socket.on('onConnected', function(d) {
           
           socket.removeListener('onConnected');
