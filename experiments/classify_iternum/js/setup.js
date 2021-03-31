@@ -24,7 +24,7 @@ function setupGame () {
     // define trial list
     var tmp = {
       type: 'iterated_number_recog',
-      iterationName: 'testing1',
+      iterationName: 'run1',
       num_trials: num_trials,
       sketch_size: [200,200],
       object_size: [100,100],
