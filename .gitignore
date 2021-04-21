@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+analysis/targs
+analysis/datastructures
 auth.txt
 auth.json
 .DS_Store

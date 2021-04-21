@@ -279,6 +279,7 @@ anova(ink_model,test1)
 str_model <- lmer(data = dat, numStrokes ~
                cardinality + category * Game_Condition + cardinality:Game_Condition + block + (1 + cardinality | gameID))
 
+# how does the model fare when you take out each relevant predictor? This will tell us how much variability in animals is predictive of str, rather than a different esimate for each particular animal
 str_no_cat <- lmer(data = dat, numStrokes ~
                cardinality * Game_Condition + block + (1 + cardinality | gameID))
 str_no_car <- lmer(data = dat, numStrokes ~
