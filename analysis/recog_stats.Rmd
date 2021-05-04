@@ -48,9 +48,48 @@ names(Rdf)[names(Rdf) == "orig_sketch_cardinality"] <- "cardinality"
 
 
 ```
+### Start with accuracy
+```{r acc_2nd_submission}
+# first look at all interactions:
+# Ocond * Rcond * block * cardinality * shape    # BIC ??                     # didn't converge
+# then the winner from original submission:
+# Ocond * Rcond * block    # BIC ??                                           # didn't converge
+# remove the interactions:
+# Ocond + Rcond + block    # BIC 18152.68                                     #
+# add back in the obvious interaction of conditions:
+# Ocond * Rcond + block    # BIC 15139.2                                      # 
+# maybe an effect of number too?:
+# Ocond * Rcond + block + cardinality   # BIC ??                              # didn't converge
+# or a number:Rcond interaction?:
+# Ocond * Rcond + block + Rcond:cardinality   # BIC ??                        # didn't converge
+# do we really need block?:
+# Ocond * Rcond    # BIC 15352.44                                             # didn't converge
+
+# https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified
+# what if we have original game as a random effect?:
+# Ocond * Rcond + block + (1  | workerID) + (1  | OgameID)   # BIC 15036.93   #
+# add cardinality and shape as random effects?:
+# + (1| workerID) + (1| OgameID) + (1|cardinality) + (1|shape) # BIC 15010.13 # winner?
+# remove cardinality as random effect?:
+# + (1| workerID) + (1| OgameID) + (1|shape)                  # BIC 15012.25  #
+# remove shape as random effect?:
+# + (1| workerID) + (1| OgameID) + (1|cardinality)            # BIC 15035.04  #
+# keep all random effects and add in interaction with block:
+# Ocond * Rcond * block                                       # BIC 14990.33  # didn't converge
+
+correct <- glmer(data=Rdf, correct ~ 
+                   Ocond * Rcond * block
+                  + (1  | workerID) + (1  | OgameID) + (1|cardinality) + (1|shape),
+                  family = 'binomial')
+BIC(correct)
+summary(correct)
+
+```
+
+
 
 ### Start with accuracy
-```{r acc}
+```{r acc_1st_submission}
 # first look at all interactions:
 # Ocond * Rcond * block * cardinality * shape    # BIC ??        # didn't converge
 # remove most interactions except O vs R condition:
