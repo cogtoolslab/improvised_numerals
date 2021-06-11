@@ -65,9 +65,9 @@ var highlightCell = function(game, color, condition) {
     globalGame.ctx.globalCompositeOperation='source-over';
     if (upperLeftX != null && upperLeftY != null) {
       globalGame.ctx.beginPath();
-      globalGame.ctx.lineWidth="7";
+      globalGame.ctx.lineWidth="5";
       globalGame.ctx.strokeStyle=color;
-      globalGame.ctx.rect(upperLeftX +5 , upperLeftY +5 ,globalGame.cellDimensions.width-10,globalGame.cellDimensions.height-10);
+      globalGame.ctx.rect(upperLeftX+1, upperLeftY+1,globalGame.cellDimensions.width-2,globalGame.cellDimensions.height-2);
       globalGame.ctx.stroke();
     }
   }
@@ -121,7 +121,7 @@ function Sketchpad() {
   // var actual_width = $('#sketchpad').innerWidth()
   // view.viewSize = new Size(actual_height, actual_width);
    // view.viewSize = new Size(view.element.width,view.element.height)
-  view.viewSize = new Size(300,300)//view.element.width, view.element.height);
+  view.viewSize = new Size(globalGame.sketchpadShape[0],globalGame.sketchpadShape[1])//view.element.width, view.element.height);  
   //  view.setViewSize = new Size(view.element.width,view.element.height)
 }
 
@@ -159,17 +159,52 @@ Sketchpad.prototype.setupTool = function() {
     startStroke(event);
   };
 
+  // tool.onMouseDrag = function(event) {
+  //   if (globalGame.drawingAllowed && !_.isEmpty(globalGame.path)) {
+  //     var point = event.point.round();
+  //     globalGame.currMouseX = point.x;
+  //     globalGame.currMouseY = point.y;
+  //     globalGame.path.add(point);
+  //   }
+  // };
+
   tool.onMouseDrag = function(event) {
-    if (globalGame.drawingAllowed && !_.isEmpty(globalGame.path)) {
-      var point = event.point.round();
+    if (globalGame.drawingAllowed && !_.isEmpty(globalGame.path) && globalGame.inkUsed < globalGame.inkLimit) {
+      if (globalGame.inkUsed != globalGame.inkLimit) {var point = event.point.round();
       globalGame.currMouseX = point.x;
       globalGame.currMouseY = point.y;
       globalGame.path.add(point);
+      globalGame.inkUsed = globalGame.inkUsed + 1;
+
+      $element = $('.ink');
+      inkLeft = (globalGame.inkLimit - globalGame.inkUsed) / globalGame.inkLimit;
+      var inkBarHeight = inkLeft * 100 + '%'
+      $element.find('.ink-bar').animate({height:inkBarHeight},{duration:0});
+
+    } if(globalGame.inkUsed == globalGame.inkLimit){
+        if (globalGame.my_role === globalGame.playerRoleNames.role1 && !objClicked) {
+          $('#feedback').html(" ");
+          $('#scoreupdate').html(" ");
+          setTimeout(function(){$('#turnIndicator').html("You've used up your ink! Time to submit");},globalGame.feedbackDelay);
+        } else if (globalGame.my_role === globalGame.playerRoleNames.role2 && !objClicked) {
+          setTimeout(function(){$('#turnIndicator').html("Your partner has run out of ink! Make a selection");},globalGame.feedbackDelay);
+          if (globalGame.useSubmitButton) {
+            $("#loading").fadeOut('fast');
+          }
+        }
+      }
     }
+    
   };
 
   tool.onMouseUp = function(event) {
     endStroke(event);
+    if (globalGame.inkUsed == globalGame.inkLimit){
+      globalGame.drawingAllowed = false;
+      globalGame.doneDrawing = true;
+      submitted = true;
+    }
+    
   };
 
 
@@ -200,6 +235,25 @@ function endStroke(event) {
     //console.log("endstroketime: " + globalGame.endStrokeTime);
     // Increment stroke num
     globalGame.currStrokeNum += 1;
+    
+    // if they've reached the strokeLimit, disallow them from more
+    if (globalGame.currStrokeNum == globalGame.strokeLimit) {
+      console.log("Hey this is being hit!!!", globalGame.currStrokeNum)
+      globalGame.doneDrawing = true;
+      globalGame.drawingAllowed = false;
+      submitted = true;
+      if (globalGame.my_role === globalGame.playerRoleNames.role1 && !objClicked) {
+        $('#feedback').html(" ");
+        $('#scoreupdate').html(" ");
+        setTimeout(function(){$('#turnIndicator').html("You've used up your 4 strokes! Time to submit");},globalGame.feedbackDelay);
+      } else if (globalGame.my_role === globalGame.playerRoleNames.role2 && !objClicked) {
+        setTimeout(function(){$('#turnIndicator').html("Your partner has run out of strokes! Make a selection");},globalGame.feedbackDelay);
+        if (globalGame.useSubmitButton) {
+          $("#loading").fadeOut('fast');
+        }
+      }
+    }
+
 
     // Simplify path to reduce data sent
     globalGame.path.simplify(10);
@@ -241,7 +295,7 @@ function getIntendedTargetName(objects) {
 
 function drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents) {
   // textual feedback
-  highlightCell(globalGame, 'black', function(x) {
+  highlightCell(globalGame, 'blue', function(x) {
     return x.subordinate == clickedObjName;
   });
   $('#turnIndicator').html(" ");
@@ -252,7 +306,7 @@ function drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents
     }, globalGame.feedbackDelay);
   } else {
     setTimeout(function(){
-      $('#feedback').html('Too bad... Your partner thought the target was the object outlined in ' + 'black'.bold() + '.');
+      $('#feedback').html('Too bad... Your partner thought the target was the object outlined in ' + 'blue'.bold() + '.');
       $('#scoreupdate').html('+0 ¢'.fontcolor("#ce0a04"));
     }, globalGame.feedbackDelay);
   }
@@ -263,7 +317,7 @@ function preFeedback(globalGame, clickedObjName, player) {
   globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
   drawGrid(globalGame);
   drawObjects(globalGame, player);
-  highlightCell(globalGame, 'black', function(x) {
+  highlightCell(globalGame, 'blue', function(x) {
     return x.subordinate == clickedObjName;
   });
 }

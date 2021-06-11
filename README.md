@@ -15,7 +15,7 @@ Abandoned early version of classify_iternum. This can be ignored; and should pro
 Recognition task for the original data.
 Data collected from the end of 2020 through early April 2021.
 
-## draw_number_2
+## draw_number2
 First extension beyond the proof of concept in first task.
 Slightly new format, consisting of 6 cardinalities, a more constrictive time limit on each production trial, and an 'ink' limit to reduce the number of strokes people make.
 
