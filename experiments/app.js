@@ -34,8 +34,8 @@ if(argv.expname) {
   var exp = argv.expname.replace(/\/$/, "");
   var gameServer = new Server(exp);
 } else {
-  console.log('no expname specified; using the default expname, "draw_number_2"')
-  var exp = 'draw_number_2';
+  console.log('no expname specified; using the default expname, "draw_number2"')
+  var exp = 'draw_number2';
   var gameServer = new Server(exp);
 }
 
@@ -60,6 +60,13 @@ var global_player_set = {};
 console.log("info  - socket.io started");
 console.log('\t :: Express :: Listening on port ' + gameport );
 
+
+var serveFile = function (req, res) {
+  var fileName = req.params[0];
+  console.log('\t :: Express :: file requested: ' + fileName);
+  return res.sendFile(fileName, { root: __dirname });
+};
+
 app.get( '/*' , function( req, res ) {
     var id = req.query.workerId;
     var isResearcher = _.includes(researchers, id);
@@ -67,7 +74,7 @@ app.get( '/*' , function( req, res ) {
     // If no worker id supplied (e.g. for demo), allow to continue
     // console.log("req.params: ",req.params,"\n") // sebholt print    
     // console.log("req.params[0]: ",req.params[0],"\n") // sebholt print
-    return utils.serveFile(req, res);
+    return serveFile(req, res);
   } else if(!valid_id(id)) {
     // If invalid id, block them
     return utils.handleInvalidID(req, res);

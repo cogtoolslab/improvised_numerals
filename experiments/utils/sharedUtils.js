@@ -9,6 +9,7 @@ var sendPostRequest = require('request').post;
 FORBIDDEN_FILES = ["auth.json"]
 var serveFile = function(req, res) {
   var fileName = req.params[0];
+  console.log("THIS?", {root: __dirname})
   if(FORBIDDEN_FILES.includes(fileName)){
     // Don't serve files that contain secrets
     console.log("Forbidden file requested:" + filename);

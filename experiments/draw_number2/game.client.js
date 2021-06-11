@@ -314,8 +314,10 @@ var customSetup = function(game) {
     }
     // Reset stroke counter
     globalGame.currStrokeNum = 0;
+    globalGame.inkUsed = 0;
     drawGrid(globalGame);
     drawObjects(globalGame, player);
+    
 
     // clear feedback blurb
     $('#feedback').html(" ");
@@ -325,9 +327,8 @@ var customSetup = function(game) {
     $('.progress-bar').attr('aria-valuemax',globalGame.timeLimit);
     $('.progress').show();
 
-    // set up stroke / ink bar
-    $('.stroke-bar').attr('aria-valuemax',globalGame.timeLimit);
-    $('.stroke').show();
+    // reset ink limit display
+    $('.ink-bar').animate({ height: '100%' },1, "linear");
 
     // Update display
     var score = game.data.subject_information.score;
@@ -339,10 +340,10 @@ var customSetup = function(game) {
       $('#instructs').html('Thanks for participating in our experiment! ' +
         "Before you submit your HIT, we'd like to ask you a few questions.");
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 1) + " of " + "32"); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 1) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
     } else {
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 2) + " of " + "32"); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 2) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
     }
     $('#score').empty().append(score / 3 + ' of ' + (game.roundNum + 1) + ' correct for a bonus of $'
 			       + displaytotal);
@@ -382,11 +383,7 @@ var customSetup = function(game) {
     path.importJSON(jsonData);
     //var sketchShowsUpTime = Date.now();
 
-    // if they've reached the strokeLimit, disallow them from more
     
-    if (globalGame.currStrokeNum == strokeLimit) {
-
-    }
   });
 
  // new progress bar function
@@ -433,6 +430,10 @@ var customSetup = function(game) {
 
 
 var client_onjoingame = function(num_players, role) {
+  w = globalGame.sketchpadShape[0] + "px";
+  h = globalGame.sketchpadShape[1] + "px";
+  $("#sketchpad").css({"height": h,"width": w});
+  $("#loading").css({"height": h,"width": w});
 
   if (globalGame.setSize == 4) {
     $("#viewport").css({"height": "25vh","width": "100vh"});
@@ -443,7 +444,7 @@ var client_onjoingame = function(num_players, role) {
     $("#viewport").css({"height": "20vh","width": "120vh"});
     $("#occluder").css({"height": "20vh","width": "120vh"});
     $("#confirmbutton").css({"top": "90%"});
-    $('#roundnumber').html("Round 1 of 48");
+    $('#roundnumber').html("Round 1 of 36");
   }
   // set role locally
   globalGame.my_role = role;
@@ -466,8 +467,16 @@ var client_onjoingame = function(num_players, role) {
       if (globalGame.useSubmitButton) {
         $("#submitbutton").show();
       }
+    // set up stroke / ink bar
+    $('.ink-bar').attr('aria-valuemax',globalGame.inkLimit);
+    $('.ink').show();
+    $('.ink-bar').show();
+    $('#inklabel').show();
+    
   } else if (role === globalGame.playerRoleNames.role2) {
-
+    $('.ink').hide();
+    $('.ink-bar').hide();
+    $('#inklabel').hide();
     $('#instructs').html("<p>Your partner has 30 seconds to use the sketchpad to indicate which image is the target. When you are sure which it is, click on the image " +
       "you think they mean. If you are correct, you will both receive a bonus (plus small additional speed bonus).</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
