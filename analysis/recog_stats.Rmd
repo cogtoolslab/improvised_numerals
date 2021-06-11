@@ -78,7 +78,7 @@ names(Rdf)[names(Rdf) == "orig_sketch_cardinality"] <- "cardinality"
 # Ocond * Rcond * block                                       # BIC 14990.33  # didn't converge
 
 correct <- glmer(data=Rdf, correct ~ 
-                   Ocond * Rcond * block
+                   Ocond * Rcond + block
                   + (1  | workerID) + (1  | OgameID) + (1|cardinality) + (1|shape),
                   family = 'binomial')
 BIC(correct)
