@@ -157,11 +157,15 @@ var dataOutput = function() {
     dis2_v_url = _.filter(objects, x => x.target_status == 'distr2')[0]['viewer_url'];
     dis3_s_url = _.filter(objects, x => x.target_status == 'distr3')[0]['sketcher_url'];
     dis3_v_url = _.filter(objects, x => x.target_status == 'distr3')[0]['viewer_url'];
+    dis4_s_url = _.filter(objects, x => x.target_status == 'distr4')[0]['sketcher_url'];
+    dis4_v_url = _.filter(objects, x => x.target_status == 'distr4')[0]['viewer_url'];
+    dis5_s_url = _.filter(objects, x => x.target_status == 'distr5')[0]['sketcher_url'];
+    dis5_v_url = _.filter(objects, x => x.target_status == 'distr5')[0]['viewer_url'];
 
     all_urls = {t_s_url: targ_s_url,
                 t_v_url: targ_v_url,
-                dis_s_urls: [dis1_s_url, dis2_s_url, dis3_s_url],
-                dis_v_urls: [dis1_v_url, dis2_v_url, dis3_v_url]}
+                dis_s_urls: [dis1_s_url, dis2_s_url, dis3_s_url, dis4_s_url, dis5_s_url],
+                dis_v_urls: [dis1_v_url, dis2_v_url, dis3_v_url, dis4_v_url, dis5_v_url]}
     return all_urls;
   }
 

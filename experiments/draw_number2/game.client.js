@@ -176,7 +176,7 @@ var client_onMessage = function(data) {
       player = globalGame.get_player(globalGame.my_id); // change this
       globalGame.viewport.removeEventListener("click", responseListener, false); // added - moved
 
-      $element.find('.progress-bar').finish();
+      // $element.find('.progress-bar').finish();
       //console.log("finishing progress bar");
 
       var timeleft = commands[3]; // commands[3] is what we used for player role ???
@@ -192,13 +192,15 @@ var client_onMessage = function(data) {
       var earnedCents = 0;
       if (scoreDiff == 1) {
         globalGame.data.subject_information.score += 3.00;
-        globalGame.data.subject_information.bonus_score += parseFloat((timeleft / 30).toFixed(2));
-        earnedCents = (3.00 + parseFloat((timeleft / 30).toFixed(2))).toFixed(2);
-      }
+        // globalGame.data.subject_information.bonus_score += parseFloat((timeleft / 30).toFixed(2));
+        earnedCents = 3.00 // (3.00 + parseFloat((timeleft / 30).toFixed(2))).toFixed(2);
+      } // remove timer
       // draw feedback
+      console.log("This is being hit")
       if (globalGame.my_role === globalGame.playerRoleNames.role1) {
 	       drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents);
       } else {
+        
 	       drawViewerFeedback(globalGame, scoreDiff, clickedObjName, earnedCents);
       }
       break;
@@ -323,9 +325,9 @@ var customSetup = function(game) {
     $('#feedback').html(" ");
     $('#scoreupdate').html(" ");
     $('#turnIndicator').html(" ");
-    // set up progress bar
-    $('.progress-bar').attr('aria-valuemax',globalGame.timeLimit);
-    $('.progress').show();
+    // set up progress bar // remove timer
+    // $('.progress-bar').attr('aria-valuemax',globalGame.timeLimit);
+    // $('.progress').show();
 
     // reset ink limit display
     $('.ink-bar').animate({ height: '100%' },1, "linear");
@@ -434,17 +436,16 @@ var client_onjoingame = function(num_players, role) {
   h = globalGame.sketchpadShape[1] + "px";
   $("#sketchpad").css({"height": h,"width": w});
   $("#loading").css({"height": h,"width": w});
-
+  $('#roundnumber').html("Round 1 of " + globalGame.numRounds);
+  
   if (globalGame.setSize == 4) {
     $("#viewport").css({"height": "25vh","width": "100vh"});
     $("#occluder").css({"height": "25vh","width": "100vh"});
     $("#confirmbutton").css({"top": "95%"});
-    $('#roundnumber').html("Round 1 of 32"); // sebholt edit; switched 40 to 24 to 32
   } else {
     $("#viewport").css({"height": "20vh","width": "120vh"});
     $("#occluder").css({"height": "20vh","width": "120vh"});
     $("#confirmbutton").css({"top": "90%"});
-    $('#roundnumber').html("Round 1 of 36");
   }
   // set role locally
   globalGame.my_role = role;
@@ -462,8 +463,8 @@ var client_onjoingame = function(num_players, role) {
   $('#roleLabel').append(role + '.');
   if (role === globalGame.playerRoleNames.role1) {
     txt = "target";
-    $('#instructs').html("<p>You have 30 seconds to use the sketchpad to indicate which image is the target (purple) so that your partner can tell which it is. You will receive " +
-      "a bonus ONLY if the Viewer selects the correct object (plus small additional speed bonus). DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
+    $('#instructs').html("<p>You have a limited amount of 'ink' to indicate on the sketchpad which image is the target (purple) so that your partner can tell which it is. You will receive " +
+      "a bonus ONLY if the Viewer selects the correct object. DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
       if (globalGame.useSubmitButton) {
         $("#submitbutton").show();
       }
@@ -477,8 +478,8 @@ var client_onjoingame = function(num_players, role) {
     $('.ink').hide();
     $('.ink-bar').hide();
     $('#inklabel').hide();
-    $('#instructs').html("<p>Your partner has 30 seconds to use the sketchpad to indicate which image is the target. When you are sure which it is, click on the image " +
-      "you think they mean. If you are correct, you will both receive a bonus (plus small additional speed bonus).</p>" +
+    $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
+      "you think they mean. If you are correct, you will both receive a bonus.</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
     if (globalGame.useSubmitButton) {
       $("#loading").show();

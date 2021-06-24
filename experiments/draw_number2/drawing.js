@@ -237,22 +237,21 @@ function endStroke(event) {
     globalGame.currStrokeNum += 1;
     
     // if they've reached the strokeLimit, disallow them from more
-    if (globalGame.currStrokeNum == globalGame.strokeLimit) {
-      console.log("Hey this is being hit!!!", globalGame.currStrokeNum)
-      globalGame.doneDrawing = true;
-      globalGame.drawingAllowed = false;
-      submitted = true;
-      if (globalGame.my_role === globalGame.playerRoleNames.role1 && !objClicked) {
-        $('#feedback').html(" ");
-        $('#scoreupdate').html(" ");
-        setTimeout(function(){$('#turnIndicator').html("You've used up your 4 strokes! Time to submit");},globalGame.feedbackDelay);
-      } else if (globalGame.my_role === globalGame.playerRoleNames.role2 && !objClicked) {
-        setTimeout(function(){$('#turnIndicator').html("Your partner has run out of strokes! Make a selection");},globalGame.feedbackDelay);
-        if (globalGame.useSubmitButton) {
-          $("#loading").fadeOut('fast');
-        }
-      }
-    }
+    // if (globalGame.currStrokeNum == globalGame.strokeLimit) {
+    //   globalGame.doneDrawing = true;
+    //   globalGame.drawingAllowed = false;
+    //   submitted = true;
+    //   if (globalGame.my_role === globalGame.playerRoleNames.role1 && !objClicked) {
+    //     $('#feedback').html(" ");
+    //     $('#scoreupdate').html(" ");
+    //     setTimeout(function(){$('#turnIndicator').html("You've used up your 4 strokes! Time to submit");},globalGame.feedbackDelay);
+    //   } else if (globalGame.my_role === globalGame.playerRoleNames.role2 && !objClicked) {
+    //     setTimeout(function(){$('#turnIndicator').html("Your partner has run out of strokes! Make a selection");},globalGame.feedbackDelay);
+    //     if (globalGame.useSubmitButton) {
+    //       $("#loading").fadeOut('fast');
+    //     }
+    //   }
+    // }
 
 
     // Simplify path to reduce data sent
