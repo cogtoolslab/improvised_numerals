@@ -91,7 +91,7 @@ def preprocess_features_for_pca(Features, Y, channel_norm=True):
     _Y = _Y.reset_index(drop=True) # reset pandas dataframe index
     return _Features, _Y    
 
-def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/iterated_number/features', channel_norm=True):
+def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/repos/iterated_number/features', channel_norm=True):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     if channel_norm==True:
@@ -109,7 +109,7 @@ def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/iterat
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
-def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/alles/iterated_number/features', channel_norm=True):    
+def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/alles/repos/iterated_number/features', channel_norm=True):    
     pca = PCA(n_components=num_pcs)
     pca.fit(F)
     print('Applying PCA and transforming data, using {} components'.format(num_pcs))
@@ -134,10 +134,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, help='full path to images', \
                         default=sketch_dir)
-    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=2) # sebholt changed; should by default be 5
+    parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=5) # sebholt changed; should by default be 5
     parser.add_argument('--num_pcs', help='number of principal components', default=128)    
     parser.add_argument('--data_type', help='"images" or "sketch"', default='sketch')
-    parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/iterated_number/features')    
+    parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/repos/iterated_number/features')    
     parser.add_argument('--spatial_avg', type=bool, help='collapse over spatial dimensions, preserving channel activation only if true', default=True) 
     parser.add_argument('--channel_norm', type=str2bool, help='apply channel-wise normalization?', default='True')    
     parser.add_argument('--crop_sketch', type=str2bool, help='do we crop sketches by default?', default='False')     
