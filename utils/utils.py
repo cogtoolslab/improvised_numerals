@@ -292,6 +292,7 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
     png=[] # the sketch
     timedOut=[] # True if sketchers didn't draw anything, False o.w.
     meanPixelIntensity=[]
+    viewer_sees_images = []
 
 
     for i,g in enumerate(complete_games):
@@ -303,7 +304,7 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
             counter = 0
             for t in X: # for each clickedObj event
                 print( 'Analyzing game {} | {} of {} | trial {}'.format(g, i+1, len(complete_games),counter))
-                clear_output(wait=True)                                
+                clear_output(wait=True)           
                 counter += 1
                 game_condition = t['game_condition']
                 targ_s_url = t['targ_s_url']
@@ -318,6 +319,11 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
                 distractor_cars = [distractors[0].split('_')[1],distractors[1].split('_')[1],distractors[2].split('_')[1]]
                 full_list = [t['intendedName'],t['object1Name'],t['object2Name'],t['object3Name']]
                 png.append(t['pngString'])
+                
+                if 'viewer_sees_images' in t.keys():
+                    viewerSeesImages = t['viewer_sees_images']
+                else:
+                    viewerSeesImages = float('NaN')
 
                 #for each stroke event with same trial number as this particular clickedObj event
                 y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
@@ -393,17 +399,18 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
                 D3_Cat.append(distractor_cats[2])
                 D3_Car.append(distractor_cars[2])
                 svgString.append(svg_list)
+                viewer_sees_images.append(viewerSeesImages)
 
 
 
     ## now actually make dataframe
-    GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls = map(np.array, \
-    [GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut,png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls])
+    GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls, viewer_sees_images = map(np.array, \
+    [GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut,png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls, viewer_sees_images])
 
     Repetition = map(int,Repetition)
 
-    _D = pd.DataFrame([GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls],
-                     index = ['gameID','trialNum', 'target', 'category', 'cardinality', 'drawDuration', 'outcome', 'response', 'numStrokes', 'meanPixelIntensity', 'numCurvesPerSketch', 'numCurvesPerStroke', 'timedOut', 'png','svgString', 'D1', 'D1_Cat', 'D1_Car', 'D2', 'D2_Cat', 'D2_Car', 'D3', 'D3_Cat', 'D3_Car', 'Game_Condition', 'Targ_s_Url', 'Targ_v_Url', 'Dis_s_Urls', 'Dis_v_Urls'])
+    _D = pd.DataFrame([GameID,TrialNum, Target, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, numCurvesPerSketch, numCurvesPerStroke, timedOut, png, svgString, D1, D1_Cat, D1_Car, D2, D2_Cat, D2_Car, D3, D3_Cat, D3_Car, Game_Condition, Targ_s_Url, Targ_v_Url, Dis_s_Urls, Dis_v_Urls, viewer_sees_images],
+                     index = ['gameID','trialNum', 'target', 'category', 'cardinality', 'drawDuration', 'outcome', 'response', 'numStrokes', 'meanPixelIntensity', 'numCurvesPerSketch', 'numCurvesPerStroke', 'timedOut', 'png','svgString', 'D1', 'D1_Cat', 'D1_Car', 'D2', 'D2_Cat', 'D2_Car', 'D3', 'D3_Cat', 'D3_Car', 'Game_Condition', 'Targ_s_Url', 'Targ_v_Url', 'Dis_s_Urls', 'Dis_v_Urls', 'viewer_sees_images'])
     _D = _D.transpose()    
     
     # tag outlier games (low accuracy)
