@@ -18,16 +18,17 @@ var
     _             = require('lodash'),
     Server        = require('./utils/serverBase.js');
 
+person_who_complained = "A2OX8TSRCU6NKD"
 var gameport;
-var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3','A9AHPCS83TFFE'];
+var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3','A9AHPCS83TFFE',person_who_complained];
 var blockResearcher = false;
 
 if(argv.gameport) {
   gameport = argv.gameport;
   console.log('using port ' + gameport);
 } else {
-  gameport = 8889;
-  console.log('no gameport specified: using 8889\nUse the --gameport flag to change');
+  gameport = 8890;
+  console.log('no gameport specified: using 8890\nUse the --gameport flag to change');
 }
 
 if(argv.expname) {

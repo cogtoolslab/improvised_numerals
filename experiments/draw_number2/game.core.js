@@ -27,16 +27,20 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'num6_shape3';
-  this.iterationName = 'pilot1';
+  this.iterationName = 'pilot2';  // pilot1, sandbox1, sandbox2
   this.email = 'ladlab.ucsd@gmail.com';
 
   // save data to the following locations (allowed: 'csv', 'mongo')
   this.dataStore = ['csv', 'mongo'];
 
   // which condition are we going to use for this game?
-  this.game_condition = _.sample(['small']); // whatever conditions we want
+  this.game_condition = _.sample(['large']); // 'small' or 'large', whatever conditions we want
   console.log("CONDITION : ", this.game_condition)
   this.anonymizeCSV = true;
+
+  // is the viewer seeing sets of animals, or just written numbers? 'true' if looking at pictures like the sketcher
+  this.guessing_pictures = true // _.sample([true,false]);
+  console.log("Viewer Sees Pictures?? : ", this.guessing_pictures)
 
   // How many players in the game?
   this.players_threshold = 2;
@@ -46,7 +50,7 @@ var game_core = function(options){
   };
 
   // How many objects do we have in a context?
-  this.setSize = 6; // many things depend on this
+  this.setSize = 4; // many things depend on this
 
   //Dimensions of world in pixels and number of cells to be divided into;
   this.numHorizontalCells = this.setSize;
@@ -108,14 +112,14 @@ var game_core = function(options){
   if (this.setSize == 4) {
     this.numReps = 6;
   } else {
-    this.numReps = 3;
+    this.numReps = 2;
   }
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 32; // sebholt edit; changed 40 to 24 to 32
+    this.numRounds = 30; // sebholt edit; changed 40 to 24 to 32 to 30
   } else {
-    this.numRounds = 42; // sebholt edit; changed 48 to 36 to 42
+    this.numRounds = 30; // sebholt edit; changed 48 to 36 to 42 to 18 to 30
   }
 
   // how many blocks in total?
@@ -144,6 +148,10 @@ var game_core = function(options){
 
   // Using different categories for the conditions?
   this.diffCats = true; // set to true if we want repeated and control to come from different clusters
+
+  // When did the current trial start?
+  this.trialStartTime = Date.now();
+
 
   // Is the sketcher ready to move on?
   this.sketcherReady = false;
@@ -244,6 +252,7 @@ game_core.prototype.newRound = function() {
     this.objClicked = false;
     active_players = this.get_active_players();
     // this.setupTimer(this.timeLimit,active_players); // remove timer
+    this.trialStartTime = Date.now();
     this.server_send_update();
   }
 };
@@ -269,11 +278,17 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
 }
 
 // sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
-game_core.prototype.fetchURL = function(item) {
+game_core.prototype.fetchURL = function(item,the_role) {
   num_versions = 100
   v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
   while (v.length < 3) v = "0" + v;
-  return "https://iternum2.s3.amazonaws.com/" + item['basic'] + '_' + (item['object']+1)+ '_' + v.toString() + ".png";
+
+  if (this.guessing_pictures == true || the_role == 's'){
+    the_url = "https://iternum2.s3.amazonaws.com/" + item['basic'] + '_' + (item['object']+1)+ '_' + v.toString() + ".png";
+  } else if (this.guessing_pictures == false && the_role == 'v'){
+    the_url = "forms/images/number_buttons/button" + '_' + (item['object']+1) + ".png";
+  };
+  return the_url
   }
 
 // sebholt begin edit rewrite this function
@@ -313,19 +328,22 @@ game_core.prototype.newsampleTrial = function(target,animals,cardinalities) {
     width: 256,
     height: 256};
 
-  var sampled_distr4 = {
-    object: numbers[3],
-    basic: curTarg['basic'],
-    subordinate: curTarg['basic'] + '_' + numbers[3],
-    width: 256,
-    height: 256};
-
-  var sampled_distr5 = {
-    object: numbers[4],
-    basic: curTarg['basic'],
-    subordinate: curTarg['basic'] + '_' + numbers[4],
-    width: 256,
-    height: 256};
+  if (this.setSize == 6){
+    var sampled_distr4 = {
+      object: numbers[3],
+      basic: curTarg['basic'],
+      subordinate: curTarg['basic'] + '_' + numbers[3],
+      width: 256,
+      height: 256};
+  
+    var sampled_distr5 = {
+      object: numbers[4],
+      basic: curTarg['basic'],
+      subordinate: curTarg['basic'] + '_' + numbers[4],
+      width: 256,
+      height: 256};
+  };
+  
 
 
   // console.log("Ds: ",curTarg.subordinate,sampled_distr1.subordinate,
@@ -336,14 +354,18 @@ game_core.prototype.newsampleTrial = function(target,animals,cardinalities) {
   // console.log(discriminator)
   
 
-  var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'}, {sketcher_url: this.fetchURL(sampled_distr1)}, {viewer_url: this.fetchURL(sampled_distr1)});
-  var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'}, {sketcher_url: this.fetchURL(sampled_distr2)}, {viewer_url: this.fetchURL(sampled_distr2)});
-  var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'}, {sketcher_url: this.fetchURL(sampled_distr3)}, {viewer_url: this.fetchURL(sampled_distr3)});
-  var d4 = _.extend({}, sampled_distr4, {target_status: 'distr4'}, {sketcher_url: this.fetchURL(sampled_distr4)}, {viewer_url: this.fetchURL(sampled_distr4)});
-  var d5 = _.extend({}, sampled_distr5, {target_status: 'distr5'}, {sketcher_url: this.fetchURL(sampled_distr5)}, {viewer_url: this.fetchURL(sampled_distr5)});
-  var tg = _.extend({}, curTarg, {target_status: 'target'}, {sketcher_url: this.fetchURL(curTarg)}, {viewer_url: this.fetchURL(curTarg)});
+  var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'}, {sketcher_url: this.fetchURL(sampled_distr1,'s')}, {viewer_url: this.fetchURL(sampled_distr1,'v')});
+  var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'}, {sketcher_url: this.fetchURL(sampled_distr2,'s')}, {viewer_url: this.fetchURL(sampled_distr2,'v')});
+  var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'}, {sketcher_url: this.fetchURL(sampled_distr3,'s')}, {viewer_url: this.fetchURL(sampled_distr3,'v')});
+  var tg = _.extend({}, curTarg, {target_status: 'target'}, {sketcher_url: this.fetchURL(curTarg,'s')}, {viewer_url: this.fetchURL(curTarg,'v')});
+  var newoutput = [d1,d2,d3,tg]
+
+  if (this.setSize == 6){
+    var d4 = _.extend({}, sampled_distr4, {target_status: 'distr4'}, {sketcher_url: this.fetchURL(sampled_distr4,'s')}, {viewer_url: this.fetchURL(sampled_distr4,'v')});
+    var d5 = _.extend({}, sampled_distr5, {target_status: 'distr5'}, {sketcher_url: this.fetchURL(sampled_distr5,'s')}, {viewer_url: this.fetchURL(sampled_distr5,'v')});
+    var newoutput = [d1,d2,d3,d4,d5,tg]
+  };
   
-  var newoutput = [d1,d2,d3,d4,d5,tg]
   return newoutput ;
 };
 // sebholt end edit rewrite this function

@@ -9,12 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../favicon.ico">
+    <!-- <link rel="icon" href="../favicon.ico"> -->
 
     <title>Experiment</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../lib/css/bootstrap.min.css" rel="stylesheet">
+
+    <script>
+      console.log("Logging here");
+      report("Reporting here");
+    </script>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -45,12 +50,12 @@
 
 	<p>
 
-	  In this experiment you will play a fun communication game with
-    another player on MTurk! Each game consists of 42 trials. On each trial both of you will see six 
-    groups of animals that vary in number, like this: 
+	  In this experiment you will play a communication game with
+    another player on MTurk! Each game consists of 30 trials. On each trial both of you will see four 
+    groups of animals that vary in number. The number will always vary between 15 and 20, like this:
 </p>
     <p>
-      <center><img src="images/many_deer_sketcher.png" alt="Example objects" style="width:600px;height:100px"></center>
+      <center><img src="images/many_bears_numbers.png" alt="Example objects" style="width:400px;height:140px"></center>
     </p>
 <p>
 
@@ -59,21 +64,21 @@
 </p>
 
   <p>
-    <b>STEP ONE: </b> Both players are shown the same set of images, but in a different order. A “target” image will be highlighted to the Sketcher in purple.
+    <b>STEP ONE: </b> Both players are shown the same groups of animals, but in a different order. A “target” image (like the "17 bears" above) will be highlighted to the Sketcher in purple.
+    The Sketcher and Viewer will<b> NOT </b>see the exact same images. "15 deer", for example, might look one way to the Sketcher and one way to the Viewer:
+</p>
+<p>
+  <center><img src="images/deer_v1_v2.png" alt="Example constellations" style="width:300px;height:160px"></center>
 </p>
   <p>
     <b>STEP TWO: </b> The goal of the Sketcher will be to help the Viewer identify the target as quickly as possible, using the sketchpad. 
-    The Sketcher can use the sketchpad however they like, but must<b> NOT </b>draw words, arrows, numbers, or other existing symbols (although inventing new symbols is ok).
+    The Sketcher can use the sketchpad however they like, but must<b> NOT </b>draw words, arrows, numbers, or other existing symbols <b>(although you might want to invent new symbols to save time!)</b>.
     The Sketcher will have a limited amount of 'ink', shown on a bar to the left of the sketchpad.
     <p>
       <center><img src="images/ink_budget.png" alt="Ink Budget" style="width:250px;height:160px"></center>
     </p>
-  Also note that the sketcher and viewer will not be shown the exact same images. For instance, a group of five owls will appear
-  to each player in a different configuration, such as:
 </p>
-  <p>
-    <center><img src="images/owls_v1_v2.png" alt="Example constellations" style="width:420px;height:140px"></center>
-  </p>
+  
 
   <p>
     Once the Sketcher is done creating their message, they will click “submit”.
@@ -119,7 +124,7 @@
   </p>
   Just hold tight. Another player should join the game within the next
   few minutes. If you're in the waiting room for more than 5 minutes without
-  another player joining, please return the HIT and try again later!
+  another player joining, please return the HIT.
   Otherwise, once a Viewer joins, you will be notified and need to
   click a button to start the game.
 </p>
@@ -202,7 +207,7 @@
       </br>
 
   </br>
-  The locations of the images are the same for the Sketcher and the Viewer.
+  The sets of animals look the same for the Sketcher and the Viewer.
       </br>
       <input type="radio" name="location" value="no"> True
       </br>
@@ -239,7 +244,7 @@
       while (match = search.exec(query))
       urlParams[decode(match[1])] = decode(match[2]);
 
-      console.log(urlParams)
+      // console.log(urlParams)
 
       var counter = 0;
       document.getElementById("quiz_submit").onclick = function () {

@@ -10,13 +10,14 @@ FORBIDDEN_FILES = ["auth.json"]
 var serveFile = function(req, res) {
   var fileName = req.params[0];
   console.log("THIS?", {root: __dirname})
+  console.log("File Name: ",fileName);
   if(FORBIDDEN_FILES.includes(fileName)){
     // Don't serve files that contain secrets
     console.log("Forbidden file requested:" + filename);
     return; 
   }
   console.log('\t :: Express :: file requested: ' + fileName);
-  return res.sendFile(fileName, {root: __dirname});
+  return res.sendFile(fileName, {root: '/home/sholt/iterated_number/experiments'});
 };
 
 var handleDuplicate = function(req, res) {

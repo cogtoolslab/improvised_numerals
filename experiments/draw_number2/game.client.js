@@ -478,9 +478,16 @@ var client_onjoingame = function(num_players, role) {
     $('.ink').hide();
     $('.ink-bar').hide();
     $('#inklabel').hide();
+    console.log("pictures? : ", globalGame.guessing_pictures)
     $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
       "you think they mean. If you are correct, you will both receive a bonus.</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
+    if (globalGame.guessing_pictures == false){
+      $('#instructs').html("<p><b>Surprise! You actually only have to click written numbers (your partner doesn't know this).</b> </p> " +
+      "<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you see their sketch, " +
+      "click on the number you think they mean. If you are correct, you will both receive a bonus.</p>" +
+      "<p> Please do not resize browser window or change zoom during the game.</p>");
+    };
     if (globalGame.useSubmitButton) {
       $("#loading").show();
       $("#loading-message").html("");
