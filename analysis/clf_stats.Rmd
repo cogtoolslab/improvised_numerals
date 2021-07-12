@@ -55,11 +55,11 @@ CLFdf <- rbind(CLFdf_firstHalf,CLFdf_secondHalf)
 # only interaction:
 # condition : rate_condition + cardinality                     # BIC 4240.271
 # only interaction:
-# condition * rate_condition + cardinality + rate_condition : cardinality                  # BIC 4229.46  # winner!!
+# condition * rate_condition + cardinality + rate_condition : cardinality                  # doesn't converge
 
 
 correct <- glmer(data=CLFdf,
-                  correct ~ condition * rate_condition * cardinality
+                  correct ~ condition : rate_condition + cardinality
                   + (1 | game_id),
                   family = 'binomial')
 BIC(correct)
