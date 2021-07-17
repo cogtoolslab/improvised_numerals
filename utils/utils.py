@@ -210,8 +210,8 @@ def render_sketch_gallery(gameids,
             k = p.get_xaxis().set_ticks([])
             k = p.get_yaxis().set_ticks([])   
             p.axis('off')
-            plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
-            title_obj = plt.title('#{}, {} {}'.format(trialNum,category,cardinality))
+            plt.title('#{}, {} {}'.format(trialNum,category,str(int(cardinality)-1)))
+            title_obj = plt.title('#{}, {} {}'.format(trialNum,category,str(int(cardinality)-1)))
             plt.setp(title_obj, color=title_colour)
             
         f = game_sketch_paths[1] # had to make this up; every game only has one condition, so okay for now
