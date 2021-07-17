@@ -18,9 +18,8 @@ var
     _             = require('lodash'),
     Server        = require('./utils/serverBase.js');
 
-person_who_complained = "A2OX8TSRCU6NKD"
 var gameport;
-var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3','A9AHPCS83TFFE',person_who_complained];
+var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3','A9AHPCS83TFFE'];
 var blockResearcher = false;
 
 if(argv.gameport) {

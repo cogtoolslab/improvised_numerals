@@ -198,7 +198,8 @@ var dataOutput = function() {
       trialNum : client.game.state.roundNum + 1,
       workerId: client.workerid,
       assignmentId: client.assignmentid,
-      viewer_sees_images: client.game.guessing_pictures
+      viewer_sees_images: client.game.guessing_pictures,
+      regularity: client.game.regularity
     };
   };
 

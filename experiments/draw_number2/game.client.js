@@ -196,7 +196,6 @@ var client_onMessage = function(data) {
         earnedCents = 3.00 // (3.00 + parseFloat((timeleft / 30).toFixed(2))).toFixed(2);
       } // remove timer
       // draw feedback
-      console.log("This is being hit")
       if (globalGame.my_role === globalGame.playerRoleNames.role1) {
 	       drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents);
       } else {
@@ -297,6 +296,7 @@ var customSetup = function(game) {
   // This means clear the canvas, update round number, and update score on screen
   game.socket.on('newRoundUpdate', function(data){
 
+
     // Reset sketchpad each round
     project.activeLayer.removeChildren();
     // reset drawing stuff
@@ -304,6 +304,86 @@ var customSetup = function(game) {
     game.strokeMade = false;
     globalGame.path = [];
     submitted = false;
+
+
+
+
+    // switch roles
+  //   console.log("I was... ",globalGame.my_role)
+  //   if (globalGame.my_role === globalGame.playerRoleNames.role2 ){
+  //     globalGame.my_role = globalGame.playerRoleNames.role1
+  //   } else{
+  //     globalGame.my_role = globalGame.playerRoleNames.role2
+  //   };
+  //   globalGame.get_player(globalGame.my_id).role = globalGame.my_role
+  //   console.log("But am now... ",globalGame.my_role)
+
+  //   // Update with switched roles instructions
+  // $('#roleLabel').replaceWith("You are the " + globalGame.my_role + '.');
+  // if (globalGame.my_role === globalGame.playerRoleNames.role1) {
+  //   txt = "target";
+  //   $('#instructs').html("<p>You have a limited amount of 'ink' to indicate on the sketchpad which image is the target (purple) so that your partner can tell which it is. You will receive " +
+  //     "a bonus ONLY if the Viewer selects the correct object. DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
+  //     if (globalGame.useSubmitButton) {
+  //       $("#submitbutton").show();
+  //     }
+  //   // set up stroke / ink bar
+  //   $('.ink-bar').attr('aria-valuemax',globalGame.inkLimit);
+  //   $('.ink').show();
+  //   $('.ink-bar').show();
+  //   $('#inklabel').show();
+    
+  // } else if (globalGame.my_role === globalGame.playerRoleNames.role2) {
+  //   $('.ink').hide();
+  //   $('.ink-bar').hide();
+  //   $('#inklabel').hide();
+  //   $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
+  //     "you think they mean. If you are correct, you will both receive a bonus.</p>" +
+  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
+  //   if (globalGame.guessing_pictures == false){
+  //     $('#instructs').html("<p><b>Surprise! You actually only have to click written numbers (your partner doesn't know this).</b> </p> " +
+  //     "<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you see their sketch, " +
+  //     "click on the number you think they mean. If you are correct, you will both receive a bonus.</p>" +
+  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
+  //   };
+  //   if (globalGame.useSubmitButton) {
+  //     $("#loading").show();
+  //     $("#loading-message").html("");
+  //   }
+  // }
+
+  // if(globalGame.my_role === globalGame.playerRoleNames.role2) {
+  //   $('#submitbutton').hide();
+  //   // $('#confirmbutton').show();
+  //   // added and put the rest inside click function
+  //   // send packet to server on button click
+  //   $('#confirmbutton').click(function start() {
+  //     if(globalGame.packet) {
+  //       if (globalGame.strokeMade || globalGame.doneDrawing) { // change
+  //         if (!globalGame.useSubmitButton || submitted) {
+  //           $('#confirmbutton').hide();
+  //           globalGame.socket.send(globalGame.packet.join('.'));
+  //         }
+  //       }
+  //     }
+  //   });
+  //   globalGame.viewport.addEventListener("click", responseListener, false);
+  //   globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
+  //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
+  // } else {
+  //   $('#confirmbutton').hide();
+  //   $('#submitbutton').show();
+  //   globalGame.sketchpad.setupTool();
+  // }
+
+  // // end of switch roles
+
+
+
+
+
+
+    
 
     // reset clicked obj flag
     objClicked = false;
