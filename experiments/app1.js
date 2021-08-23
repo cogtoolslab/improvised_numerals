@@ -19,7 +19,9 @@ var
 
 var gameport;
 // cogtoolsrequester is: 'A9AHPCS83TFFE'
-var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3'];
+
+// First 4 here are workers who needed to do the compensation HIT
+var researchers = ['A2T675UCHNTSSW','A2RVFMCKSSEHDV','A1V2H0UF94ATWY','A2UYZFH5VT5R3H',  'A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3'];
 var blockResearcher = false;
 
 if(argv.gameport) {

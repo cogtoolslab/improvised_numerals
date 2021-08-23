@@ -122,6 +122,18 @@ var onMessage = function(client,message) {
    gc.newRound();
    console.log("startGame in server.js called")
    break;
+   
+   case 'newSubmitTime' : 
+   gc.submitTime = Date.now();
+   break;
+
+   case 'newClickedTime' : 
+   gc.clickedTime = Date.now();
+   break;
+
+   case 'newConfirmTime' : 
+   gc.confirmTime = Date.now();
+   break;
  }
 };
 
@@ -200,10 +212,12 @@ var dataOutput = function() {
       assignmentId: client.assignmentid,
       viewer_sees_images: client.game.guessing_pictures,
       regularity: client.game.regularity
+      
     };
   };
 
   var clickedObjOutput = function(client, message_data) {
+    // console.log("Times: (submit; clicked; confirm): ",client.game.submitTime,client.game.clickedTime,client.game.confirmTime);
     var objects = client.game.trialInfo.currStim;
     var intendedName = getIntendedTargetName(objects);
     var objLocations = _.zipObject(getObjectLocHeaderArray(), getObjectLocs(objects));
@@ -224,7 +238,10 @@ var dataOutput = function() {
       targ_s_url: getObjectUrls(objects)['t_s_url'],
       targ_v_url: getObjectUrls(objects)['t_v_url'],
       dis_s_urls: getObjectUrls(objects)['dis_s_urls'],
-      dis_v_urls: getObjectUrls(objects)['dis_v_urls']
+      dis_v_urls: getObjectUrls(objects)['dis_v_urls'],
+      submitTime: client.game.submitTime,
+      clickedTime: client.game.clickedTime,
+      confirmTime: client.game.confirmTime
       }
     );
     //console.log(JSON.stringify(_.pick(output, ['trialNum','intendedName','clickedName','correct','previous_score','previous_bonus_score','subset']), null, 3));

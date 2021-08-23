@@ -250,6 +250,9 @@ var customSetup = function(game) {
       if (globalGame.currStrokeNum > 0) { // only allow submit button to be pressed if at least one stroke made
         var finished = ['doneDrawing',1];
         globalGame.socket.send(finished.join('.'));
+        if (submitted == false){
+          game.socket.send('newSubmitTime');
+        };
         $('#feedback').html("");
       } else {
         if (!globalGame.useSubmitButton || !globalGame.doneDrawing) {
@@ -558,7 +561,6 @@ var client_onjoingame = function(num_players, role) {
     $('.ink').hide();
     $('.ink-bar').hide();
     $('#inklabel').hide();
-    console.log("pictures? : ", globalGame.guessing_pictures)
     $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
       "you think they mean. If you are correct, you will both receive a bonus.</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
@@ -599,6 +601,7 @@ var client_onjoingame = function(num_players, role) {
       if(globalGame.packet) {
         if (globalGame.strokeMade || globalGame.doneDrawing) { // change
           if (!globalGame.useSubmitButton || submitted) {
+            globalGame.socket.send('newConfirmTime');
             $('#confirmbutton').hide();
             globalGame.socket.send(globalGame.packet.join('.'));
           }
@@ -649,6 +652,10 @@ function responseListener(evt) {
 	// find which shape was clicked
 	_.forEach(globalGame.objects, function(obj) {
 	    if (hitTest(obj, mouseX, mouseY)) {
+
+          globalGame.new
+          globalGame.socket.send('newClickedTime');
+
           $('#confirmbutton').show();
 		      //globalGame.messageSent = false;
           var player = globalGame.get_player(globalGame.my_id)
