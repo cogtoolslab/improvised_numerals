@@ -62,23 +62,25 @@
                   <div class="value">MAX</div>
             </div>
         </div> --> <!-- remove timer -->
-
         <div id="inklabel">Remaining ink:
-        <div class="ink">
-          
-          <div class="ink-bar" role="inkbar" aria-valuenow="100"
-               aria-valuemin="0" aria-valuemax="100">
+          <div class="ink">
+            
+            <div class="ink-bar" role="inkbar" aria-valuenow="100"
+                 aria-valuemin="0" aria-valuemax="100">
+            </div>
           </div>
-          
-          
-      </div></div>
+        </div>
+        
 
     </div>
 
     <div id='main'>
+
       <span>
+        
       <canvas id="sketchpad" tabindex=1 height='500px' width='500px'></canvas>
             <canvas id="viewport"> </canvas>
+            
       <div id='loading' style="display: none"><div id="loading-message">The Sketcher is still drawing...</div></div>
       <div id='occluder' style="display: none"> </div>
       <button id="submitbutton" style="display:none">Submit</button>

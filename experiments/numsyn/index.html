@@ -1,0 +1,375 @@
+<!doctype html>
+
+<link rel="shortcut icon" href="#" />
+
+<html>
+  <style>
+    #instructions {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #numdict {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      text-align: center;
+      border: 1px solid white;
+    }
+
+    #numdict tr {
+      border: 1px solid white;
+    }
+    .dictrow {
+      border: 1px solid white;
+    }
+
+    #thankyou {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #RoundNumDiv {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #main_image {
+      /* width: 50%; */
+      color: #FFFFFF;
+      margin: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+
+    #problem {
+      position:relative;
+      margin:auto;
+      text-align: center;
+    }
+    #stim {
+      position:relative;
+      margin:auto;
+      text-align: center;
+    }
+   
+    #animals {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      margin-bottom: auto;
+    }
+    #cardinalities {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      margin-bottom: auto;
+    }
+    #exit_survey {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    </style>
+    
+  <head>
+    <title> Numbers </title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/snap.svg-min.js"></script>
+    <script src="js/jspsych.js"></script>
+    <script src="js/jspsych-nAFC-circle.js"></script>
+    <script src="js/jspsych-instructions.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <!-- <script src="js/object_list.js"></script> -->
+    <script src="js/setup.js"></script>
+    <link rel="stylesheet" href="./custom.css"></link>
+    
+
+    <script>
+      // make sure we have lodash; if we don't, then import it
+      var has_require = typeof require !== 'undefined';
+      if( typeof _ === 'undefined' ) {
+        if( has_require ) {
+          _ = require('lodash');
+          utils  = require(__base + 'utils/sharedUtils.js');
+        }
+        else throw 'mymodule requires underscore, see http://underscorejs.org';
+      };
+
+      function sendData() {
+        console.log('sending data to mturk');
+        jsPsych.turk.submitToTurk({'score':score});
+      };
+      
+      window.onbeforeunload = function() {
+        return "Data will be lost if you leave the page, are you sure?";
+      };
+      
+
+
+
+      var turkerStatus = false;
+      var curTrial = -1; /* we want to use this as 
+          index into trialList, so start at 0 */
+      var curTrialTimeStarted = 0;
+
+      // we want to generate the list of numbers
+      highestNumber = 24
+      dotArrays = [];
+      for (var i = 1; i < highestNumber + 1; i++){
+        rows = Math.floor(i / 8)
+        rowRemainder = i % 8
+        groups = Math.floor(rowRemainder / 4)
+        remainder = i % 4
+        curArr = "•••• ••••<br>".repeat(rows) + "•••• ".repeat(groups) + "•".repeat(remainder);
+        dotArrays.push(curArr);
+      };
+
+      numSyls = [];
+      onsets = ['k','s','t','n','h','m'];
+      codas = ['a','i','u','e','o'];
+      possibleSyls = [];
+      for (var i = 0; i < onsets.length; i++){
+        for (var j = 0; j < codas.length; j++){
+          curSyl = onsets[i] + codas[j]
+          possibleSyls.push(curSyl)
+        };
+      };
+      shuffledSyls = _.shuffle(possibleSyls).slice(0,highestNumber)
+
+      
+
+
+      // when the document is ready
+      $(document).ready(function() {
+        // add numdict
+        for (var i = 0; i < shuffledSyls.length; i++){
+        firstpart = i % 2 == 0 ? "<tr class='dictrow' style='background-color:slategrey;'><td>" : "<tr class='dictrow'><td>"
+        markup = firstpart + dotArrays[i] + '</td><td>' + shuffledSyls[i] + '</td></tr>'
+        $('#numdict tbody').append(markup);
+      };
+
+      $("#main_image").hide();
+      $("#thankyou").hide();
+      $("#RoundNumDiv").hide();
+
+      var totalScore = 0;
+      var totalTrials = 0;
+      var sum = 0;
+      
+      AdvanceSlide = function(){
+        var answer = document.getElementById("response").value;
+        
+
+        if (answer == shuffledSyls[sum]){
+          totalScore = totalScore + 1;
+        } else{
+        };
+        totalTrials = totalTrials + 1;
+
+        
+
+
+        sum = Math.ceil(Math.random() * dotArrays.length); // get a random index from the list of numbers
+        var firstAddend = Math.ceil(Math.random() * sum); // get a random point between 0 and the sum
+        var secondAddend = sum - firstAddend;
+
+        console.log(firstAddend,'+',secondAddend,'=',sum,'aka',shuffledSyls[sum],'or',answer)
+
+        $("#first").html(dotArrays[firstAddend-1].replace(/\<br>/g, '<br/>'))
+        $("#second").html(dotArrays[secondAddend-1].replace(/\<br>/g, '<br/>'))
+
+        $("#main_image").show();
+        $("#nextButton").show();
+        $("#response").show();
+
+        
+
+      };
+
+      StartExperiment = function(){
+        $("#instructions").hide();
+        $("#RoundNumDiv").show();
+        $("#RoundNumDiv").append("Score: ",totalScore)
+        AdvanceSlide()
+      };
+      
+      });
+      
+      
+      
+
+      $("#rect").text('No!');
+ 
+   
+      
+      $("#surveySubmit").on("click", function(){
+        $("#exit_survey").hide()
+        $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+        $("#thankyou").show()
+      });
+
+      var subject_information = [];
+      // This gets called when someone selects something in the menu during the exit survey...
+      // collects data from drop-down menus and submits using not mmturkey, but JSPsych
+      function dropdownTip(data){
+        var commands = data.split('::');
+        switch(commands[0]) {
+        case 'gender' :
+          subject_information = _.extend(subject_information,
+                    {'gender' : commands[1]}); break;
+        case 'age' :
+          subject_information = _.extend(subject_information,
+                    {'age' : commands[1]}); break;
+        case 'comments' :
+          subject_information = _.extend(subject_information,
+                    {'comments' : commands[1]}); break;
+        case 'confused' :
+          subject_information = _.extend(subject_information,
+                    {'confused' : commands[1]}); break;
+        case 'submit' :
+          subject_information = _.extend(subject_information,
+                    {'comments' : $('#comments').val(),
+                  'totalLength' : new Date() - startTime});
+          console.log("data is...");
+          console.log(subject_information);
+          if(turkerStatus == true) {
+            jsPsych.turk.submitToTurk(subject_information); // this seems like it works, while the line below does not...         
+            // window.opener.turk.submit(subject_information, true);
+            window.close();
+          } else {
+            console.log("would have submitted the following :")
+            console.log(subject_information);
+          }
+          break;
+        }
+      }
+
+      var startTime = new Date()
+      
+    </script>
+  </head>
+
+
+  <body>
+    <div id="display-area"></div>
+
+    <!-- Instructions DIV is hidden once they 
+    click the button. Default instruction text is for number condition -->
+    <div id="instructions">
+      <p id="instruction_text">
+        Take a look at these numbers. You're going to do some simple math with them!
+
+        <table id=numdict style="width:80%">
+        <tbody>
+          
+        </tbody>
+        </table>
+
+        <button id=syl style="width:50px;height:50x;border:1px solid darkslategrey; background-color:darkslategrey; display:none" ></button>
+      </p>
+
+      <button id="startExperimentButton" onclick="StartExperiment()">
+        Click here to begin
+      </button>
+
+      
+    </div>
+    
+
+    <div id="main_image">
+      <table id="stim">
+        <tbody id='problem' style="text-align:right">
+          <td id='first' style='color:blue'> A </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;</td> <td id='second' style='color:grey'> B </td> <td>&nbsp;&nbsp; = &nbsp;&nbsp;?</td>
+        </tbody>
+      </table>
+
+      
+    </div>
+
+
+    <div id="RoundNumDiv">
+      <input id='response' style='display:none;' type=text placeholder="Type answer here"> </input>
+      <br>
+      <br>
+      <button id="nextButton" onclick="AdvanceSlide()" style="display:none">
+        Next
+      </button>
+      <p id="RoundNumText">
+        Round 0
+      </p>
+    </div>
+
+    <div id="thankyou">
+      <p id="thankyouText">
+        Thank you!
+      </p>
+    </div>
+
+    <div id="exit_survey" style="display:none">
+      <br><p> Thanks for participating! Please fill out this optional demographic survey and submit your HIT at the bottom of the page. </p><br>
+      (When you click "Submit HIT", a pop-up window will appear; feel free to click "Leave" at that prompt) <br>
+      <p> What is your gender? </p>
+      <select onChange="dropdownTip('gender::' + this.value)">
+        <option value =""></option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <br><br>
+
+      <p> What is your age? </p>
+      <textarea id='age' onChange="dropdownTip('age::' + this.value)" rows="1" cols="8"></textarea>
+      <br><br>
+
+      <p> Did you read the instructions and do you think you did the
+  HIT correctly? </p>
+      <select onChange="dropdownTip('confused::' + this.value)">
+        <option value = ""></option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+        <option value="confused">I was confused</option>
+      </select>
+
+      <p> Do you have any comments on the experiment? </p>
+      <textarea id='comments' onChange="dropdownTip('comments::' + this.value)" rows="4" cols="50"></textarea>
+      <br>
+
+      <p> Note: Clicking this button should automatically submit the HIT and close this tab. There is no need to input a code.<p>
+      <p> If you experience a problem submitting, please contact ladlab.ucsd@gmail.com for compensation. </p>
+
+      <div><button id="surveySubmit" onclick="dropdownTip('submit')" type="button">Submit HIT</button></div>
+    </div>
+  
+    <script>
+      
+      
+    </script>
+
+
+  </body>
+</html>

@@ -118,16 +118,6 @@ xyhtml , body {
     font-weight:lighter;
 }
 
-#inklabel {
-    left: 55vh; top: 25%; bottom: 20%;
-    right: 300vh;
-    margin-right: 4vw;
-    position: absolute;
-    bottom:0px;
-    font-size: 2vh;
-    font-weight:lighter;
-}
-
 
 #cents {
   height: 2vh;
@@ -257,8 +247,27 @@ xyhtml , body {
 }
 
 
+#inklabel {
+    float: middle;
+    height: 100%;
+    margin: auto;
+	  top: 20vh; bottom: auto; left:0; right: 500px;
+    position: absolute;
+    /* float: left;
+    left: 30h; */
+    /* left: 55vh; top: 25%; bottom: 20%;
+    right: 300vh; 
+    margin-right: 4vw;
+    position: relative;
+    float: left;
+    bottom:0px; */
+    font-size: 2vh;
+    font-weight:lighter;
+}/* 25% */
 
 .ink{
+    float: middle;    
+    right: 47%; left: auto; top: 30px;
     width: 1.6vw;
     position: absolute;
     display: flex;
@@ -269,6 +278,8 @@ xyhtml , body {
 }
 
 .ink-bar{
+    float: middle;
+    right: 47%; left: auto; top: 30px;
     height: 100%;
     -webkit-transition: none !important;
     transition: none !important;
