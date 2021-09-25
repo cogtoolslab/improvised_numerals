@@ -429,16 +429,158 @@ def generate_dataframe(coll, complete_games, iterationName, csv_dir):
     # tag outlier games (low accuracy)
     _D['outcome'] = pd.to_numeric(_D['outcome'])
     acc = _D.groupby('gameID')['outcome'].mean().reset_index()
-    thresh = acc['outcome'].mean() - acc['outcome'].std()*3
-    low_acc_games = acc[acc['outcome']<thresh]['gameID'].values
+    thresh1 = acc['outcome'].mean() - acc['outcome'].std()*3
+    low_acc_games = acc[acc['outcome']<thresh1]['gameID'].values
+    
+    # tag games that fail our prespecified accuracy threshold of 50%
+    thresh2 = .5
+    failed_games = acc[acc['outcome']<thresh2]['gameID'].values
 
     # add new column, low_acc, to keep track of low accuracy games
     _D = _D.assign(low_acc = pd.Series(np.zeros(len(_D),dtype=bool)))
     _D.loc[_D['gameID'].isin(low_acc_games),'low_acc'] = True
+    
+    #... and do the same for failed games
+    _D = _D.assign(failed = pd.Series(np.zeros(len(_D),dtype=bool)))
+    _D.loc[_D['gameID'].isin(failed_games),'failed'] = True
 
     # save out dataframe to be able to load in and analyze later w/o doing the above mongo querying ...
     _D.to_csv(os.path.join(csv_dir,'iterated_number_group_data_{}.csv'.format(iterationName)),index=False)
 
     print('Done!')
     return _D    
+
+
+
+
+def quick_dataframe(coll, complete_games, iterationName, csv_dir):
+    
+    # preprocessing
+    TrialNum = []
+    GameID = []
+    Category = []
+    Cardinality = []
+    Outcome = []
+    Response = []
+    numStrokes = []
+    drawDuration = [] # in seconds
+    #svgString = [] # svg string representation of ksetch
+    png=[] # the sketch
+    timedOut=[] # True if sketchers didn't draw anything, False o.w.
+    meanPixelIntensity=[]
+    Regularity = []
+
+
+    for i,g in enumerate(complete_games):
+
+            # collection of all clickedObj events in a particular game
+            X = coll.find({ '$and': [{'gameid': g}, {'eventType': 'clickedObj'}]}).sort('time')
+            # collection of all stroke events in a particular game
+            Y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}]}).sort('time')
+            counter = 0
+            for t in X: # for each clickedObj event
+                print( 'Analyzing game {} | {} of {} | trial {}'.format(g, i+1, len(complete_games),counter))
+                clear_output(wait=True)           
+                counter += 1
+                target = t['intendedName']
+                category = target.split('_')[0]
+                cardinality = target.split('_')[1]                
+                
+                if 'regularity' in t.keys():
+                    regularity = t['regularity']
+                else:
+                    regularity = float('NaN')
+                
+                #for each stroke event with same trial number as this particular clickedObj event
+                y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+                # have to account for cases in which sketchers do not draw anything
+                if (y.count() == 0):
+                    numStrokes.append(float('NaN'))
+                    drawDuration.append(float('NaN'))
+                    #svgString.append('NaN')
+                    meanPixelIntensity.append('NaN')
+                    timedOut.append(True)
+                    
+                    svg_list = 'NaN'
+                else:
+                    y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+
+
+                    lastStrokeNum = float(y[y.count() - 1]['currStrokeNum']) # get currStrokeNum at last stroke
+                    ns = y.count()
+                    if not lastStrokeNum == ns:
+                        print("ns: " + str(ns))
+                        print("lastStrokeNum: " + str(lastStrokeNum))
+
+                    numStrokes.append(lastStrokeNum)
+
+                    # calculate drawDuration
+                    startStrokeTime =  float(y[0]['startStrokeTime'])
+                    endStrokeTime = float(y[y.count() - 1]['endStrokeTime']) ## took out negative 1
+                    duration = (endStrokeTime - startStrokeTime) / 1000
+                    drawDuration.append(duration)
+
+                    # extract svg string into list
+                    #svg_list = [_y['svgData'] for _y in y]
+
+                    # calculate other measures that have to do with sketch
+                    #y = coll.find({ '$and': [{'gameid': g}, {'eventType': 'stroke'}, {'trialNum': t['trialNum']}]}).sort('time')
+                    timedOut.append(False)
+
+                    ## calculate pixel intensity (amount of ink spilled)                    
+                    imsize = 300
+                    numpix = imsize**2
+                    thresh = 250
+                    imgData = t['pngString']
+                    im = Image.open(BytesIO(base64.b64decode(imgData)))
+                    _im = np.array(im)
+                    meanPixelIntensity.append(len(np.where(_im[:,:,3].flatten()>thresh)[0])/numpix)
+                  
+
+                ### aggregate game metadata
+                TrialNum.append(t['trialNum'])
+                GameID.append(t['gameid'])
+                Category.append(category)
+                Cardinality.append(cardinality)
+                Response.append(t['clickedName'])
+                Outcome.append(t['correct'])
+                #svgString.append(svg_list)
+                Regularity.append(regularity)
+
+
+
+    ## now actually make dataframe
+    GameID,TrialNum, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, timedOut, png, Regularity = map(np.array, \
+    [GameID,TrialNum, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, timedOut, png, Regularity])
+
+    Repetition = map(int,Repetition)
+
+    _D = pd.DataFrame([GameID,TrialNum, Category, Cardinality, drawDuration, Outcome, Response, numStrokes, meanPixelIntensity, timedOut, png, Regularity],
+                     index = ['GameID','TrialNum', 'Category', 'Cardinality', 'drawDuration', 'Outcome', 'Response', 'numStrokes', 'meanPixelIntensity', 'timedOut', 'png', 'Regularity'])
+    _D = _D.transpose()    
+    
+    # tag outlier games (low accuracy)
+    _D['outcome'] = pd.to_numeric(_D['outcome'])
+    acc = _D.groupby('gameID')['outcome'].mean().reset_index()
+    thresh1 = acc['outcome'].mean() - acc['outcome'].std()*3
+    low_acc_games = acc[acc['outcome']<thresh1]['gameID'].values
+    
+    # tag games that fail our prespecified accuracy threshold of 50%
+    thresh2 = .5
+    failed_games = acc[acc['outcome']<thresh2]['gameID'].values
+
+    # add new column, low_acc, to keep track of low accuracy games
+    _D = _D.assign(low_acc = pd.Series(np.zeros(len(_D),dtype=bool)))
+    _D.loc[_D['gameID'].isin(low_acc_games),'low_acc'] = True
+    
+    #... and do the same for failed games
+    _D = _D.assign(failed = pd.Series(np.zeros(len(_D),dtype=bool)))
+    _D.loc[_D['gameID'].isin(failed_games),'failed'] = True
+
+    # save out dataframe to be able to load in and analyze later w/o doing the above mongo querying ...
+    _D.to_csv(os.path.join(csv_dir,'iterated_number_group_data_{}.csv'.format(iterationName)),index=False)
+
+    print('Done!')
+    return _D    
+
     
