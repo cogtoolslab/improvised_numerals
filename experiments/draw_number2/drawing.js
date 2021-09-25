@@ -235,6 +235,7 @@ function endStroke(event) {
     //console.log("endstroketime: " + globalGame.endStrokeTime);
     // Increment stroke num
     globalGame.currStrokeNum += 1;
+    console.log("Happening yo");
     
     // if they've reached the strokeLimit, disallow them from more
     // if (globalGame.currStrokeNum == globalGame.strokeLimit) {

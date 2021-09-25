@@ -1,0 +1,152 @@
+<!doctype html>
+
+<link rel="shortcut icon" href="#" />
+
+<html>
+  <style>
+      #maindiv {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+
+    #container {
+      color: #FFFFFF;
+    }
+
+
+  </style>
+    
+  <head>
+    <title> Monitor Games </title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="../classify_iternum/js/jquery.min.js"></script>
+    <script src="../classify_iternum/js/lodash.min.js"></script>
+    <script src="../classify_iternum/js/setup.js"></script>
+
+
+    <script>
+      // make sure we have lodash; if we don't, then import it
+      var has_require = typeof require !== 'undefined';
+      if( typeof _ === 'undefined' ) {
+        if( has_require ) {
+          _ = require('lodash');
+          utils  = require(__base + 'sharedUtils.js');
+        }
+        else throw 'mymodule requires underscore, see http://underscorejs.org';
+      };
+      
+      // when the document is ready
+      $(document).ready(function() {
+        $('#bouton').text('Refresh');
+        
+      });
+
+      
+      
+      
+      
+    </script>
+  </head>
+
+
+  <body style="background-color:black;">
+    <div id="display-area"></div>
+
+    <!-- Instructions DIV is hidden once they 
+    click the button. Default instruction text is for number condition -->
+    <div id="maindiv" style="width:100%;">
+
+      
+      <button id="autoRefreshButton" onclick="activateAutoRefresh()" style="background-color:white;">
+        Auto Refresh
+      </button>
+
+      <button id="bouton" onclick="sendMonitorQuery()" style="background-color:white;">
+        Button
+      </button>
+      <br>
+      <br>
+
+      
+    </div>
+
+    <div id="container" style="width:100%;position:center;">
+
+    </div>
+    
+
+<script>
+
+  var socket = io.connect();
+  var preactivated = false;
+
+  var activateAutoRefresh = function(){
+    if (preactivated == false){
+      refresh = setInterval(function(){socket.emit('monitor_query');},1000);
+      preactivated = true;
+      document.getElementById('autoRefreshButton').style = 'background-color:yellow;';
+    }else{
+      clearInterval(refresh);
+      preactivated = false;
+      document.getElementById('autoRefreshButton').style = 'background-color:white;';
+    };
+    
+  };
+
+  var sendMonitorQuery = function(){
+    socket.emit('monitor_query');
+  };
+
+  socket.on('reportingGameInfo',function(info){
+
+    html = "<table style='width:100%;text-align:center;'>";
+    html += "<tr>";
+    html += "<th>GameID</th>";
+    html += "<th>Condition</th>";
+    html += "<th>RoundNum</th>";
+    html += "<th>Players</th>";
+    html += "<th>Time (minutes)</th>";
+    html += "<th>Score</th>";
+    html += "</tr>";
+    
+    row = 0;
+    for (let key in info){
+      regularity = info[key].regularity;
+      roundNum = info[key].roundNum + 1;
+      player_count = info[key].player_count;
+      elapsedTime = (Date.now() - info[key].gameStartTime) / 1000;  // used to be trialStartTime - gameStartTime
+      elapsedMinutes = Math.floor(elapsedTime / 60).toString();
+      remainderSeconds = Math.round(elapsedTime % 60).toString();
+      if (remainderSeconds.length == 1){
+        remainderSeconds = '0' + remainderSeconds;
+      };
+      score = info[key].score;
+      bonus_score = info[key].bonus_score;
+
+      html += row % 2 == 0 ? "<tr style='background-color:slategrey;'>" : "<tr>";
+      html += "<td>" + key.toString() + "</td>";
+      html += "<td>" + regularity.toString() + "</td>";
+      html += "<td>" + roundNum.toString() + "</td>";
+      html += "<td>" + player_count.toString() + "</td>";
+      html += "<td>" + elapsedMinutes + ":" + remainderSeconds + "</td>";
+      html += "<td>" + score.toString() + " " + bonus_score.toString() + "</td>";
+      html += "</tr>";
+      row += 1;
+    };
+
+    html += "</table>";
+
+    document.getElementById('container').innerHTML = row != 0 ? html : "<p style='position:center;'> <b>Sorry, no games.</b> </p>";
+    document.getElementById('container').style.display = 'block';
+  });
+  
+</script>
+
+  </body>
+</html>

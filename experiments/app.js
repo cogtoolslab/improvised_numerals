@@ -121,32 +121,46 @@ var initialize = function(query, client, id) {
   client.workerid = query.workerId ? query.workerId : '';
   client.assignmentid = query.assignmentId ? query.assignmentId : '';
 
-  // Make contact with client
-  client.emit('onconnected', { id: client.userid } );
-  if(gameServer.setCustomEvents) {gameServer.setCustomEvents(client);};
+  // set up a system for getting current game states with GUI
+  monitor = client.handshake.headers.referer.split('/')[4].split('.')[0] == 'monitor';
+  if (monitor == true) {
+    client.on('monitor_query', function () {
+      gameInfo = gameServer.reportGameInfo()
+      client.emit('reportingGameInfo', gameInfo );
+    });
+  };
 
-  // Good to know when they connected
-  console.log('\t socket.io:: player ' + client.userid + ' connected');
+  // everything that actually handles the games being played:
+  if (monitor != true) {
+    // Make contact with client
+    client.emit('onconnected', { id: client.userid } );
+    if(gameServer.setCustomEvents) {gameServer.setCustomEvents(client);};
 
-  //Pass off to game.server.js code
-  gameServer.findGame(client);
+    // Good to know when they connected
+    console.log('\t socket.io:: player ' + client.userid + ' connected');
 
-  // Now we want set up some callbacks to handle messages that clients will send.
-  // We'll just pass messages off to the server_onMessage function for now.
-  client.on('message', function(m) {
-    gameServer.onMessage(client, m);
-  });
+    //Pass off to game.server.js code
+    gameServer.findGame(client);
 
-  // When this client disconnects, we want to tell the game server
-  // about that as well, so it can remove them from the game they are
-  // in, and make sure the other player knows that they left and so on.
-  client.on('disconnect', function () {
-    console.log('\t socket.io:: client id ' + client.userid
-                + ' disconnected from game id ' + client.game.id);
+    // Now we want set up some callbacks to handle messages that clients will send.
+    // We'll just pass messages off to the server_onMessage function for now.
+    client.on('message', function(m) {
+      gameServer.onMessage(client, m);
+    });
 
-    //If the client was in a game set by gameServer.findGame,
-    //we can tell the game server to update that game state.
-    if(client.userid && client.game && client.game.id)
-      gameServer.endGame(client.game.id, client.userid);
-  });
+    // When this client disconnects, we want to tell the game server
+    // about that as well, so it can remove them from the game they are
+    // in, and make sure the other player knows that they left and so on.
+    client.on('disconnect', function () {
+      console.log('\t socket.io:: client id ' + client.userid
+                  + ' disconnected from game id ' + client.game.id);
+
+      //If the client was in a game set by gameServer.findGame,
+      //we can tell the game server to update that game state.
+      if(client.userid && client.game && client.game.id)
+        gameServer.endGame(client.game.id, client.userid);
+    });
+
+  };
+  
 };

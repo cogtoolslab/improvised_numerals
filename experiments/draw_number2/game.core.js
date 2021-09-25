@@ -50,7 +50,7 @@ var game_core = function(options){
   this.guessing_pictures = true // _.sample([true,false]);
 
   // will the spatial distribution of animals on the stim be regular or random?
-  this.regularity = _.sample(['regular','random']) // 'regular' or 'random'
+  this.regularity = _.sample(['regular','regular','random']) // 'regular' or 'random'
 
   // we want every cardinality in the random condition to have its own spatial distribution,
   // which should be constant within-game but arbitrary between-games
@@ -194,6 +194,9 @@ var game_core = function(options){
 
   // When did the current trial start?
   this.trialStartTime = Date.now();
+
+  // When did the current game start? (this never gets updated - we use it to monitor elapsed time via GUI while the HIT is live)  
+  this.gameStartTime = Date.now();
 
 
   // Is the sketcher ready to move on?

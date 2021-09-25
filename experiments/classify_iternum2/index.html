@@ -1,0 +1,485 @@
+<!doctype html>
+
+<link rel="shortcut icon" href="#" />
+
+<html>
+  <style>
+    #instructions {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #thankyou {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #RoundNumDiv {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #main_image {
+      /* width: 10%; */
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+    }
+    #main_image img {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    #main_image #intertitle {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 100px;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    #animals {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      margin-bottom: auto;
+    }
+    #cardinalities {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 50px;
+      margin-bottom: auto;
+    }
+    #exit_survey {
+      color: #FFFFFF;
+      width: 70%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      text-align: center;
+    }
+    </style>
+    
+  <head>
+    <title> Sketch Matching </title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/snap.svg-min.js"></script>
+    <script src="js/jspsych.js"></script>
+    <script src="js/jspsych-nAFC-circle.js"></script>
+    <script src="js/jspsych-instructions.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <!-- <script src="js/object_list.js"></script> -->
+    <script src="js/setup.js"></script>
+    <link rel="stylesheet" href="./custom.css"></link>
+    
+
+    <script>
+      // make sure we have lodash; if we don't, then import it
+      var has_require = typeof require !== 'undefined';
+      if( typeof _ === 'undefined' ) {
+        if( has_require ) {
+          _ = require('lodash');
+          utils  = require(__base + 'utils/sharedUtils.js');
+        }
+        else throw 'mymodule requires underscore, see http://underscorejs.org';
+      };
+
+      function sendData() {
+        console.log('sending data to mturk');
+        jsPsych.turk.submitToTurk({'score':score});
+      };
+      
+      window.onbeforeunload = function() {
+        return "Data will be lost if you leave the page, are you sure?";
+      };
+
+    </script>
+  </head>
+
+
+  <body>
+    <div id="display-area"></div>
+
+    <!-- Instructions DIV is hidden once they 
+    click the button. Default instruction text is for number condition -->
+    <div id="instructions">
+      <p id="instruction_text">
+        You will see a series of symbols.
+        Please click the number that you think each symbol was conveying!
+      </p>
+
+      <button id="startExperimentButton">
+        Click here to begin
+      </button>
+    </div>
+
+    <div id="main_image">
+      <img id="stim"
+      width="240" height="240" alt="Image"/>
+      
+      <!-- when people's internet crashes, we don't want them in the dark! -->
+      <img id="error_stim" src="/classify_iternum/forms/images/no_image.png"
+      width="240" height="240" alt="Error_Stim"/>
+
+    </div>
+
+
+    <div id="cardinalities">
+      <center>
+        <img id="one" class="classifier_button" src="classifier_buttons/button_1.png"
+        width="100" height="100" background="#FFFFFF" alt="1"/>
+        <img id="two" class="classifier_button" src="classifier_buttons/button_2.png"
+        width="100" height="100" alt="2"/>
+        <img id="three" class="classifier_button" src="classifier_buttons/button_3.png"
+        width="100" height="100" alt="3"/>
+        <img id="four" class="classifier_button" src="classifier_buttons/button_4.png"
+        width="100" height="100" alt="4"/>
+        <img id="five" class="classifier_button" src="classifier_buttons/button_5.png"
+        width="100" height="100" background="#FFFFFF" alt="5"/>
+        <img id="six" class="classifier_button" src="classifier_buttons/button_6.png"
+        width="100" height="100" alt="6"/>
+        <img id="seven" class="classifier_button" src="classifier_buttons/button_7.png"
+        width="100" height="100" alt="7"/>
+        <img id="eight" class="classifier_button" src="classifier_buttons/button_8.png"
+        width="100" height="100" alt="8"/>
+      </center>
+    </div>
+
+    <div id="animals">
+      <center>
+        <img id="bear" class="classifier_button" src="classifier_buttons/button_bear.png"
+        width="180" height="180" alt="bear"/>
+        <img id="deer" class="classifier_button" src="classifier_buttons/button_deer.png"
+        width="180" height="180" alt="deer"/>
+        <img id="owl" class="classifier_button" src="classifier_buttons/button_owl.png"
+        width="180" height="180" alt="owl"/>
+        <img id="rabbit" class="classifier_button" src="classifier_buttons/button_rabbit.png"
+        width="180" height="180" alt="rabbit"/>
+      </center>
+    </div>
+
+    <div id="RoundNumDiv">
+      <p id="RoundNumText">
+        Round 0
+      </p>
+    </div>
+
+    <div id="thankyou">
+      <p id="thankyouText">
+        Thank you!
+      </p>
+    </div>
+
+    <div id="exit_survey" style="display:none">
+      <br><p> Thanks for participating! Please fill out this optional demographic survey and submit your HIT at the bottom of the page. </p><br>
+      (When you click "Submit HIT", a pop-up window will appear; feel free to click "Leave" at that prompt) <br>
+      <p> What is your gender? </p>
+      <select onChange="dropdownTip('gender::' + this.value)">
+        <option value =""></option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <br><br>
+
+      <p> What is your age? </p>
+      <textarea id='age' onChange="dropdownTip('age::' + this.value)" rows="1" cols="8"></textarea>
+      <br><br>
+
+      <p> Did you read the instructions and do you think you did the
+  HIT correctly? </p>
+      <select onChange="dropdownTip('confused::' + this.value)">
+        <option value = ""></option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+        <option value="confused">I was confused</option>
+      </select>
+
+      <p> Do you have any comments on the experiment? </p>
+      <textarea id='comments' onChange="dropdownTip('comments::' + this.value)" rows="4" cols="50"></textarea>
+      <br>
+
+      <p> Note: Clicking this button should automatically submit the HIT and close this tab. There is no need to input a code.<p>
+      <p> If you experience a problem submitting, please contact ladlab.ucsd@gmail.com for compensation. </p>
+
+      <div><button id="surveySubmit" onclick="dropdownTip('submit')" type="button">Submit HIT</button></div>
+    </div>
+  
+    <script>
+      var turkerStatus = false;
+      var curTrial = -1; /* we want to use this as 
+          index into trialList, so start at 0 */
+      var curTrialTimeStarted = 0;
+      var last_clicked = 'nothing';
+      
+      $("#main_image").hide();
+      $("#intertitle").hide();
+      $("#animals").hide();
+      $("#cardinalities").hide();
+      $("#thankyou").hide();
+      $("#RoundNumDiv").hide();
+      $("#instructions").hide();
+      
+      // We want to add some precautions in case people's internet crashes!
+      // so below, if there's an error retrieving the stim, we hide everything
+      // and show them an error message. They can wait til the internet works,
+      // and click the error message when they're able to get back to the game
+      // Consulted: https://stackoverflow.com/questions/92720/jquery-javascript-to-replace-broken-images
+      $("#error_stim").hide();
+      $("#stim").error(
+        function(){
+          $("#stim").hide();
+          $("#error_stim").show();
+          $("#cardinalities").hide();
+          $("#animals").hide();
+        });
+      $("#error_stim").on("click", function(){
+        $("#error_stim").hide();
+        $("#stim").show();
+        $("#stim").attr("src", meta[curTrial].sketch_url);
+        if (condition == 'shape'){$("#animals").show()}
+        if (condition == 'number'){$("#cardinalities").show()}
+      });
+      
+      $("#surveySubmit").on("click", function(){
+        $("#exit_survey").hide()
+        $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+        $("#thankyou").show()
+      });
+
+      var subject_information = [];
+      // This gets called when someone selects something in the menu during the exit survey...
+      // collects data from drop-down menus and submits using not mmturkey, but JSPsych
+      function dropdownTip(data){
+        var commands = data.split('::');
+        switch(commands[0]) {
+        case 'gender' :
+          subject_information = _.extend(subject_information,
+                    {'gender' : commands[1]}); break;
+        case 'age' :
+          subject_information = _.extend(subject_information,
+                    {'age' : commands[1]}); break;
+        case 'comments' :
+          subject_information = _.extend(subject_information,
+                    {'comments' : commands[1]}); break;
+        case 'confused' :
+          subject_information = _.extend(subject_information,
+                    {'confused' : commands[1]}); break;
+        case 'submit' :
+          subject_information = _.extend(subject_information,
+                    {'comments' : $('#comments').val(),
+                  'totalLength' : new Date() - startTime});
+          console.log("data is...");
+          console.log(subject_information);
+          if(turkerStatus == true) {
+            jsPsych.turk.submitToTurk(subject_information); // this seems like it works, while the line below does not...         
+            // window.opener.turk.submit(subject_information, true);
+            window.close();
+          } else {
+            console.log("would have submitted the following :")
+            console.log(subject_information);
+          }
+          break;
+        }
+      }
+
+      var startTime = new Date()
+      // very janky way of getting the results of setup game into the experiment without redoing the whole thing in JSPsych
+      // not sure what 'setupGame()' this is calling, as it doesn't appear to be the one defined in setup.js
+      window.onload = function() {
+        // setupGame();
+        // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
+        var socket = io.connect();
+
+        // the following line is important for if the worker has already done the task and we have to redirect them
+        // https://stackoverflow.com/questions/33321792/how-to-redirect-a-client-after-a-socket-io-event
+        socket.on('redirect', function(destination) {
+            window.location.href = destination;
+
+            // attention: can we put in an alert here? People are currently redirected without explanation
+          });
+
+        socket.on('onConnected', function(d) {
+          
+          socket.removeListener('onConnected');
+          turkerStatus = d.turker;
+          var meta = d.meta;
+
+          catches = meta.filter(function(X) {    // extract catch trials
+            return X.catchTrial == true
+          });
+          meta = meta.filter(function(X) {    // and make another structure of the non-catch trials
+            return X.catchTrial == false
+          });
+
+          meta = _.shuffle(meta);    // shuffle all those real trials
+
+          for (var j=0; j<catches.length; j++){ // now reinsert the catch trials into the real ones at regular intervals
+            interval = Math.round(meta.length / catches.length)
+            meta.splice(interval*j, 0, catches[j]); // https://stackoverflow.com/questions/586182/how-to-insert-an-item-into-an-array-at-a-specific-index-javascript  
+          };
+
+          var URLs = [];
+          var origAnimals = [];
+          var origCardinalities = [];
+          var orig_conds = [];
+          var orig_gameIDs = [];
+          var orig_gametrials = [];
+          var orig_stim_versions = [];
+          var catch_trial_val = [];
+
+          for (var j=0; j<meta.length; j++) {
+            URLs.push(meta[j].sketch_url)
+            origAnimals.push(meta[j].orig_animal)
+            origCardinalities.push(meta[j].orig_cardinality)
+            orig_conds.push(meta[j].orig_cond)
+            orig_gameIDs.push(meta[j].orig_gameid)
+            orig_gametrials.push(meta[j].orig_trial)
+            orig_stim_versions.push(meta[j].orig_version)
+            catch_trial_val.push(meta[j].catchTrial)
+          };
+          console.log("Partition number: ",d.whole_structure.versionID);
+
+          var condition = d.whole_structure.classify_condition;
+          if (condition == 'shape'){$("#instruction_text").text( "You will see a series of symbols.\
+        Please click the animal that you think each symbol was conveying!" )};
+          $("#instructions").show();
+
+          function StartExperiment() {
+            $("#instructions").hide();
+            $("#RoundNumDiv").show();
+            AdvanceSlide();
+            startTime = new Date();
+          };
+          $("#startExperimentButton").on("click", StartExperiment);
+
+          function AdvanceSlide() {
+            var curTime = new Date(); // for measuring RT
+            var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
+
+            // displaying the new sketch for them to rate, and all the buttons
+            $("#main_image").show();
+            if (condition == 'number') {
+              $("#cardinalities").show();
+            };
+            if (condition == 'shape') {
+              $("#animals").show();
+            };
+
+            // now store the data depending on what trial we're at
+            if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
+            // now create the data structure we want to store for this trial on mongodb:
+              var output = {
+                dbname : 'iterated_number',
+                colname : 'num8_shape4_recognition',
+                iterationName : 'run1',
+                // first, info about the rating task
+                recog_gameID : d.gameid,
+                workerID: d.workerID,
+                assignmentID: d.assignmentID,
+                hitID: d.hitID,
+                turkSubmitTO: d.turkSubmitTO,
+                recog_version : d.experimentVersion,
+                rating_trial_num : curTrial+1,
+                rate_condition : condition, // is the rater being asked to select cardinalities or animals?
+                rating : last_clicked, // which label did the rater select?
+                RT : reaction_time,
+
+                // next, info about the original conditions under which the sketch was produced
+                orig_game_id : orig_gameIDs[curTrial],
+                orig_sketch_animal : origAnimals[curTrial],
+                orig_sketch_cardinality : origCardinalities[curTrial],
+                orig_game_trial_num : orig_gametrials[curTrial],
+                orig_game_condition : orig_conds[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
+                orig_stim_version : orig_stim_versions[curTrial], // which version of the target stim was used to elicit the sketch?
+                sketch_url : URLs[curTrial],
+                catch_trial : catch_trial_val[curTrial]};
+            
+
+            } if (curTrial == meta.length - 1){
+              console.log("The End")
+              $("#main_image").hide();
+              $("#cardinalities").hide();
+              $("#animals").hide();
+              $("#RoundNumDiv").hide();
+              $("#intertitle").hide();
+              // $("#thankyou").show();
+              $("#exit_survey").show()
+            };
+
+            // send that data to mongo! By way of app1.js of course, it needs to get to the server first
+            socket.emit('currentData', output); // this 'emits' the current trial info onto socket where app1.js is listening for it    
+
+            // replace the stim image with whatever is next in the list
+            curTrial = curTrial + 1
+            $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
+            $("#stim").attr("src", URLs[curTrial]);
+            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
+            
+            curTrialTimeStarted = new Date(); // for measuring RT
+          };
+
+
+
+
+
+          function HapticFeedback(button) {
+            // want to make accidental double clicks irrelevant by setting off the sensitivity
+            $(".classifier_button").off("click")
+
+            button.fadeTo(1, 0); // and also make it visually obvious what the choice was
+            button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
+            
+            // setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
+            setTimeout(function(){$(".classifier_button").each( function() {
+              var this_button = $(this);
+              this_button.on("click",function(){HapticFeedback(this_button)}); }
+            )}, 500); // for every classifier_button, make it clickable after 500ms
+
+            last_clicked = button[0].alt;
+
+            AdvanceSlide()
+          };
+          
+          // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
+          $("#bear").on("click", function(){HapticFeedback($("#bear"))});
+          $("#deer").on("click", function(){HapticFeedback($("#deer"))});
+          $("#owl").on("click", function(){HapticFeedback($("#owl"))});
+          $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
+
+          $("#one").on("click", function(){HapticFeedback($("#one"))});
+          $("#two").on("click", function(){HapticFeedback($("#two"))});
+          $("#three").on("click", function(){HapticFeedback($("#three"))});
+          $("#four").on("click", function(){HapticFeedback($("#four"))});
+          $("#five").on("click", function(){HapticFeedback($("#five"))});
+          $("#six").on("click", function(){HapticFeedback($("#six"))});
+          $("#seven").on("click", function(){HapticFeedback($("#seven"))});
+          $("#eight").on("click", function(){HapticFeedback($("#eight"))});
+
+        });
+      }
+    </script>
+
+
+  </body>
+</html>

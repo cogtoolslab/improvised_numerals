@@ -2,6 +2,7 @@ var utils = require(__base + 'utils/sharedUtils.js');
 
 global.window = global.document = global;
 
+
 class ReferenceGameServer {
   constructor(expName) {
     this.expName = expName;
@@ -13,6 +14,27 @@ class ReferenceGameServer {
     // Track ongoing games
     this.games = {};
     this.game_count = 0;
+  }
+
+  // this gets called when our monitor wants to know info about the current games
+  reportGameInfo(){
+    var gamesList = {};
+    
+    for (let key in this.games){
+        var gameInfo = {
+          regularity : this.games[key].regularity,
+          roundNum : this.games[key].state.roundNum,
+          player_count : this.games[key].player_count,
+          trialStartTime : this.games[key].trialStartTime,
+          gameStartTime : this.games[key].gameStartTime,
+          currStrokeNum : this.games[key].currStrokeNum,
+          score : this.games[key].data.subject_information.score,
+          bonus_score : this.games[key].data.subject_information.bonus_score
+        };
+
+      gamesList[key] = gameInfo;
+    };
+    return gamesList;
   }
 
   // if game relies on asynchronous stim logic, need to wait until everything
