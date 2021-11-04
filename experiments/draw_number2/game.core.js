@@ -29,7 +29,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'num6_shape3';
-  this.iterationName = 'regularity1';  // pilot1, sandbox1, sandbox2, pilot2, sandbox3, 
+  this.iterationName = 'sandbox';  // pilot1, sandbox1, sandbox2, pilot2, sandbox3, regularity1
   // pilot1 was very dull for everyone, too much counting for viewer and sketcher
   // sandbox2 was to check that we are storing the correct time stamps and whether viewer sees images or numbers
   // pilot2 showed viewers arabic numerals instead of stims

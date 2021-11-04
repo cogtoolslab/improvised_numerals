@@ -11,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../favicon.ico">
 
     <title>Symbols</title>
 
@@ -43,40 +42,144 @@
 
       <div class="well" style="width:800px; margin: 0 auto">
 
-<h2><center>Symbol Interpretation</center>  </h2>
+<h2><center>Tagging Symbols</center>  </h2>
 
 	<p>
 
-    In this experiment you will be shown 65 hand-drawn symbols and asked what they mean.
-    On each trial, one of these symbols will appear in the top part of the screen, and several options will appear below it.
-    Your task is to click the option that best matches the symbol. For example, you might be asked which <b>number</b> best matches the symbol:
+    Welcome! In this experiment, you will play a game where you view a series of 70 drawings and tell us what features they have.
+    Each drawing was made by someone who was playing a Pictionary-style game, where their goal was to produce a drawing to convey <b>how many objects there were</b> in an image, without using standard numerals.
+    The drawings will be shown at the top of the screen, along with the sets of animals they are describing.
+    We need your help identifying what strategies these people used when producing their drawings.
+    There are five main strategies: <b>matching</b>, <b>grouping</b>, <b>numbers</b>, <b>clipping</b>, and <b>unique</b>.
+    <div id="buttons">
+      <center>
+        <div class="buttonDiv" id="catch1ButtonDiv" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:orange">Matching</b><br>
+        <img id="catch1_button" class="classifier_button" src="images/classifier_buttons/catch1_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Matching"/>
+        <img id="catch1_ann_button" class="classifier_button" src="images/classifier_buttons/catch1_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Matching" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch2ButtonDiv" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:red">Grouping</b><br>
+        <img id="catch2_button" class="classifier_button" src="images/classifier_buttons/catch2_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Grouping"/>
+        <img id="catch2_ann_button" class="classifier_button" src="images/classifier_buttons/catch2_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Grouping" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch3ButtonDiv" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:white">Clipped</b><br>
+        <img id="catch3_button" class="classifier_button" src="images/classifier_buttons/catch3_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Clipped"/>
+        <img id="catch3_ann_button" class="classifier_button" src="images/classifier_buttons/catch3_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Clipped" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch4ButtonDiv" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:pink">Numbers</b><br>
+        <img id="catch4_button" class="classifier_button" src="images/classifier_buttons/catch4_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Number"/>
+        <img id="catch4_ann_button" class="classifier_button" src="images/classifier_buttons/catch4_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Number" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch5ButtonDiv" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"> <b style="color:magenta">Unique</b><br>
+        <img id="catch5_button" class="classifier_button" src="images/classifier_buttons/catch5_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Unique"/>
+        <img id="catch5_ann_button" class="classifier_button" src="images/classifier_buttons/catch5_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Unique" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+        
+        
+      </center>
+    </div>
+    
+    <br>
+    You might be interested to learn that these are real strategies that people in different cultures have used throughout history to communicate about number! 
+    Let’s walk through what each of these strategies means. 
+
+<br><br>
+<h4><center>Types of Numerals</center>  </h4>
+
+<b>1: Matching. </b> A drawing is using a <b>matching</b> strategy whenever <i>one</i> mark in the drawing represents <i>one</i> object, as seen in the example below. Hover your mouse over the image to count the marks and bears!
 </p>
     <p>
-      <center><img src="images/number_rate.png" alt="Example number" style="width:400px;height:200px"></center>
+      <center>
+      <div id="catch1Div" style="width:200px;height:100px">
+      <center><img id="catch1" src="images/catch1.png" alt="Example Matching" style="width:200px;height:100px;border:solid;"></center>
+      <center><img id="catch1_ann" src="images/catch1_ann.png" alt="Example Matching" style="width:200px;height:100px;display:none;border:solid;"></center>
+      </div>
+      </center>
     </p>
 
   <p>
-    Or you might be asked which <b>animal</b> best matches the symbol:
+    <b>2: Grouping. </b>A drawing is using a <b>grouping</b> strategy whenever <i>one</i> mark in the drawing represents <i>multiple</i> objects, as seen in the example below. 
+    Hover over the image to see grouping in red, and matching in orange.
 </p>
   <p>
-    <center><img src="images/animal_rate.png" alt="Example shape" style="width:400px;height:240px"></center>
+    <center>
+    <div id="catch2Div" style="width:200px;height:100px">
+    <center><img id="catch2" src="images/catch2.png" alt="Example Grouping" style="width:200px;height:100px;border:solid;"></center>
+    <center><img id="catch2_ann" src="images/catch2_ann.png" alt="Example Grouping" style="width:200px;height:100px;display:none;border:solid;"></center>
+    </div>
+    </center>
+  </p>
+
+   <p>
+    <b>3: Clipping. </b>A drawing is using a <b>clipping</b> strategy if there are some objects in the target image that are “missing” in the drawing.
+    In other words, the marks in the drawing represent some, but not all, of the objects in the target image. For example, the image below uses matching and clipping to communicate only the rightmost column of bears:
+  </p>
+
+  <p>
+    <center>
+    <div id="catch3Div" style="width:200px;height:100px">
+    <center><img id="catch3" src="images/catch3.png" alt="Example Clipped" style="width:200px;height:100px;border:solid;"></center>
+    <center><img id="catch3_ann" src="images/catch3_ann.png" alt="Example Clipped" style="width:200px;height:100px;display:none;border:solid;"></center>
+    </div>
+    </center>
+  </p>
+
+  <p>
+    <b>4: Numbers. </b>A drawing is using a <b>numbers</b> strategy if it contains one or more number symbols that you are already familiar with, such as the digit ‘8’ or ‘5’:
   </p>
   <p>
-    <!-- You will only be presented with one set of buttons (numbers or animals) for the entire task – meaning that either you will only ever interpret the number conveyed by every drawing, or only ever interpret the animal. -->
-    It may not always be clear what the symbol means. In any case, give your best guess!
+    <center>
+    <div id="catch4Div" style="width:200px;height:100px">
+    <center><img id="catch4" src="images/catch4.png" alt="Example Number" style="width:200px;height:100px;border:solid;"></center>
+    <center><img id="catch4_ann" src="images/catch4_ann.png" alt="Example Number" style="width:200px;height:100px;display:none;border:solid;"></center>
+    </div>
+    </center>
   </p>
 
 
-    <!-- <p>
-      <b>Bonus: </b> You will receive a bonus for accuracy ($0.03 per correct guess).
-      , the running total of which will be revealed after every 20 trials.
-  </p> -->
+  <p>
+    <b>5: Unique. </b>A drawing is using a <b>unique</b> strategy if it is not clear to you how the marks relate to the objects in the target image, 
+    perhaps because whoever produced the drawing had invented some different way of representing number information. Drawings that cannot be described by the other features should be marked as unique.
+    
+    
+  </p>
 
+  <p>
+    <center>
+    <div id="catch5Div" style="width:200px;height:100px">
+    <center><img id="catch5" src="images/catch5.png" alt="Example Unique" style="width:200px;height:100px;border:solid;"></center>
+    <center><img id="catch5_ann" src="images/catch5_ann.png" alt="Example Unique" style="width:200px;height:100px;display:none;border:solid;"></center>
+    </div>
+    </center>
+  </p>
+
+  <br>
+  
+    <br>
+
+  <p>
+    <b>Important: Any individual drawing may use more than one of these five strategies.</b>
+    Your job is to indicate any and all of the strategies you believe were used.
+    If you are not sure, please provide your best guess! There will be <b>six practice trials</b> to get the hang of it before starting for real.
+  </p>
 <p>
-  Finally, please DO NOT refresh the page at any point once you start
-  the game. If you refresh, you will not
+  Please <b>DO NOT refresh the page at any point once you start
+  the game.</b> If you refresh, you will not
   be able to get back to the session you were in and you may not be able to
-  submit the HIT. <br> Thank you!
+  submit the HIT. <br> <br> Thank you!
 </p>
 
 <h4>
@@ -92,13 +195,14 @@
 
  <div class="well" style="width:800px; margin: 0 auto">
 
-  You should click the option you think best matches the meaning of the hand-drawn symbol.
+  You should click <b>all</b> the features you think best describe the hand-drawn symbol.
     </br>
     <input type="radio" name="dgoal" value="no"> False
     </br>
     <input type="radio" name="dgoal" value="yes"> True
     </br>
   </br>
+
   You can exit the page any time and return later to continue the task.
       </br>
       <input type="radio" name="mgoal" value="yes"> False
@@ -106,6 +210,24 @@
       <input type="radio" name="mgoal" value="no"> True
       </br>
   </br>
+
+  <!-- Sometimes multiple features all accurately describe a picture, in which case you should select all of them. -->
+  Only one feature should be selected for each symbol.
+      </br>
+      <input type="radio" name="multiple" value="yes"> False
+      </br>
+      <input type="radio" name="multiple" value="no"> True
+      </br>
+  </br>
+
+  When nothing else seems appropriate, you should click 'unique'.
+      </br>
+      <input type="radio" name="q4" value="no"> False
+      </br>
+      <input type="radio" name="q4" value="yes"> True
+      </br>
+  </br>
+
     <input id="quiz_submit" type="submit" value="Submit">
       </br>
       </br>
@@ -129,8 +251,10 @@
       document.getElementById("quiz_submit").onclick = function () {
         var ans1 = $('input[name="dgoal"]:checked').val();
         var ans2 = $('input[name="mgoal"]:checked').val();
+        var ans3 = $('input[name="multiple"]:checked').val();
+        var ans4 = $('input[name="q4"]:checked').val();
 
-        if(ans1 == "yes" && ans2 == "yes" && urlParams.workerId != undefined) {
+        if(ans1 == "yes" && ans2 == "yes" && ans3 == "yes" && ans4 == "yes" && urlParams.workerId != undefined) {
            var workerId = urlParams.workerId;
            var assignmentId = urlParams.assignmentId;
            var hitId = urlParams.hitId;
@@ -147,6 +271,74 @@
           counter += 1;
         }
       };
+
+      // set it so that highlights will show up when you hover over the images
+      $("#catch1Div").on('mouseover', function() {
+        $("#catch1").hide()
+        $("#catch1_ann").show()});
+      $("#catch1Div").on('mouseout', function() {
+        $("#catch1_ann").hide()
+        $("#catch1").show()});
+      $("#catch2Div").on('mouseover', function() {
+        $("#catch2").hide()
+        $("#catch2_ann").show()});
+      $("#catch2Div").on('mouseout', function() {
+        $("#catch2_ann").hide()
+        $("#catch2").show()});
+      $("#catch3Div").on('mouseover', function() {
+        $("#catch3").hide()
+        $("#catch3_ann").show()});
+      $("#catch3Div").on('mouseout', function() {
+        $("#catch3_ann").hide()
+        $("#catch3").show()});
+      $("#catch4Div").on('mouseover', function() {
+        $("#catch4").hide()
+        $("#catch4_ann").show()});
+      $("#catch4Div").on('mouseout', function() {
+        $("#catch4_ann").hide()
+        $("#catch4").show()});
+      $("#catch5Div").on('mouseover', function() {
+        $("#catch5").hide()
+        $("#catch5_ann").show()});
+      $("#catch5Div").on('mouseout', function() {
+        $("#catch5_ann").hide()
+        $("#catch5").show()});
+
+
+      // now do the same with all the buttons
+
+      $("#catch1ButtonDiv").on("mouseover", function(){
+            $("#catch1_button").hide()
+            $("#catch1_ann_button").show();});
+          $("#catch1ButtonDiv").on("mouseout", function(){
+            $("#catch1_ann_button").hide()
+            $("#catch1_button").show();});
+          $("#catch2ButtonDiv").on("mouseover", function(){
+            $("#catch2_button").hide()
+            $("#catch2_ann_button").show();});
+          $("#catch2ButtonDiv").on("mouseout", function(){
+            $("#catch2_ann_button").hide()
+            $("#catch2_button").show();});
+          $("#catch3ButtonDiv").on("mouseover", function(){
+            $("#catch3_button").hide()
+            $("#catch3_ann_button").show();});
+          $("#catch3ButtonDiv").on("mouseout", function(){
+            $("#catch3_ann_button").hide()
+            $("#catch3_button").show();});
+          $("#catch4ButtonDiv").on("mouseover", function(){
+            $("#catch4_button").hide()
+            $("#catch4_ann_button").show();});
+          $("#catch4ButtonDiv").on("mouseout", function(){
+            $("#catch4_ann_button").hide()
+            $("#catch4_button").show();});
+          $("#catch5ButtonDiv").on("mouseover", function(){
+            $("#catch5_button").hide()
+            $("#catch5_ann_button").show();});
+          $("#catch5ButtonDiv").on("mouseout", function(){
+            $("#catch5_ann_button").hide()
+            $("#catch5_button").show();});
+
+
     </script>
 
     <script src="./validate-form.js"></script>

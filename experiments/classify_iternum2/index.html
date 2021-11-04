@@ -30,7 +30,7 @@
       max-width: 300px;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 100px;
+      margin-top: 20px;
       margin-bottom: auto;
       text-align: center;
     }
@@ -38,13 +38,15 @@
       /* width: 10%; */
       margin-left: auto;
       margin-right: auto;
-      margin-top: 100px;
+      margin-top: 50px;
       margin-bottom: auto;
     }
     #main_image img {
       margin-left: auto;
       margin-right: auto;
       display: block;
+      border-style: solid;
+      border-color: rgb(128, 0, 0);
     }
     #main_image #intertitle {
       color: #FFFFFF;
@@ -56,17 +58,12 @@
       margin-bottom: auto;
       text-align: center;
     }
-    #animals {
+    #buttons {
       margin-left: auto;
       margin-right: auto;
-      margin-top: 50px;
+      margin-top: 20px;
       margin-bottom: auto;
-    }
-    #cardinalities {
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 50px;
-      margin-bottom: auto;
+      overflow: hidden;
     }
     #exit_survey {
       color: #FFFFFF;
@@ -119,23 +116,28 @@
 
   <body>
     <div id="display-area"></div>
-
+<div> OKAY</div>
     <!-- Instructions DIV is hidden once they 
     click the button. Default instruction text is for number condition -->
     <div id="instructions">
       <p id="instruction_text">
-        You will see a series of symbols.
-        Please click the number that you think each symbol was conveying!
+        You will see a series of numerals.
+        Please click all the features that you think each numeral has!
       </p>
 
       <button id="startExperimentButton">
         Click here to begin
       </button>
+      <center>
+      <button id="continueButton" style="display:none;">
+        Click to continue
+      </button>
+    </center>
     </div>
 
     <div id="main_image">
       <img id="stim"
-      width="240" height="240" alt="Image"/>
+      width="480" height="240" alt="Image"/>
       
       <!-- when people's internet crashes, we don't want them in the dark! -->
       <img id="error_stim" src="/classify_iternum/forms/images/no_image.png"
@@ -144,43 +146,59 @@
     </div>
 
 
-    <div id="cardinalities">
+    <div id="buttons">
       <center>
-        <img id="one" class="classifier_button" src="classifier_buttons/button_1.png"
-        width="100" height="100" background="#FFFFFF" alt="1"/>
-        <img id="two" class="classifier_button" src="classifier_buttons/button_2.png"
-        width="100" height="100" alt="2"/>
-        <img id="three" class="classifier_button" src="classifier_buttons/button_3.png"
-        width="100" height="100" alt="3"/>
-        <img id="four" class="classifier_button" src="classifier_buttons/button_4.png"
-        width="100" height="100" alt="4"/>
-        <img id="five" class="classifier_button" src="classifier_buttons/button_5.png"
-        width="100" height="100" background="#FFFFFF" alt="5"/>
-        <img id="six" class="classifier_button" src="classifier_buttons/button_6.png"
-        width="100" height="100" alt="6"/>
-        <img id="seven" class="classifier_button" src="classifier_buttons/button_7.png"
-        width="100" height="100" alt="7"/>
-        <img id="eight" class="classifier_button" src="classifier_buttons/button_8.png"
-        width="100" height="100" alt="8"/>
+      <div id="explanationDiv" style="color:white;height:100px;width:480px">
+
+
+
+      </div>
+    </center>
+      <center>
+        <div class="buttonDiv" id="catch1Div" style="margin-top:80px;height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:orange">Matching</b><br>
+        <img id="catch1" class="classifier_button" src="forms/images/classifier_buttons/catch1_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Matching"/>
+        <img id="catch1_ann" class="classifier_button" src="forms/images/classifier_buttons/catch1_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Matching" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch2Div" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:red">Grouping</b><br>
+        <img id="catch2" class="classifier_button" src="forms/images/classifier_buttons/catch2_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Grouping"/>
+        <img id="catch2_ann" class="classifier_button" src="forms/images/classifier_buttons/catch2_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Grouping" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch3Div" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:white">Clipped</b><br>
+        <img id="catch3" class="classifier_button" src="forms/images/classifier_buttons/catch3_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Clipped"/>
+        <img id="catch3_ann" class="classifier_button" src="forms/images/classifier_buttons/catch3_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Clipped" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+        
+        <div class="buttonDiv" id="catch4Div" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"><b style="color:pink">Numbers</b><br>
+        <img id="catch4" class="classifier_button" src="forms/images/classifier_buttons/catch4_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Number"/>
+        <img id="catch4_ann" class="classifier_button" src="forms/images/classifier_buttons/catch4_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Number" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+
+        <div class="buttonDiv" id="catch5Div" style="height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;"> <b style="color:magenta">Unique</b><br>
+        <img id="catch5" class="classifier_button" src="forms/images/classifier_buttons/catch5_button.png"
+        width="60" height="60" style="background-color:#FFFFFF;" background="#FFFFFF" alt="Unique"/>
+        <img id="catch5_ann" class="classifier_button" src="forms/images/classifier_buttons/catch5_button_ann.png"
+        width="60" height="60" background="#FFFFFF" alt="Unique" style="background-color:#FFFFFF;display:none;"/>
+        </div>
+        
+        
       </center>
     </div>
-
-    <div id="animals">
-      <center>
-        <img id="bear" class="classifier_button" src="classifier_buttons/button_bear.png"
-        width="180" height="180" alt="bear"/>
-        <img id="deer" class="classifier_button" src="classifier_buttons/button_deer.png"
-        width="180" height="180" alt="deer"/>
-        <img id="owl" class="classifier_button" src="classifier_buttons/button_owl.png"
-        width="180" height="180" alt="owl"/>
-        <img id="rabbit" class="classifier_button" src="classifier_buttons/button_rabbit.png"
-        width="180" height="180" alt="rabbit"/>
-      </center>
-    </div>
-
+<div style="display: flex;justify-content: center;height:80px">
+<button id="NextButton" style="padding-top:10px;margin-top:20px;width:100px;height:50px;background-color:black;color:white;border-style:none;"> </button>  
+</div>
     <div id="RoundNumDiv">
       <p id="RoundNumText">
-        Round 0
+        Round 1
       </p>
     </div>
 
@@ -227,18 +245,18 @@
   
     <script>
       var turkerStatus = false;
-      var curTrial = -1; /* we want to use this as 
+      var curTrial = 0; /* we want to use this as 
           index into trialList, so start at 0 */
       var curTrialTimeStarted = 0;
       var last_clicked = 'nothing';
+      var tutorial = true;
       
       $("#main_image").hide();
       $("#intertitle").hide();
-      $("#animals").hide();
-      $("#cardinalities").hide();
       $("#thankyou").hide();
       $("#RoundNumDiv").hide();
-      $("#instructions").hide();
+      $("#buttons").hide();
+      $("#NextButton").hide();
       
       // We want to add some precautions in case people's internet crashes!
       // so below, if there's an error retrieving the stim, we hide everything
@@ -318,102 +336,117 @@
 
             // attention: can we put in an alert here? People are currently redirected without explanation
           });
-
+        
         socket.on('onConnected', function(d) {
           
           socket.removeListener('onConnected');
           turkerStatus = d.turker;
           var meta = d.meta;
-
+          
           catches = meta.filter(function(X) {    // extract catch trials
-            return X.catchTrial == true
+            return X.catch == true
           });
           meta = meta.filter(function(X) {    // and make another structure of the non-catch trials
-            return X.catchTrial == false
+            return X.catch == false
           });
-
+          
+          tutorials = catches.slice(5,11);
+          catches = catches.slice(0,5);
           meta = _.shuffle(meta);    // shuffle all those real trials
-
+          catches = _.shuffle(catches);    // shuffle the catch trials too, but not tutorial
+          
           for (var j=0; j<catches.length; j++){ // now reinsert the catch trials into the real ones at regular intervals
             interval = Math.round(meta.length / catches.length)
-            meta.splice(interval*j, 0, catches[j]); // https://stackoverflow.com/questions/586182/how-to-insert-an-item-into-an-array-at-a-specific-index-javascript  
+            meta.splice(interval*j+interval, 0, catches[j]); // https://stackoverflow.com/questions/586182/how-to-insert-an-item-into-an-array-at-a-specific-index-javascript  
           };
+
+          meta = tutorials.concat(meta); // now prepend the tutorial trials to the list
 
           var URLs = [];
           var origAnimals = [];
           var origCardinalities = [];
-          var orig_conds = [];
-          var orig_gameIDs = [];
           var orig_gametrials = [];
-          var orig_stim_versions = [];
           var catch_trial_val = [];
 
           for (var j=0; j<meta.length; j++) {
-            URLs.push(meta[j].sketch_url)
-            origAnimals.push(meta[j].orig_animal)
-            origCardinalities.push(meta[j].orig_cardinality)
-            orig_conds.push(meta[j].orig_cond)
-            orig_gameIDs.push(meta[j].orig_gameid)
-            orig_gametrials.push(meta[j].orig_trial)
-            orig_stim_versions.push(meta[j].orig_version)
-            catch_trial_val.push(meta[j].catchTrial)
+            URLs.push(meta[j].URL)
+            origAnimals.push(meta[j].animal)
+            origCardinalities.push(meta[j].cardinality)
+            orig_gametrials.push(meta[j].origTrialNum)
+            catch_trial_val.push(meta[j].catch)
           };
           console.log("Partition number: ",d.whole_structure.versionID);
 
-          var condition = d.whole_structure.classify_condition;
-          if (condition == 'shape'){$("#instruction_text").text( "You will see a series of symbols.\
-        Please click the animal that you think each symbol was conveying!" )};
           $("#instructions").show();
 
           function StartExperiment() {
             $("#instructions").hide();
             $("#RoundNumDiv").show();
-            AdvanceSlide();
+
+            catchID = URLs[curTrial].split('/')[3].split('.')[0];
+            if (catchID in tutorialBlurbs){
+              tutorial = true;
+              $("#explanationDiv").html(tutorialBlurbs[catchID]);
+            } else{
+              tutorial = false;
+            }
+            
+            $("#stim").attr("src", URLs[curTrial]);
+            document.getElementById("stim").style.backgroundColor = "#FFFFFF";
+            $("#main_image").show();
+            $("#buttons").show();
+            $("#NextButton").show();
             startTime = new Date();
+            curTrialTimeStarted = new Date();
+            $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
           };
-          $("#startExperimentButton").on("click", StartExperiment);
+          $("#startExperimentButton").on("click", function(){StartExperiment()});
 
           function AdvanceSlide() {
             var curTime = new Date(); // for measuring RT
-            var reaction_time = curTime - curTrialTimeStarted; // for measuring RT
+            var reaction_time = (curTime - curTrialTimeStarted) - 450; // for measuring RT; we have 450ms of delay, too
 
-            // displaying the new sketch for them to rate, and all the buttons
+            // displaying the new sketch for them to rate, and all the buttons, and reset their colours
             $("#main_image").show();
-            if (condition == 'number') {
-              $("#cardinalities").show();
-            };
-            if (condition == 'shape') {
-              $("#animals").show();
-            };
+            $("#buttons").show();
+            $(".buttonDiv").css("background-color", "#222222");
+            last_clicked = Object.values(selected);
 
             // now store the data depending on what trial we're at
             if (curTrial > -1 & curTrial < meta.length){ // this used to say "URL.length"
             // now create the data structure we want to store for this trial on mongodb:
               var output = {
                 dbname : 'iterated_number',
-                colname : 'num8_shape4_recognition',
-                iterationName : 'run1',
+                colname : 'iternum2_recog',
+                iterationName : 'sebastian', // sandbox accidentally has some early pilots in it, use sandbox1 for sandboxing. [sandbox, sandbox1, pilot1, pilot2, sebastian]
+                // pilot1 still had the very thematic instructions and no tutorial
+                // pilot2 had totally game-based instructions examples and a tutorial phase
+                // 'sebastian' is Sebastian rating the sketches
                 // first, info about the rating task
                 recog_gameID : d.gameid,
                 workerID: d.workerID,
                 assignmentID: d.assignmentID,
                 hitID: d.hitID,
                 turkSubmitTO: d.turkSubmitTO,
-                recog_version : d.experimentVersion,
                 rating_trial_num : curTrial+1,
-                rate_condition : condition, // is the rater being asked to select cardinalities or animals?
                 rating : last_clicked, // which label did the rater select?
                 RT : reaction_time,
 
                 // next, info about the original conditions under which the sketch was produced
-                orig_game_id : orig_gameIDs[curTrial],
-                orig_sketch_animal : origAnimals[curTrial],
-                orig_sketch_cardinality : origCardinalities[curTrial],
-                orig_game_trial_num : orig_gametrials[curTrial],
-                orig_game_condition : orig_conds[curTrial], // was the original sketcher motivated to depict cardinalities or animals?
-                orig_stim_version : orig_stim_versions[curTrial], // which version of the target stim was used to elicit the sketch?
+                animal : origAnimals[curTrial], 
+                cardinality : origCardinalities[curTrial],
+                origTrialNum : orig_gametrials[curTrial],
                 sketch_url : URLs[curTrial],
                 catch_trial : catch_trial_val[curTrial]};
+              
+              // now reset the selected options:
+              selected = {
+                '#catch1':0,
+                '#catch2':0,
+                '#catch3':0,
+                '#catch4':0,
+                '#catch5':0
+              };
             
 
             } if (curTrial == meta.length - 1){
@@ -423,8 +456,9 @@
               $("#animals").hide();
               $("#RoundNumDiv").hide();
               $("#intertitle").hide();
-              // $("#thankyou").show();
-              $("#exit_survey").show()
+              $("#exit_survey").show();
+              $("#NextButton").hide();
+              $("#buttons").hide();
             };
 
             // send that data to mongo! By way of app1.js of course, it needs to get to the server first
@@ -435,47 +469,177 @@
             $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
             $("#stim").attr("src", URLs[curTrial]);
             document.getElementById("stim").style.backgroundColor = "#FFFFFF";
+
+            catchID = URLs[curTrial].split('/')[3].split('.')[0];
+            if (catchID in tutorialBlurbs){
+              tutorial = true;
+              $("#explanationDiv").html(tutorialBlurbs[catchID]);
+            } else{
+              tutorial = false;
+            };
             
             curTrialTimeStarted = new Date(); // for measuring RT
           };
 
+          tutorialBlurbs = {'catch6':"<b style='color:#579dff'>Practice (1 of 6)</b> <br> This person used matching to outline the top row and leftmost column of the animal set, and clipping by not drawing anything else. <br>Select both <b>matching</b> and <b>clipped</b> to proceed.",
+          'catch7':"<b style='color:#579dff'>Practice (2 of 6)</b> <br> This person relied on grouping to depict only the upper portion of the animal set, and clipping by not drawing anything else. <br>Select <b>grouping</b> and <b>clipped</b> to proceed.",
+          'catch8':"<b style='color:#579dff'>Practice (3 of 6)</b> <br> This person used both grouping (on the left) and matching (top-right) to depict only the upper portion of the animal set, and clipping by not drawing anything else. <br>Select <b>matching</b>, <b>grouping</b>, and <b>clipped</b> to proceed.",
+          'catch9':"<b style='color:#579dff'>Practice (4 of 6)</b> <br> This person used the number 6 to describe each full column of the animal set, as well as matching to communicate the remaining, rightmost column. <br>Select <b>matching</b> and <b>numbers</b> to proceed.",
+          'catch10':"<b style='color:#579dff'>Practice (5 of 6)</b> <br> This person used some other strategy to make their symbol. It is not clear how this symbol relates to the animal set, so we can call it unique. <br>Select <b>unique</b> to proceed.",
+          'catch11':"<b style='color:#579dff'>Practice (6 of 6)</b> <br> This person used a combination of matching and grouping to depict every element of the animal set. <br>Select <b>matching</b> and <b>grouping</b> to proceed."};
 
+          tutorialAnswers = {'catch6':[1,0,1,0,0],
+          'catch7':[0,1,1,0,0],
+          'catch8':[1,1,1,0,0],
+          'catch9':[1,0,0,1,0],
+          'catch10':[0,0,0,0,1],
+          'catch11':[1,1,0,0,0]};
 
+          button2div = {'#catch1':'#catch1Div',
+          '#catch2':'#catch2Div',
+          '#catch3':'#catch3Div',
+          '#catch4':'#catch4Div',
+          '#catch5':'#catch5Div'};
 
-
-          function HapticFeedback(button) {
-            // want to make accidental double clicks irrelevant by setting off the sensitivity
-            $(".classifier_button").off("click")
-
-            button.fadeTo(1, 0); // and also make it visually obvious what the choice was
-            button.fadeTo(350, 1); // but also make sure the button reappears so we know that we can click it again
-            
-            // setTimeout(function(){button.on("click",function(){HapticFeedback(button)})}, 500); // make it clickable after 500ms
-            setTimeout(function(){$(".classifier_button").each( function() {
-              var this_button = $(this);
-              this_button.on("click",function(){HapticFeedback(this_button)}); }
-            )}, 500); // for every classifier_button, make it clickable after 500ms
-
-            last_clicked = button[0].alt;
-
-            AdvanceSlide()
+          selected = {
+            '#catch1':0,  // 1-to-1
+            '#catch2':0,  // grouping
+            '#catch3':0,  // clipped
+            '#catch4':0,  // Arabic
+            '#catch5':0   // arbitrary
           };
-          
+
+          function RegisterClick(button){
+            $("#NextButton").text("Next");
+            $("#NextButton").css("background-color", "#525252");
+            $("#NextButton").css("padding-top", "10px");
+            if (selected[button.selector] == 0){
+              $(button2div[button.selector]).css("background-color", "#579dff"); // some yellow: #ebc034
+              // $(button2div[button.selector]).css("border-color", "#613510");
+              selected[button.selector] = 1;
+              
+            } else {
+              $(button2div[button.selector]).css("background-color", "#222222");
+              // $(button2div[button.selector]).css("border-color", "#222222");
+              selected[button.selector] = 0;
+            };
+          };
+
+
+          // the following could be abbreviated using this block of code:
+          // https://tekeye.uk/html/html-image-hover-effects-using-onmouseover
+          $("#catch1Div").on("mouseover", function(){
+            $("#catch1").hide()
+            $("#catch1_ann").show()
+            $("#explanationDiv").html("<b style='color:orange;'>Matching</b> <br> When <i>one</i> mark represents <i>one</i> object.");
+          });
+          $("#catch1Div").on("mouseout", function(){
+            $("#catch1_ann").hide()
+            $("#catch1").show()
+            tutorial ? $("#explanationDiv").html(tutorialBlurbs[catchID]) : $("#explanationDiv").html("");});
+          $("#catch2Div").on("mouseover", function(){
+            $("#catch2").hide()
+            $("#catch2_ann").show()
+            $("#explanationDiv").html("<b style='color:red;'>Grouping</b> <br> When <i>one</i> mark represents <i>multiple</i> objects");
+          });
+          $("#catch2Div").on("mouseout", function(){
+            $("#catch2_ann").hide()
+            $("#catch2").show()
+            tutorial ? $("#explanationDiv").html(tutorialBlurbs[catchID]) : $("#explanationDiv").html("");});
+          $("#catch3Div").on("mouseover", function(){
+            $("#catch3").hide()
+            $("#catch3_ann").show()
+            $("#explanationDiv").html("<b style='color:white;'>Clipped</b> <br> When marks on the page only represent <i>some but not all</i> of the objects.");
+          $("#catch3Div").on("mouseout", function(){
+            $("#catch3_ann").hide()
+            $("#catch3").show()
+            tutorial ? $("#explanationDiv").html(tutorialBlurbs[catchID]) : $("#explanationDiv").html("");});
+          $("#catch4Div").on("mouseover", function(){
+            $("#catch4").hide()
+            $("#catch4_ann").show()
+            $("#explanationDiv").html("<b style='color:pink;'>Numbers</b> <br> Anything made of 1, 2, 3, 4, 5, 6, 7, 8, 9, or 0.");});
+          $("#catch4Div").on("mouseout", function(){
+            $("#catch4_ann").hide()
+            $("#catch4").show()
+            tutorial ? $("#explanationDiv").html(tutorialBlurbs[catchID]) : $("#explanationDiv").html("");});
+          $("#catch5Div").on("mouseover", function(){
+            $("#catch5").hide()
+            $("#catch5_ann").show()
+            $("#explanationDiv").html("<b style='color:magenta;'>Unique</b> <br> Anything else!");});});
+          $("#catch5Div").on("mouseout", function(){
+            $("#catch5_ann").hide()
+            $("#catch5").show()
+            tutorial ? $("#explanationDiv").html(tutorialBlurbs[catchID]) : $("#explanationDiv").html("");});
+
+
+
           // is there some way of condensing the following blocks of code (the ones making all the buttons dynamic?)
-          $("#bear").on("click", function(){HapticFeedback($("#bear"))});
-          $("#deer").on("click", function(){HapticFeedback($("#deer"))});
-          $("#owl").on("click", function(){HapticFeedback($("#owl"))});
-          $("#rabbit").on("click", function(){HapticFeedback($("#rabbit"))});
+          $("#catch1Div").on("click", function(){RegisterClick($("#catch1"))});
+          $("#catch2Div").on("click", function(){RegisterClick($("#catch2"))});
+          $("#catch3Div").on("click", function(){RegisterClick($("#catch3"))});
+          $("#catch4Div").on("click", function(){RegisterClick($("#catch4"))});
+          $("#catch5Div").on("click", function(){RegisterClick($("#catch5"))});
 
-          $("#one").on("click", function(){HapticFeedback($("#one"))});
-          $("#two").on("click", function(){HapticFeedback($("#two"))});
-          $("#three").on("click", function(){HapticFeedback($("#three"))});
-          $("#four").on("click", function(){HapticFeedback($("#four"))});
-          $("#five").on("click", function(){HapticFeedback($("#five"))});
-          $("#six").on("click", function(){HapticFeedback($("#six"))});
-          $("#seven").on("click", function(){HapticFeedback($("#seven"))});
-          $("#eight").on("click", function(){HapticFeedback($("#eight"))});
+          $("#NextButton").on("click", function(){
+            sum = Object.values(selected).reduce((a, b) => a + b, 0);
 
+            if (tutorial == true && Object.values(selected).toString() == tutorialAnswers[catchID].toString()){  // they never equal unless you cast them as string or something... pretty annoying
+              
+              // if we've finished the tutorial, show an intertitle and let them proceed
+              if (catchID == 'catch11'){
+                $("#main_image").hide();
+                $("#buttons").hide();
+                $("#NextButton").hide();
+                $("#RoundNumDiv").hide();
+                $("#instruction_text").html("Great, you've finished the tutorial. Onto the real thing!");
+                $("#startExperimentButton").attr("style","display:none;");
+                $("#continueButton").attr("style","display:block;");
+                $("#continueButton").on("click", function(){
+                  tutorial = false;
+                  $("#buttonDiv").attr("style","margin-top:0;height:100px;width:100px;background-color:#222222;display:inline-block;border-style:solid;");
+                  $("#explanationDiv").attr("style","color:white;height:20px;width:480px");
+                  $("#explanationDiv").html("");
+                  $("#instructions").hide();
+                  $("#NextButton").show();
+                  $('#RoundNumDiv').show();
+                  AdvanceSlide();
+                });
+                $("#instructions").show();
+                
+              } else {  // this handles correct answers on tutorial trials 
+                $("#NextButton").text("");
+                $("#NextButton").css("background-color", "black");
+                $("#stim").attr("src", "forms/images/blank_stim.png");
+                $("#NextButton").hide();
+                setTimeout(function(){
+                  $("#NextButton").show();
+                  AdvanceSlide();
+                }, 450);
+              };
+              
+              
+            } else if (tutorial == true && Object.values(selected).toString() != tutorialAnswers[catchID].toString()){  // this handles failed tutorial trials (unlimited attempts)
+              $("#NextButton").text("Try Again");
+              $("#NextButton").css("background-color", "red");
+              $("#NextButton").css("padding-top", "5px");
+
+            } else if (sum != 0){  // this handles correct answers on normal trials
+              
+              $("#NextButton").text("");
+              $("#NextButton").css("background-color", "black");
+              $("#stim").attr("src", "forms/images/blank_stim.png");
+              $("#NextButton").hide();
+              setTimeout(function(){
+                $("#NextButton").show();
+                AdvanceSlide();
+              }, 450);
+              
+            } else if (sum == 0){  // this handles null answers on normal trials (unlimited attempts)
+              $("#NextButton").text("Choose Something");
+              $("#NextButton").css("background-color", "red");
+              $("#NextButton").css("padding-top", "5px");
+            };
+          });
         });
       }
     </script>
