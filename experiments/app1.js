@@ -138,7 +138,7 @@ function checkPreviousParticipant(workerId, callback) {
 function initializeWithTrials(socket,status,query) {
   turkerStatus = status;
   var gameid = UUID();
-  var colname = 'iternum_classification_patching3';
+  var colname = 'iternum2_recog2';
   
   sendPostRequest('http://localhost:8980/db/getstims', {
     json: {
@@ -153,7 +153,7 @@ function initializeWithTrials(socket,status,query) {
       var packet = {
         gameid: gameid,
         meta: body.meta,
-        version: body.experimentVersion,
+        // version: body.experimentVersion,
         whole_structure: body,
         turker: turkerStatus,
         workerID: query.workerId,

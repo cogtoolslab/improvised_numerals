@@ -52,10 +52,10 @@ function mongoConnectWithRetry(delayInMilliseconds, callback) {
     }
   });
 }
-
 function markAnnotation(collection, gameid, sketchid) {
   collection.update({_id: ObjectID(sketchid)}, {
     $push : {games : gameid},
+    // $push : {all_games : gameid},    // this has to be commented out, and the commented block below uncommented, for actual data collection to progress capturing all the stimuli
     $inc  : {numGames : 1}
   }, function(err, items) {
     if (err) {
@@ -64,6 +64,16 @@ function markAnnotation(collection, gameid, sketchid) {
       console.log(`successfully marked annotation. result: ${JSON.stringify(items)}`);
     }
   });
+  // collection.update({_id: ObjectID(sketchid)}, {
+  //   $push : {all_games : gameid},
+  //   $inc  : {numGames : 1}
+  // }, function(err, items) {
+  //   if (err) {
+  //     console.log(`error marking annotation data: ${err}`);
+  //   } else {
+  //     console.log(`successfully marked backup annotation. result: ${JSON.stringify(items)}`);
+  //   }
+  // });
 };
 
 
@@ -85,7 +95,7 @@ function serve() {
       const projection = request.body.projection;
 
       // hardcoded for now (TODO: get list of collections in db)
-      var collectionList = ['animals','num8_shape4','num8_shape4_recognition','num6_shape3']; 
+      var collectionList = ['animals','num8_shape4','num8_shape4_recognition','num6_shape3','iternum2_recog']; 
 
       function checkCollectionForHits(collectionName, query, projection, callback) {
         const collection = database.collection(collectionName);        

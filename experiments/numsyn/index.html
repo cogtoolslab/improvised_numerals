@@ -7,10 +7,10 @@
     #instructions {
       color: #FFFFFF;
       width: 70%;
-      max-width: 300px;
+      max-width: 500px;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 200px;
+      margin-top: 100px;
       margin-bottom: auto;
       text-align: center;
     }
@@ -48,7 +48,7 @@
       max-width: 300px;
       margin-left: auto;
       margin-right: auto;
-      margin-top: 100px;
+      margin-top: 0px;
       margin-bottom: auto;
       text-align: center;
     }
@@ -56,7 +56,7 @@
       /* width: 50%; */
       color: #FFFFFF;
       margin: auto;
-      margin-top: 100px;
+      margin-top: 0px;
       margin-bottom: auto;
       text-align: center;
     }
@@ -69,20 +69,8 @@
     #stim {
       position:relative;
       margin:auto;
+      margin-top: 60px;
       text-align: center;
-    }
-   
-    #animals {
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 50px;
-      margin-bottom: auto;
-    }
-    #cardinalities {
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 50px;
-      margin-bottom: auto;
     }
     #exit_survey {
       color: #FFFFFF;
@@ -133,9 +121,7 @@
 
 
       var turkerStatus = false;
-      var curTrial = -1; /* we want to use this as 
-          index into trialList, so start at 0 */
-      var curTrialTimeStarted = 0;
+      
 
       // we want to generate the list of numbers
       highestNumber = 24
@@ -150,81 +136,397 @@
       };
 
       numSyls = [];
-      onsets = ['k','s','t','n','h','m'];
-      codas = ['a','i','u','e','o'];
+      onsets = _.shuffle(['k','s','t','n','h','m']);
+      codas = _.shuffle(['a','i','u','e','o']);
       possibleSyls = [];
       for (var i = 0; i < onsets.length; i++){
         for (var j = 0; j < codas.length; j++){
-          curSyl = onsets[i] + codas[j]
-          possibleSyls.push(curSyl)
+          curSyl = onsets[i] + codas[j];
+          possibleSyls.push(curSyl);
         };
       };
-      shuffledSyls = _.shuffle(possibleSyls).slice(0,highestNumber)
+      shuffledSyls = _.shuffle(possibleSyls).slice(0,highestNumber);
+      // shuffledSyls = possibleSyls.slice(0,highestNumber);
 
       
 
+      // now draw from those random syllables to construct a count list
+      var maxNum = 10;
+      var maxGeneral = 5;
+      var base = _.sample([2,3,4,5]);
+      unitSyls = [""].concat(shuffledSyls.slice(0,base+1));
+      Syls = [""].concat(shuffledSyls);
+      Syls[1] = "";    // the first instance of the base doesn't need a coefficient '1'
+
+      var countList = [];
+      var numDict = {};  // and populate a dictionary mapping each cardinality to its name
+      var systemType = "multiplicative" // what kind of base system are we using? Purely additive, multiplicative with novel decades, an exponential base...?
+      for (var num = 1; num < maxNum + 1; num++){
+
+        if (systemType == "exponential"){
+          // find the largest exponent less than the current number:
+          largestExp = base;
+          for (var i = base+1; i < num + 1; i++){
+            largestExp = (Math.log(num) / Math.log(base)) % 1 == 0 ? i : largestExp;
+          };
+          expRemainder = num - largestExp;
+          expName = largestExp.toString()
+          nam = Syls[decades] + firstConnecter + baseName + secondConnector + unitSyls[remainder]; // name of the number
+
+        } else{ // if (systemType == "multiplicative")
+          decades = Math.floor(num / base); // how many 'decades' do we have?
+          baseName = (num > base-1 ? unitSyls[base] : "");
+          remainder = num % base;
+          firstConnecter = (Syls[decades] == "" ? "" : "-")
+          secondConnector = ((unitSyls[remainder] == "" || baseName == "") ? "" : "-")
+          nam = Syls[decades] + firstConnecter + baseName + secondConnector + unitSyls[remainder]; // name of the number
+        }
+
+        
+        countList.push(nam);
+        numDict[num] = nam;
+      };
+
+
+      
+
+      // not going to shuffle presentation order anymore - just count up always
+      var shuffledCountList = _.shuffle(countList);
+      
+      var gameid = 0;
+      var hitID = 0;
+      var workerID = 0;
+      var assignmentID = 0;
+
+      var socket = io.connect();
+      socket.on('onConnected', function(d) {
+          
+          socket.removeListener('onConnected');
+          gameid = d.gameid;
+          hitID = d.hitID;
+          workerID = d.workerID;
+          assignmentID = d.assignmentID;
+      });
 
       // when the document is ready
       $(document).ready(function() {
-        // add numdict
-        for (var i = 0; i < shuffledSyls.length; i++){
+        console.log("Base: ", base);
+        console.log("Count list:\n");
+        for (var i=0;i<countList.length;i++){
+          console.log(countList[i])
+        };
+
+      // add numdict
+      for (var i = 0; i < shuffledSyls.length; i++){
         firstpart = i % 2 == 0 ? "<tr class='dictrow' style='background-color:slategrey;'><td>" : "<tr class='dictrow'><td>"
         markup = firstpart + dotArrays[i] + '</td><td>' + shuffledSyls[i] + '</td></tr>'
         $('#numdict tbody').append(markup);
       };
 
+      var highestCount = 1;
+
+      // add another empty dict for the final testing 'highest count' task
+      for (var num = 1; num < maxNum + maxGeneral + 1; num ++){
+
+        firstpart = (num-1) % 2 == 0 ? "<tr class='dictrow' style='background-color:slategrey;'><td>" : "<tr class='dictrow'><td>"
+          
+        rowAnswer = countList[num-1]
+        inputID = "input" + num.toString()
+        nextInputID = "input" + (num+1).toString()
+        rowInput = "<input id='" + inputID + "'disabled='true' type='text' placeholder='Type answer & press enter'> </input>"
+        markup = firstpart + num.toString() + '</td><td>' + rowInput + '</td></tr>'
+        $('#finalCountUp tbody').append(markup);
+
+
+
+
+        document.getElementById(inputID).addEventListener("keyup", function(event) {
+
+            if ($("#input" + highestCount.toString()).val() != "" && event.keyCode === 13 && highestCount < maxNum + maxGeneral) { // advancing one row
+              $("#input" + highestCount.toString()).prop('placeholder','Type answer & press enter');
+              event.preventDefault();
+              $('#input' + highestCount.toString()).prop('disabled', true);
+              $('#input' + (highestCount+1).toString()).prop('disabled', false);
+              $('#input' + (highestCount+1).toString()).focus();
+              $('#input' + (highestCount+1).toString()).select();
+              highestCount = highestCount + 1;
+              
+
+            } else if ($("#input" + highestCount.toString()).val() == "" && event.keyCode === 13 && highestCount < maxNum + maxGeneral){ // if they have tried to enter without input
+              $("#input" + highestCount.toString()).prop('placeholder','Make a guess!')
+
+            } else if($("#input" + highestCount.toString()).val() == "" && highestCount > 1 && (event.keyCode === 46 || event.keyCode === 8)){ // retreating one row
+              $('#input' + highestCount.toString()).prop('disabled', true);
+              $('#input' + (highestCount-1).toString()).prop('disabled', false);
+              $('#input' + (highestCount-1).toString()).focus();
+              $('#input' + (highestCount-1).toString()).select();
+              highestCount = highestCount - 1;
+
+            } else if(event.keyCode === 13 && highestCount == maxNum + maxGeneral){  // when people enter the last row
+              $("#stim").hide();
+              $("#main_image").hide();
+              $("#main_image").height("0px");
+              $("#instructionReminder").hide();
+              $("#stim").hide();
+              $("#nextButton").hide();
+              $("#response").hide();
+              $("#RoundNumDiv").hide();
+              $("#nextDiv").hide();
+              // $("*").hide();
+              $("#exit_survey").show()
+            }
+
+
+
+          });
+        }; // finish the for loop over highest count table creation
+
+
+
+
+
+
+
+
+      $("#input1").prop('disabled', false);
+
       $("#main_image").hide();
       $("#thankyou").hide();
       $("#RoundNumDiv").hide();
 
-      var totalScore = 0;
-      var totalTrials = 0;
-      var sum = 0;
+      var totalScore = 0;  // what is their total score?
+      var elapsedTrials = 1; // how many trials have we been through total?
+      var elapsedSection = 1; // how many trials have we been through in this block?
+      var sum = 0;         // what's the current correct answer?
+      var streak = 0;      // how many correct answers have they gotten in a row?
+      var correctAnswer = 0; // what answer is currently correct?
+      var trialType = 'tutorial';  // are we doing tutorial trials, training, or generalization?
+      var curTrialTimeStarted = 0;
+      var prelimMax = 1;
+
+      var input = document.getElementById("response");
+      input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("nextButton").click();
+        }
+      });
       
       AdvanceSlide = function(){
         var answer = document.getElementById("response").value;
         
 
-        if (answer == shuffledSyls[sum]){
+        if (trialType == 'generalization'){
           totalScore = totalScore + 1;
-        } else{
         };
-        totalTrials = totalTrials + 1;
 
+        if (elapsedSection >= maxGeneral && trialType == 'generalization'){
+          EndExperiment();
+        };
+
+        // first handle if they didn't input anything
+        if (answer == ""){
+          $("#feedbackDiv").html("<b style='color:yellow;'>Please enter a response</b>");
+
+        } else {
+          $("#response").prop('disabled', true);  // disable the input for a second
+
+          // handle correct answer
+          if (trialType != 'generalization' && (answer == correctAnswer || answer == correctAnswer.replace(/-/g, ''))){
+            $("#feedbackDiv").html("<b style='color:green;'>Correct!</b>")
+            
+            if (trialType == 'quiz' || trialType == 'test'){
+              totalScore = totalScore + 1;
+              streak = streak + 1;
+            };
+            
+            if (elapsedSection >= maxNum){  // (streak >= maxNum || elapsedSection >= maxNum*2 - 1)
+              streak = 0;
+              if (trialType == 'quiz'){
+                trialType = 'test';
+                elapsedSection = 0;
+                // $("#instructionReminder").html("<p style='color:red'><b><u>Test</u>:</b><br>Test your memory and earn bonus points.</p>");
+
+                ShowCountUp();
+                $('#input1').focus();
+                $('#input1').select();
+
+
+              } else if (trialType == 'test'){
+                trialType = 'generalization';
+                elapsedSection = 0;
+                $("#instructionReminder").html("<p style='color:grey;'><b><u>New</u>:</b><br>Based on what you've seen, can you name these new numbers?</p>");
+                correctAnswer = countList[elapsedSection % maxNum + maxNum];
+                $("#first").html(elapsedSection % maxNum + maxNum + 1);
+                $("#second").html("?");
+
+                $("#RoundNumText").text("Trial "+(elapsedTrials).toString())
+                $("#ScoreText").text("Score "+totalScore.toString());
+              }
+            };
+          } else if (trialType != 'generalization'){
+            $("#feedbackDiv").html("<b style='color:red;'>The correct answer was "+ correctAnswer+"</b>")
+            
+            streak = 0;
+          } else {
+            $("#feedbackDiv").html("<b style='color:green;'>Answer received!</b>")
+          };
+          timeTaken = Date.now() - curTrialTimeStarted;
+
+          // get the data structure we want to store from this trial!
+          trialData = {
+            dbname : 'num_syn',
+            colname : 'proof_of_concept',
+            iterationName : 'sandbox',  // sandbox, friends1 (Leo & Emily), labmtgdemo was nothing
+            gameID : gameid,
+            workerID: workerID,
+            assignmentID: assignmentID,
+            hitID: hitID,
+            score : totalScore,
+            trialNum : elapsedTrials+1,
+            sectionTrial : elapsedSection+1,
+            target : correctAnswer,
+            response : answer,
+            block : trialType,
+            trialStartTime : curTrialTimeStarted,
+            RT: timeTaken
+          };
+
+          // socket.emit('currentData', trialData);
+
+          setTimeout(function(){
+              $("#feedbackDiv").html("<br>")
+              $("#response").val("");
+              $("#response").prop('disabled', false);
+              $("#response").focus();
+              $("#response").select();
+
+
+              if (trialType == 'tutorial'){ // && newPrelim == 0
+                trialType = 'quiz';
+                $("#instructionReminder").html("<p style='color:gold'><b><u>Quiz</u>:</b><br>Test your memory and earn bonus points.</p>");
+                $("#ScoreText").show();
+
+                $("#second").html("?");
+
+              } else if (trialType == 'quiz'){
+                
+
+                if (elapsedSection == prelimMax){
+                  trialType = 'tutorial';
+                  $("#instructionReminder").html("<p style='color:green'><b><u>Practice</u>:</b><br>Copy the new number word below.</p>");
+                  elapsedSection = elapsedSection + 1;
+                  correctAnswer = countList[elapsedSection-1];
+                  $("#first").html(elapsedSection);
+                  $("#second").html(correctAnswer);
+                  elapsedTrials = elapsedTrials + 1;
+
+
+                } else if (elapsedSection < prelimMax + 1){
+                  elapsedSection = elapsedSection + 1;
+                  correctAnswer = countList[elapsedSection-1];
+                  $("#first").html(elapsedSection);
+                  $("#second").html(correctAnswer);
+                  elapsedTrials = elapsedTrials + 1;
+                  
+                } else {
+                  prelimMax = prelimMax + 1;
+                  elapsedSection = 1;
+                  correctAnswer = countList[elapsedSection-1];
+                  $("#first").html(elapsedSection);
+                  $("#second").html(correctAnswer);
+                  elapsedTrials = elapsedTrials + 1;
+                  
+                }
+                
+
+                $("#RoundNumText").text("Trial "+(elapsedTrials).toString())
+                $("#ScoreText").text("Score "+totalScore.toString());
+                
+              } else if (trialType == 'test'){
+
+                // // this block replaced by the 'highest count' task 
+                // correctAnswer = countList[elapsedSection % maxNum];
+                // $("#first").html(elapsedSection % maxNum + 1);
+                // $("#second").html('?');
+                // elapsedTrials = elapsedTrials + 1;
+                // elapsedSection = elapsedSection + 1;
+                // $("#instructionReminder").html("<p style='color:red'><b><u>Test</u>:</b><br>Test your memory and earn bonus points.</p>");
+
+                $("#RoundNumText").text("Trial "+(elapsedTrials).toString())
+                $("#ScoreText").text("Score "+totalScore.toString());
+
+              } else if (trialType == 'generalization'){
+                correctAnswer = countList[elapsedSection + maxNum];
+                $("#first").html(elapsedSection + maxNum + 1);
+                $("#second").html("?");
+
+                $("#RoundNumText").text("Trial "+(elapsedTrials).toString())
+                $("#ScoreText").text("Score "+totalScore.toString());
+                elapsedTrials = elapsedTrials + 1;
+                elapsedSection = elapsedSection + 1;
+                
+              }
+              
+              
+              
+              
+
+              $("#main_image").show();
+              $("#nextButton").show();
+              $("#response").show();
+              curTrialTimeStarted = Date.now();
+
+              
+            }, 1000);
+          
+
+        };
+
+      };
+      StartExperiment = function(){
+        $("#instructions").hide();
+        $("#RoundNumDiv").show();
+        $("#RoundNumText").text("Trial 1")
+        $("#response").val("");
         
-
-
-        sum = Math.ceil(Math.random() * dotArrays.length); // get a random index from the list of numbers
-        var firstAddend = Math.ceil(Math.random() * sum); // get a random point between 0 and the sum
-        var secondAddend = sum - firstAddend;
-
-        console.log(firstAddend,'+',secondAddend,'=',sum,'aka',shuffledSyls[sum],'or',answer)
-
-        $("#first").html(dotArrays[firstAddend-1].replace(/\<br>/g, '<br/>'))
-        $("#second").html(dotArrays[secondAddend-1].replace(/\<br>/g, '<br/>'))
+        correctAnswer = countList[0];
+        $("#first").html('1');
+        $("#second").html(correctAnswer);
 
         $("#main_image").show();
         $("#nextButton").show();
         $("#response").show();
-
-        
-
+        $("#response").focus();
+        $("#response").select();
+        curTrialTimeStarted = Date.now();
       };
 
-      StartExperiment = function(){
-        $("#instructions").hide();
-        $("#RoundNumDiv").show();
-        $("#RoundNumDiv").append("Score: ",totalScore)
-        AdvanceSlide()
+      ShowCountUp = function(){
+        $("#stim").hide();
+        $("#nextButton").hide();
+        $("#response").hide();
+        $("#finalCountUp").show();
+        $("#nextDiv").hide();
+        $("#instructionReminder").html("<p style='color:white'><b><u>Last thing</u>:</b><br>How high can you go? Translate all the numbers below as best you can!</p>");
       };
-      
-      });
-      
-      
-      
 
-      $("#rect").text('No!');
- 
+      EndExperiment = function(){
+        $("#stim").hide();
+        $("#main_image").hide();
+        $("#main_image").height("0px");
+        $("#instructionReminder").hide();
+        $("#nextButton").hide();
+        $("#response").hide();
+        $("#RoundNumDiv").hide();
+        $("#nextDiv").hide();
+        // $("*").hide();
+        $("#exit_survey").show()
+      };
+
+      
+      }); // end of the 'document ready' section
+       
    
       
       $("#surveySubmit").on("click", function(){
@@ -255,19 +557,24 @@
           subject_information = _.extend(subject_information,
                     {'comments' : $('#comments').val(),
                   'totalLength' : new Date() - startTime});
-          console.log("data is...");
-          console.log(subject_information);
           if(turkerStatus == true) {
             jsPsych.turk.submitToTurk(subject_information); // this seems like it works, while the line below does not...         
             // window.opener.turk.submit(subject_information, true);
+            $("#exit_survey").hide()
+            $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+            $("#thankyou").show()
             window.close();
           } else {
             console.log("would have submitted the following :")
             console.log(subject_information);
+            $("#exit_survey").hide()
+            $("#thankyouText").text( "Successfully submitted. \n (Close this tab any time)")
+            $("#thankyou").show()
           }
           break;
-        }
-      }
+        };
+        
+      };
 
       var startTime = new Date()
       
@@ -282,9 +589,12 @@
     click the button. Default instruction text is for number condition -->
     <div id="instructions">
       <p id="instruction_text">
-        Take a look at these numbers. You're going to do some simple math with them!
+        In the following experiment, you will learn an alien number system.<br><br>
+        In the <b>practice trials</b>, you will copy down the numbers as they are shown to you.<br><br>
+        After those trials, you will be asked to <b>translate numbers</b> into the new language,
+        and will receive bonus marks for your accuracy.
 
-        <table id=numdict style="width:80%">
+        <table id=numdict style="width:80%;display:none;">
         <tbody>
           
         </tbody>
@@ -299,30 +609,54 @@
 
       
     </div>
-    
 
-    <div id="main_image">
-      <table id="stim">
-        <tbody id='problem' style="text-align:right">
-          <td id='first' style='color:blue'> A </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;</td> <td id='second' style='color:grey'> B </td> <td>&nbsp;&nbsp; = &nbsp;&nbsp;?</td>
-        </tbody>
-      </table>
 
+
+    <div id="RoundNumDiv" style="display:flex;">
+      
+      <p id="RoundNumText" style="display:block;" flex="1;">
+        Round 0
+      </p>
+      <p id="ScoreText" style="display:block;" flex="1;">
+        Score 0
+      </p>
       
     </div>
 
 
-    <div id="RoundNumDiv">
+    <div id="main_image" style="height:150px">
+      <center>
+        <div id="instructionReminder"> <p style="color:green"> <b><u>Practice trial</u>:</b><br>Copy the new number word below. </p></div>
+      <table id="stim">
+        <tbody id='problem' style="text-align:center;font-size:40px">
+          <td id='first' style='color:blue;text-align:center;'> A </td>
+          <td>&nbsp;&nbsp;=&nbsp;&nbsp;</td>
+          <td id='second' style='color:grey;text-align:center;'> B </td>
+        </tbody>
+      </table>
+      <table id="finalCountUp" style="display:none;">
+        <center>
+        <tbody id='finalCountUpBody' style="text-align:center;font-size:20px">
+        </tbody>
+        </center>
+      </table>
+    </center>
+
+    </div>
+
+    <div id="nextDiv">
+      <center>
+      <div id="feedbackDiv" style='margin-top:20px'> <br> </div>
       <input id='response' style='display:none;' type=text placeholder="Type answer here"> </input>
       <br>
       <br>
+
       <button id="nextButton" onclick="AdvanceSlide()" style="display:none">
         Next
       </button>
-      <p id="RoundNumText">
-        Round 0
-      </p>
+    </center>
     </div>
+
 
     <div id="thankyou">
       <p id="thankyouText">
@@ -331,7 +665,7 @@
     </div>
 
     <div id="exit_survey" style="display:none">
-      <br><p> Thanks for participating! Please fill out this optional demographic survey and submit your HIT at the bottom of the page. </p><br>
+      <p> <b style="color:green;">You're done the experiment</b>, thanks for participating! Please fill out this optional demographic survey and submit your HIT at the bottom of the page. </p><br>
       (When you click "Submit HIT", a pop-up window will appear; feel free to click "Leave" at that prompt) <br>
       <p> What is your gender? </p>
       <select onChange="dropdownTip('gender::' + this.value)">
