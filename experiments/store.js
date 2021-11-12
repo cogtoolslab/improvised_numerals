@@ -64,16 +64,16 @@ function markAnnotation(collection, gameid, sketchid) {
       console.log(`successfully marked annotation. result: ${JSON.stringify(items)}`);
     }
   });
-  // collection.update({_id: ObjectID(sketchid)}, {
-  //   $push : {all_games : gameid},
-  //   $inc  : {numGames : 1}
-  // }, function(err, items) {
-  //   if (err) {
-  //     console.log(`error marking annotation data: ${err}`);
-  //   } else {
-  //     console.log(`successfully marked backup annotation. result: ${JSON.stringify(items)}`);
-  //   }
-  // });
+  collection.update({_id: ObjectID(sketchid)}, {
+    $push : {all_games : gameid},
+    $inc  : {numGames : 1}
+  }, function(err, items) {
+    if (err) {
+      console.log(`error marking annotation data: ${err}`);
+    } else {
+      console.log(`successfully marked backup annotation. result: ${JSON.stringify(items)}`);
+    }
+  });
 };
 
 
@@ -174,6 +174,8 @@ function serve() {
 
       const databaseName = request.body.dbname;
       const collectionName = request.body.colname;
+      const versionID = request.body.versionID;
+      
       if (!collectionName) {
         return failure(response, '/db/getstims needs collection');
       }
@@ -183,21 +185,37 @@ function serve() {
 
       const database = connection.db(databaseName);
       const collection = database.collection(collectionName);
-
-      // sort by number of times previously served up and take the first
-      collection.aggregate([
-        { $addFields : { numGames: { $size: '$games'} } },
-        { $sort : {numGames : 1, trialNum: 1} },
-        { $limit : 1}
-      ]).toArray( (err, results) => {
-        if(err) {
-          console.log(err);
-        } else {
-	  // Immediately mark as annotated so others won't get it too
-	  markAnnotation(collection, request.body.gameid, results[0]['_id']);
-          response.send(results[0]);
-        }
-      });
+      if (versionID == undefined){
+        // sort by number of times previously served up and take the first
+        collection.aggregate([
+          { $addFields : { numGames: { $size: '$games'} } },
+          { $sort : {numGames : 1, trialNum: 1} },
+          { $limit : 1}
+        ]).toArray( (err, results) => {
+          if(err) {
+            console.log(err);
+          } else {
+            // Immediately mark as annotated so others won't get it too
+            markAnnotation(collection, request.body.gameid, results[0]['_id']);
+            response.send(results[0]);
+          }
+        });
+      } else { // if there is a version ID, supplied by an experimenter / RA
+        console.log("need to go by the experimenter's version ID")
+        console.log("versionID: ",versionID)
+        // sort by number of times previously served up and take the first
+        collection.find( { versionID: parseInt(versionID) } 
+          ).toArray( (err, results) => {
+          if(err) {
+            console.log(err);
+          } else {
+            // Immediately mark as annotated so others won't get it too
+            markAnnotation(collection, request.body.gameid, results[0]['_id']);
+            response.send(results[0]);
+            
+          }
+        });
+      }
     });
 
     app.listen(port, () => {

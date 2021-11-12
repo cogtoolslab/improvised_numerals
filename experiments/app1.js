@@ -56,19 +56,31 @@ io.on('connection', function (socket) {
   var id = query.workerId;
 
   var isResearcher = _.includes(researchers, id);
+  var isRA = 0;  // is an RA using the interface to non-anonymously annotate sketches?
 
   if (!id || isResearcher && !blockResearcher || id === 'undefined'){
     var turkerStatus = false;
-    initializeWithTrials(socket,turkerStatus,query)
+    isRA = 1;
+    // initializeWithTrials(socket,turkerStatus,query,undefined,undefined)
     console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');
   } else {
     var turkerStatus = true;
     checkPreviousParticipant(id, (exists) => {
-      return exists ? handleDuplicate(socket) : initializeWithTrials(socket,turkerStatus,query);
+      return exists ? handleDuplicate(socket) : initializeWithTrials(socket,turkerStatus,query,undefined,undefined);
     });
     console.log("ID appears valid");
+  }
+
+  if (isRA == 1){
+    console.log("Is RA!")
+    socket.on('startGame', function(nameAndPartition) {
+      console.log("start game!");
+      raterName = nameAndPartition[0]
+      partition = nameAndPartition[1]
+      initializeWithTrials(socket,turkerStatus,query,raterName,partition)
+    });
   }
 
   // write data to db upon getting current data
@@ -135,9 +147,9 @@ function checkPreviousParticipant(workerId, callback) {
 };
 
 // This was from Holly's experiment, our stimuli are elsewhere and accessed from index.html
-function initializeWithTrials(socket,status,query) {
+function initializeWithTrials(socket,status,query,raterName,version) {
   turkerStatus = status;
-  var gameid = UUID();
+  var gameid = raterName + "_" + UUID();
   var colname = 'iternum2_recog2';
   
   sendPostRequest('http://localhost:8980/db/getstims', {
@@ -145,7 +157,8 @@ function initializeWithTrials(socket,status,query) {
       dbname: 'stimuli',
       colname: colname,
       //numTrials: 1,
-      gameid: gameid
+      gameid: gameid,
+      versionID: version
     }
   }, (error, res, body) => {
     if (!error && res.statusCode === 200) {
