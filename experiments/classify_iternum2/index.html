@@ -121,11 +121,18 @@
     click the button. Default instruction text is for number condition -->
     <div id="instructions">
       <p id="instruction_text">
-        You will see a series of numerals.
-        Please click all the features that you think each numeral has!
+        <!-- You will see a series of numerals.
+        Please click all the features that you think each numeral has! -->
+        <center>
+        <input id="raterName" placeholder="Name"></input>
+        <input id="partitionNum" placeholder="Partition"></input>
+      </center>
       </p>
+      <button id="enterRaterInfo">
+        submit
+      </button>
 
-      <button id="startExperimentButton">
+      <button id="startExperimentButton"  style="display:none;">
         Click here to begin
       </button>
       <center>
@@ -257,6 +264,8 @@
       $("#RoundNumDiv").hide();
       $("#buttons").hide();
       $("#NextButton").hide();
+
+      
       
       // We want to add some precautions in case people's internet crashes!
       // so below, if there's an error retrieving the stim, we hide everything
@@ -313,6 +322,12 @@
             jsPsych.turk.submitToTurk(subject_information); // this seems like it works, while the line below does not...         
             // window.opener.turk.submit(subject_information, true);
             window.close();
+          } else if (typeof(PROLIFIC_PID) != undefined){
+            // if this is a Prolific study
+            prolificSubmitTo = "https://app.prolific.co/submissions/complete?cc=" // basic submit URL
+            ProlificCompletionCode = "14F36ECD" // add the completion code - manually specified after Prolific generates it for you via its own interface (while you set up the study)
+            prolificSubmitTo = prolificSubmitTo + ProlificCompletionCode;
+            window.open(prolificSubmitTo,"_self");
           } else {
             console.log("would have submitted the following :")
             console.log(subject_information);
@@ -329,6 +344,17 @@
         // a little thing to replace the actual setupGame() function because I already wrote the whole experiment in this doc. Do better next time     
         var socket = io.connect();
 
+
+        // this is for when WE are going through images and rating them, and want to keep track of who is doing what
+        $("#enterRaterInfo").on("click",function(){
+          if (document.getElementById("raterName").value != "" && document.getElementById("partitionNum").value != ""){
+              console.log(document.getElementById("raterName").value,document.getElementById("partitionNum").value)
+              socket.emit("startGame",[document.getElementById("raterName").value,document.getElementById("partitionNum").value]);
+              $("#enterRaterInfo").hide();
+              $("#startExperimentButton").show();
+            };
+        });
+
         // the following line is important for if the worker has already done the task and we have to redirect them
         // https://stackoverflow.com/questions/33321792/how-to-redirect-a-client-after-a-socket-io-event
         socket.on('redirect', function(destination) {
@@ -342,6 +368,16 @@
           socket.removeListener('onConnected');
           turkerStatus = d.turker;
           var meta = d.meta;
+
+          // could get URL parameters right here (use jsPsych to query URL for MTurk / Prolific params)
+          // then save them here. So Prolific workerID
+          // capture info from Prolific
+          var queryString = window.location.search;
+          var urlParams = new URLSearchParams(queryString);
+          var prolificID = urlParams.get('PROLIFIC_PID')    // ID unique to the participant
+          var studyID = urlParams.get('STUDY_ID')                // ID unique to the study
+          var sessionID = urlParams.get('SESSION_ID')        // ID unique to the particular 
+
           
           catches = meta.filter(function(X) {    // extract catch trials
             return X.catch == true
@@ -400,7 +436,9 @@
             curTrialTimeStarted = new Date();
             $('#RoundNumText').empty().append("Round\n" + (curTrial + 1) + " of " + meta.length);
           };
-          $("#startExperimentButton").on("click", function(){StartExperiment()});
+          $("#startExperimentButton").on("click", function(){
+            StartExperiment();
+          });
 
           function AdvanceSlide() {
             var curTime = new Date(); // for measuring RT
@@ -418,16 +456,23 @@
               var output = {
                 dbname : 'iterated_number',
                 colname : 'iternum2_recog',
-                iterationName : 'sebastian', // sandbox accidentally has some early pilots in it, use sandbox1 for sandboxing. [sandbox, sandbox1, pilot1, pilot2, sebastian]
+                iterationName : 'scientists', // sandbox accidentally has some early pilots in it, use sandbox1 for sandboxing. [sandbox, sandbox1, pilot1, pilot2, sebastian]
                 // pilot1 still had the very thematic instructions and no tutorial
                 // pilot2 had totally game-based instructions examples and a tutorial phase
-                // 'sebastian' is Sebastian rating the sketches
+                // 'sebastian' is Sebastian rating the sketches. Abandoned because there's more than just Sebastian annotating sketches
+                // 'scientists' refers to Sebastian and other RAs rating sketches :)
                 // first, info about the rating task
                 recog_gameID : d.gameid,
+
                 workerID: d.workerID,
                 assignmentID: d.assignmentID,
                 hitID: d.hitID,
-                turkSubmitTO: d.turkSubmitTO,
+                turkSubmitTO: d.turkSubmitTO,     // specific to MTurk (otherwise 'undefined')
+
+                prolificID: prolificID,
+                studyID: studyID,
+                sessionID: sessionID,     // specific to Prolific (otherwise 'undefined')
+
                 rating_trial_num : curTrial+1,
                 rating : last_clicked, // which label did the rater select?
                 RT : reaction_time,
@@ -462,7 +507,7 @@
             };
 
             // send that data to mongo! By way of app1.js of course, it needs to get to the server first
-            socket.emit('currentData', output); // this 'emits' the current trial info onto socket where app1.js is listening for it    
+            // socket.emit('currentData', output); // this 'emits' the current trial info onto socket where app1.js is listening for it    
 
             // replace the stim image with whatever is next in the list
             curTrial = curTrial + 1
