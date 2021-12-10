@@ -14,12 +14,8 @@
     <title>Experiment</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../lib/css/bootstrap.min.css" rel="stylesheet">
 
-    <script>
-      console.log("Logging here");
-      report("Reporting here");
-    </script>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -46,81 +42,49 @@
 
       <div class="well" style="width:800px; margin: 0 auto">
 
-<h2><center>Animal Game</center>  </h2>
+<h2><center>Number Game</center>  </h2>
 
 	<p>
 
-	  In this experiment you will play a communication game with
-    another player on MTurk! Each game consists of 36 trials. On each trial both of you will see four 
-    groups of animals that vary in number, like this:
-    <!-- The number will always vary between 15 and 20 -->
+	  You will play a communication game with another player. Each game has 32 trials. On each trial both of you will see four groups of dots that come in different numbers, like this:
 </p>
     <p>
-      <center><img src="images/many_bears_numbers.png" alt="Example objects" style="width:400px;height:140px"></center>
+      <center><img src="images/dot_arrays.png" alt="Example Objects" style="width:300px;height:100px"></center>
     </p>
 <p>
 
-  One of you will act as the "Sketcher" and the other will be the "Viewer". Every trial will include the following steps:
+  One of you will act as the "Sender" and the other will be the "Receiver". Every trial will have four steps:
 
 </p>
 
   <p>
-    <b>STEP ONE: </b> Both players are shown the same groups of animals. A “target” image (like the "17 bears" above) will be highlighted to the Sketcher in purple.
-    Each player will see the images in a <b>different order</b>. This means that if the sketcher sees images in the order above, the viewer will see them in a scrambled order, like shown below:
+    <b>STEP ONE: </b> Both players will see the same groups of dots. A “target” group will be highlighted to the Sender in blue, as in the picture above.
+    Each player will see the pictures in a <b>different order</b>. This means that if the Sender sees images in the order above, the Receiver will see them in a scrambled order, like shown below:
     <p>
-      <center><img src="images/other_bears_numbers.png" alt="Example viewer objects" style="width:400px;height:140px"></center>
-    </p>
-    <!-- The Sketcher and Viewer will<b> NOT </b>see the exact same images. "15 deer", for example, might look one way to the Sketcher and one way to the Viewer: -->
-</p>
-<!-- <p>
-  <center><img src="images/deer_v1_v2.png" alt="Example constellations" style="width:300px;height:160px"></center>
-</p> -->
-  <p>
-    <b>STEP TWO: </b> The goal of the Sketcher will be to help the Viewer identify the target as quickly as possible, using the sketchpad. 
-    The Sketcher can use the sketchpad however they like, but must<b> NOT </b>draw words, arrows, numbers, or other existing symbols <b>(although you might want to invent new symbols to save time!)</b>.
-    The Sketcher will have a limited amount of 'ink', shown on a bar to the left of the sketchpad.
-    <p>
-      <center><img src="images/ink_budget.png" alt="Ink Budget" style="width:250px;height:160px"></center>
+      <center><img src="images/dot_arrays2.png" alt="Example Receiver Objects" style="width:300px;height:100px"></center>
     </p>
 </p>
-  
+  <p>
+    <b>STEP TWO: </b>  The Sender will use a few symbol buttons to help the Receiver pick out the target as quickly as possible. The Sender will use these buttons to create a message, and then click “submit”:
+    <p>
+      <center><img src="images/symbol_keyboard.png" alt="Symbol Keyboard" style="width:330px;height:100px"></center>
+    </p>
+</p>
 
   <p>
-    Once the Sketcher is done creating their message, they will click “submit”.
-  </p>
-
-  <p>
-  <b>STEP THREE: </b> The message will be shown to the Viewer, who will then click on whichever image they think it matches and click “confirm” to submit their response. 
-  <b>Once the "confirm" button is clicked, the response is submitted and the Viewer cannot change their selection.
+  <b>STEP THREE: </b> Then the Receiver will see the message. The Receiver will then click on whichever group of dots they think it matches, and click “confirm” once they are sure. 
+  <b>Once the "confirm" button is clicked, the response is submitted and the Receiver cannot change their selection.
   </b> 
 </p>
 <p>
-  <b>STEP FOUR: </b> Both players will be given feedback; the Sketcher will see what the Viewer clicked (highlighted in blue), and the Viewer will see the true target (highlighted in green). 
-  Then you will both automatically advance to the next trial.
+  <b>STEP FOUR: </b> Both players will be given feedback; the Sender will see what the Receiver clicked (highlighted in yellow), and the Receiver will see the true target (also highlighted in yellow). Then you will both automatically move on to the next trial.
 </p>
 
   <p>
-    For each correct guess the Viewer makes, both of you will receive
+    For each correct guess the Receiver makes, both of you will receive
     <b>an accuracy bonus of $0.03</b> per correct guess.
-    Incorrect guesses do not receive any bonus, so  try your best!
+    Incorrect guesses do not receive any bonus, so try your best!
     
-    <!-- In addition, you will both receive <b>
-    a speed bonus (up to $0.01) based on how fast the Viewer selects the correct image</b>.
-    In other words, <b> the faster the Viewer can select the correct image,
-    the larger the bonus both of you will receive</b>.
-</p>
-    However, <b>incorrect guesses do not receive any bonus</b> regardless of how quickly they were made.
-
-  </p>
-
-    <p>
-    The bonus meter below displays the possible total bonus (accuracy bonus + time bonus) and shrinks as the 30-second timer runs down.
-
-  </p>
-    <p>
-      <center><img src="images/bonusmeter2.png" alt="bonus meter" style="width:440px;height:200px"></center>
-    </p>  -->
-    <!-- remove timer -->
 
 <p> A few final notes: First, since you are playing with another
   player, you may see this screen before the game begins:
@@ -130,18 +94,13 @@
   Just hold tight. Another player should join the game within the next
   few minutes. If you're in the waiting room for more than 5 minutes without
   another player joining, please return the HIT.
-  Otherwise, once a Viewer joins, you will be notified and need to
+  Otherwise, once a Receiver joins, you will be notified and need to
   click a button to start the game.
 </p>
 
-<p>
-  Second, to make sure your work is properly recognized, we ask that you be respectful of your partner and the rules of the game. If you are the Sketcher, <b>please do not "draw" words, arrows, numbers, or any other existing symbols</b>.
-  <!-- If you are the Viewer, please do your best to be as responsive as possible so you can both earn the highest possible bonus. --> <!-- remove timer -->
-
-</p>
 
 <p>
-  Third, please DO NOT refresh the page at any point once you start
+  Finally, please DO NOT refresh the page at any point once you start
   the game (including the waiting page). If you refresh, you will not
   be able to rejoin the game you were in and you may not be able to
   submit the HIT. <br> Thank you!
@@ -151,10 +110,10 @@
 
     In sum:
     <br><br>
-    As a Sketcher, your priority is to send useful information via the sketchpad that will help
-    the Viewer always select the correct image. <b>Please do not "draw" numbers, words, arrows, or any other existing symbols</b>.
+    As a Sender, your priority is to send useful information that will help
+    the Receiver always select the correct image.
     <br><br>
-    As a Viewer, your job is to be really sure when you are making your decision so
+    As a Receiver, your job is to be really sure when you are making your decision so
     you can always <b>select the correct image</b>.
     <br><br>
     Please fill out this short quiz below before getting started. Good luck and have fun!
@@ -170,7 +129,7 @@
  <div class="well" style="width:800px; margin: 0 auto">
 
   </br>
-  The Sketcher can click on an image to end the trial.
+  The Sender can click on an image to end the trial.
     </br>
     <input type="radio" name="dgoal" value="yes"> False
     </br>
@@ -179,7 +138,7 @@
 
 
   </br>
-  The Viewer wants to click on the image that the Sketcher has drawn.
+  The Sender and Receiver see the three groups of dots in a shuffled order.
       </br>
       <input type="radio" name="mgoal" value="no"> False
       </br>
@@ -188,7 +147,7 @@
 
 
   </br>
-  The target is the image which has the purple box around it (only seen by the Sketcher).
+  The target is the image which has the blue box around it (only seen by the Sender).
       </br>
       <input type="radio" name="round" value="yes"> True
       </br>
@@ -196,7 +155,7 @@
       </br>
 
   </br>
-  Only the Sketcher can use the sketchpad to send information.
+  Only the Sender can use the symbol keyboard to send information.
       </br>
       <input type="radio" name="message" value="no"> False
       </br>
@@ -212,23 +171,7 @@
       </br>
 
   </br>
-  The Sketcher can use pre-existing symbols.
-      </br>
-      <input type="radio" name="location" value="no"> True
-      </br>
-      <input type="radio" name="location" value="yes"> False
-      </br>
-
-    </br>
-    <!-- If an incorrect guess is made under 30 seconds, both players will still receive a "speed bonus" for completing that trial quickly.
-        </br>
-        <input type="radio" name="incorrect" value="no"> True
-        </br>
-        <input type="radio" name="incorrect" value="yes"> False
-        </br>
-
-  </br> -->
-  <!-- remove timer -->
+ 
 
     <input id="quiz_submit" type="submit" value="Submit">
       </br>
@@ -258,18 +201,21 @@
         var ans3 = $('input[name="round"]:checked').val();
         var ans4 = $('input[name="message"]:checked').val();
         var ans5 = $('input[name="comp"]:checked').val();
-        var ans6 = $('input[name="location"]:checked').val();
-        // var ans7 = $('input[name="incorrect"]:checked').val();
 
         if(ans1 == "yes" && ans2 == "yes" && ans3 == "yes" &&
-           ans4 == "yes" && ans5 == "yes" && ans6 == "yes") {
+           ans4 == "yes" && ans5 == "yes") {
            var workerId = urlParams.workerId;
            var assignmentId = urlParams.assignmentId;
            var hitId = urlParams.hitId;
            var turkSubmitTo = urlParams.turkSubmitTo;
-           location.replace("./pass.html?workerId=" + workerId
-                            + "&assignmentId=" + assignmentId
-                            + "&hitId=" + hitId + "&turkSubmitTo=" + turkSubmitTo);
+
+           var PROLIFIC_PID = urlParams.PROLIFIC_PID;
+           var SESSION_ID = urlParams.SESSION_ID;
+           var STUDY_ID = urlParams.STUDY_ID;
+
+           location.replace("./pass.html?PROLIFIC_PID=" + PROLIFIC_PID
+                            + "&SESSION_ID=" + SESSION_ID
+                            + "&STUDY_ID=" + STUDY_ID); // + "&turkSubmitTo=" + turkSubmitTo);
         } else if(counter == 2) {
           location.replace("./fail.html");
         } else {
