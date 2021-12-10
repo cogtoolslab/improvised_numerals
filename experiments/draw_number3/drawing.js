@@ -65,7 +65,7 @@ var highlightCell = function(game, color, condition) {
     globalGame.ctx.globalCompositeOperation='source-over';
     if (upperLeftX != null && upperLeftY != null) {
       globalGame.ctx.beginPath();
-      globalGame.ctx.lineWidth="5";
+      globalGame.ctx.lineWidth="7";
       globalGame.ctx.strokeStyle=color;
       globalGame.ctx.rect(upperLeftX+1, upperLeftY+1,globalGame.cellDimensions.width-2,globalGame.cellDimensions.height-2);
       globalGame.ctx.stroke();
@@ -228,15 +228,17 @@ function startStroke(event) {
   }
 };
 
+
+
 function endStroke(event) {
   // Only send stroke if actual line (single points don't get rendered)
-  if (globalGame.drawingAllowed && globalGame.path.length > 1) {
+  if (globalGame.drawingAllowed) {
     globalGame.endStrokeTime = Date.now();
-    //console.log("endstroketime: " + globalGame.endStrokeTime);
+
     // Increment stroke num
     globalGame.currStrokeNum += 1;
-    console.log("Happening yo");
-    
+    globalGame.path.push(curMessage)
+    console.log("path: ",globalGame.path)
     // if they've reached the strokeLimit, disallow them from more
     // if (globalGame.currStrokeNum == globalGame.strokeLimit) {
     //   globalGame.doneDrawing = true;
@@ -256,13 +258,14 @@ function endStroke(event) {
 
 
     // Simplify path to reduce data sent
-    globalGame.path.simplify(10);
+    // globalGame.path.simplify(10);
 
     // Send stroke (in both svg & json forms) to server
     var packet = ['stroke',
 		  globalGame.currStrokeNum,
-		  globalGame.path.exportSVG({asString: true}).replace(/\./g,'~~~'),
-		  globalGame.path.exportJSON({asString: true}).replace(/\./g,'~~~'),
+		  // globalGame.path.exportSVG({asString: true}).replace(/\./g,'~~~'),
+		  // globalGame.path.exportJSON({asString: true}).replace(/\./g,'~~~'),
+      globalGame.path,
 		  globalGame.shiftKeyUsed,
       globalGame.data.subject_information.score,
       (globalGame.data.subject_information.bonus_score.toString()).replace(/\./g,'~~~'),
@@ -295,7 +298,7 @@ function getIntendedTargetName(objects) {
 
 function drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents) {
   // textual feedback
-  highlightCell(globalGame, 'blue', function(x) {
+  highlightCell(globalGame, 'yellow', function(x) {
     return x.subordinate == clickedObjName;
   });
   $('#turnIndicator').html(" ");
@@ -306,7 +309,7 @@ function drawSketcherFeedback(globalGame, scoreDiff, clickedObjName, earnedCents
     }, globalGame.feedbackDelay);
   } else {
     setTimeout(function(){
-      $('#feedback').html('Too bad... Your partner thought the target was the object outlined in ' + 'blue'.bold() + '.');
+      $('#feedback').html('Too bad... Your partner thought the target was the object outlined in ' + 'yellow'.fontcolor("yellow").bold() + '.');
       $('#scoreupdate').html('+0 ¢'.fontcolor("#ce0a04"));
     }, globalGame.feedbackDelay);
   }
@@ -324,7 +327,7 @@ function preFeedback(globalGame, clickedObjName, player) {
 
 function drawViewerFeedback(globalGame, scoreDiff, confirmedObjName, earnedCents) {
   // visual feedback
-  highlightCell(globalGame, 'green', function(x) {
+  highlightCell(globalGame, 'yellow', function(x) {
     return x.target_status == 'target';
   });
   // textual feedback
@@ -336,7 +339,7 @@ function drawViewerFeedback(globalGame, scoreDiff, confirmedObjName, earnedCents
       }, globalGame.feedbackDelay);
   } else {
       setTimeout(function(){
-        $('#feedback').html('Sorry... The target was the object outlined in ' + 'green'.fontcolor("#1aff1a").bold() + '.');
+        $('#feedback').html('Sorry... The target was the object outlined in ' + 'yellow'.fontcolor("yellow").bold() + '.');
         $('#scoreupdate').html('+0 ¢'.fontcolor("#ce0a04"));
       }, globalGame.feedbackDelay);
   }

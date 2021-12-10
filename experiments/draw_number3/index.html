@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Animal Game </title>
+    <title> Numbers Game </title>
 
     <!-- Load style sheet -->
     <link href="/draw_number/lib/css/shared.css" media="screen" rel="stylesheet" type="text/css">
@@ -30,6 +30,9 @@
     <script type="text/javascript" src="../utils/clientBase.js"></script>
     <script type="text/javascript" src="game.client.js"></script>
     <script type="text/javascript" src="drawing.js"></script>
+    
+    <!-- Hoping this will let us actually submit to turk. -->
+    <script src="../lib/js/jspsych.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,7 +55,7 @@
         <p style="color:white" id='score'> </p>
         <!-- <p style="color:white" id='bonuslabel'>Possible bonus </p>
         <p style="color:white" id='cents'>if correct (¢): </p> --> <!-- remove timer -->
-        <button id="startbutton" style="display:none">Your viewer is here. <br>Click to begin sketching!</button>
+        
         <!-- <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="100"
                  aria-valuemin="0" aria-valuemax="100">
@@ -62,7 +65,7 @@
                   <div class="value">MAX</div>
             </div>
         </div> --> <!-- remove timer -->
-        <div id="inklabel">Remaining ink:
+        <div id="inklabel" style="display:none;">Remaining ink:
           <div class="ink">
             
             <div class="ink-bar" role="inkbar" aria-valuenow="100"
@@ -74,13 +77,48 @@
 
     </div>
 
-    <div id='main'>
+    <div id='main' style="display:flex;">
 
-      <span>
+      <span width="100%">
+        <canvas id="viewport"> </canvas>
+
+        <div id="channel" tabindex=1 height='60vh' width='200px' style="position: absolute;
+        top: 40vh;
+        right:0;left:0;
+        float: bottom;
+        margin: auto;">
         
-      <canvas id="sketchpad" tabindex=1 height='500px' width='500px'></canvas>
-            <canvas id="viewport"> </canvas>
-            
+          <div id="commonground" height='20vh' width='200px' style="margin:auto; padding-top:5px; overflow:visible; background-color: #b8c7f5; min-height: 60px; max-width: 60vh; display:block; align-items: center; justify-content: center; text-align: center; font-weight: bold; font-size: x-large; border-style:solid; border-width: 4px; border-color:navy;">  </div>
+
+        </div>
+        
+      <canvas id="sketchpad" tabindex=1 height='500px' width='500px' style="display:none;"></canvas>
+
+      
+        
+      <div id="buttons" style="width: 60vh; height:18vh; bottom:0px; float: bottom; position:absolute; background-color: white; align-items: center; justify-content: center; color:black; left: 50%; transform: translate(-50%, -50%);">
+
+        <button id="startbutton" style="display:none">Your receiver is here. <br>Click to begin writing!</button>
+        <div id="buttons_instructions" style="display:none"> Symbol Keyboard </div><br>
+        
+      <div id="numberButtons" margin='auto'>
+        <button class="clickable" id="button1" style="width:12vh; height: 12vh; top:2vh;  margin-left:0px; margin-bottom:0px; background-color:black;"  onclick="writeNumber(curNum,1)">
+        <img src="buttons/1.png" style="width: 10vh; height: 10vh;" /></button>
+        
+        <button class="clickable" id="button2" style="width:12vh; height: 12vh; top:2vh;  margin-left:0px; margin-bottom:0px; background-color:black;" onclick="writeNumber(curNum,2)">
+        <img src="buttons/2.png" style="width: 10vh; height: 10vh;" /></button>
+        
+        <button class="clickable" id="button3" style="width:12vh; height: 12vh; top:2vh;  margin-left:0px; margin-bottom:0px; background-color:black;" onclick="writeNumber(curNum,3)">
+        <img src="buttons/3.png" style="width: 10vh; height: 10vh;" /></button>
+        
+        <button class="clickable" id="button4" style="width:12vh; height: 12vh; top:2vh;  margin-left:0px; margin-bottom:0px; background-color:black;" onclick="writeNumber(curNum,4)">
+        <img src="buttons/4.png" style="width: 10vh; height: 10vh;" /></button>
+
+        <button class="clickable" id="deletebutton" style="width:8vh; height: 4vh; top:4vh;  background-color:slategrey;" onclick="deleteNumber()"> Delete </button>
+
+      </div>
+      </div>
+
       <div id='loading' style="display: none"><div id="loading-message">The Sketcher is still drawing...</div></div>
       <div id='occluder' style="display: none"> </div>
       <button id="submitbutton" style="display:none">Submit</button>
@@ -141,14 +179,6 @@
       <textarea id='age' onChange="dropdownTip('age::' + this.value)" rows="1" cols="8"></textarea>
       <br><br>
 
-      <p> Did you use a mouse or trackpad?</p>
-      <select onChange="dropdownTip('medium::' + this.value)">
-        <option value =""></option>
-        <option value="mouse">Mouse</option>
-        <option value="trackpad">Trackpad</option>
-        <option value="other">Other</option>
-      </select>
-      <br><br>
 
       <p> Did you read the instructions and do you think you did the
   HIT correctly? </p>
@@ -180,4 +210,111 @@
       <div><button id="surveySubmit" onclick="dropdownTip('submit')" type="button">Submit HIT</button></div>
     </div>
   </body>
+
+  
+  <script>
+    // want to write a function for people to click buttons and create their numerals
+    curNum = 1;
+    curMessage = [];  // will be a sequence of numbers (1-4) corresponding to each image in the message
+    curProcess = []; // the Sender's entire process of writing. Includes timestamps as keys, and actions as values
+
+
+
+    writeNumber = function(currentNum,cardinality){
+      if (globalGame.drawingAllowed == true && currentNum < 31){  // maximum of 27 images
+        imageSignID = 'image' + currentNum.toString();
+        curMessage.push(cardinality);
+        curProcess.push([Date.now(),cardinality].join(':'));
+        globalGame.currStrokeNum += 1;
+        if (curNum == 1){
+          $('#commonground').html("");
+        };
+
+        // // auto expand width of commonground channel if too many tokens
+        // if (curNum*50 > 250){
+        //   // leftPos = $('#commonground').scrollLeft();
+        //   // $('#commonground').animate({scrollLeft: leftPos + 200},0);
+        //   if(curNum*50 < 700){
+        //     newWidth = (parseInt($( "#commonground" ).css( "max-width").split('p')[0]) + 50 ).toString() + "px"
+        //   $("#commonground" ).css( "max-width",newWidth);
+        //   };
+        // }
+        if (currentNum == 30){
+          $("#buttons_instructions").html("<p> You've hit the maximum number of symbols! </p>");
+        };
+
+        // display the new image
+        $('#commonground').append("<img id='" +imageSignID+ "' class='imageSign' src='buttons/"+cardinality.toString()+ ".png" + "' width='35vh' height='35vh' margin='auto'/>");
+        curNum += 1;
+      };
+    };
+
+    deleteNumber = function(){
+      if (globalGame.drawingAllowed == true){
+        if(curNum > 1){
+          curNum = curNum - 1;
+          globalGame.currStrokeNum -= 1;
+          curMessage.pop();
+          curProcess.push([Date.now(),'del'].join(':'))
+          document.getElementById('image' + (curNum).toString()).remove();
+          if (curNum == 1){
+            $('#commonground').html("Your message goes here.");
+          };
+
+          if (curNum == 30){
+            $("#buttons_instructions").html("Symbol Keyboard");
+          };
+        
+        //   // auto decrease width of commonground channel if too many tokens
+        // if (parseInt($( "#commonground" ).css( "height").split('p')[0]) < 101 && parseInt($( "#commonground" ).css( "max-width").split('p')[0]) > 250){
+        //   newWidth = (parseInt($( "#commonground" ).css( "max-width").split('p')[0]) - 50 ).toString() + "px"
+        //   $( "#commonground" ).css( "max-width",newWidth);
+        // };
+      };
+
+      };
+      
+    };
+
+    $("#submitbutton").on('click',function(){
+      if (globalGame.currStrokeNum > 0){
+        globalGame.curMessage = curMessage;
+        globalGame.curProcess = curProcess;
+      };
+    });    
+    
+
+    document.addEventListener("keyup", function(event) {
+      if(curNum > 1 && (event.keyCode === 46 || event.keyCode === 8)){
+        deleteNumber();
+      }
+    });
+
+
+    // what OS are people using?
+    // https://stackoverflow.com/questions/38241480/detect-macos-ios-windows-android-and-linux-os-with-js
+    function getOS() {
+      var userAgent = window.navigator.userAgent,
+          platform = window.navigator.platform,
+          macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+          windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+          iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+          os = null;
+
+      if (macosPlatforms.indexOf(platform) !== -1) {
+        os = 'Mac OS';
+      } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+      } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+      } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+      } else if (!os && /Linux/.test(platform)) {
+        os = 'Linux';
+      }
+
+      return os;
+    };
+    var OS = getOS();
+  </script>
 </html>

@@ -94,7 +94,7 @@ var client_onserverupdate_received = function(data){
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
             drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
-            highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';});
+            highlightCell(globalGame, 'blue', function(x) {return x.target_status == 'target';});
           } else {
             globalGame.ctx.clearRect(0, 0, globalGame.viewport.width, globalGame.viewport.height);
             drawGrid(globalGame);
@@ -109,7 +109,7 @@ var client_onserverupdate_received = function(data){
               drawGrid(globalGame);
               drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
               if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-                highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
+                highlightCell(globalGame, 'blue', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
               }
               globalGame.drawingAllowed = true;
             },750);
@@ -222,10 +222,14 @@ var client_onMessage = function(data) {
       globalGame.get_player(globalGame.my_id).message = ('');
       drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
       $('#occluder').show();
+      $('#numberButtons').hide();
       $('#startbutton').show();
+      
 
       $('#startbutton').click(function start() {
         $('#startbutton').hide();
+        $('#buttons_instructions').show();
+        $('#numberButtons').show();
         globalGame.socket.send('startGame');
       });
 
@@ -248,15 +252,23 @@ var customSetup = function(game) {
   $(document).ready(function() { // added back submit button
     $("#submitbutton").click(function(){
       if (globalGame.currStrokeNum > 0) { // only allow submit button to be pressed if at least one stroke made
-        var finished = ['doneDrawing',1];
+        var finished = ['doneDrawing',1,$('#commonground').html()];
         globalGame.socket.send(finished.join('.'));
+
+
         if (submitted == false){
           game.socket.send('newSubmitTime');
+          var symbols = ['newSymbols',globalGame.curMessage, globalGame.curProcess,globalGame.prolificID, globalGame.studyID, globalGame.sessionID]
+          globalGame.socket.send(symbols.join('.'));
+          globalGame.curMessage = [];
+          globalGame.curProcess = [];
+          curMessage = [];
+          curProcess =[];
         };
         $('#feedback').html("");
       } else {
         if (!globalGame.useSubmitButton || !globalGame.doneDrawing) {
-          $('#feedback').html("Please make your sketch.");
+          $('#feedback').html("Please create your message.");
         }
       }
     });
@@ -282,7 +294,7 @@ var customSetup = function(game) {
     window.location.href = destination;
     });
     
-  game.socket.on('mutualDoneDrawing', function(role) {
+  game.socket.on('mutualDoneDrawing', function(imageMessage) {
     globalGame.doneDrawing = true;
     globalGame.drawingAllowed = false;
     submitted = true;
@@ -291,9 +303,22 @@ var customSetup = function(game) {
       setTimeout(function(){$('#turnIndicator').html("Your partner's turn to guess the target!");},globalGame.feedbackDelay);
     } else if (globalGame.my_role === globalGame.playerRoleNames.role2) {
       $("#loading").fadeOut('fast');
-      setTimeout(function(){$('#turnIndicator').html('Your turn: Select the target!');},globalGame.feedbackDelay);
+      setTimeout(function(){
+        $('#turnIndicator').html('Your turn: Select the target!');
+        $("#commonground").html(imageMessage)
+      },globalGame.feedbackDelay);
+      
     }
   });
+
+  // // clear the commonground once the trial is over
+  // game.socket.on('confirmed',function(){
+  //   setTimeout(function(){
+  //     $("#commonground").html("");
+  //     $( "#commonground" ).css( "max-width","300px");
+  //     curNum = 1;
+  // },globalGame.feedbackDelay)
+  // });
 
   // Set up new round on client's browsers after submit round button is pressed.
   // This means clear the canvas, update round number, and update score on screen
@@ -308,93 +333,22 @@ var customSetup = function(game) {
     globalGame.path = [];
     submitted = false;
 
+    $("#commonground").html("");
+    // $( "#commonground" ).css( "max-width","300px");
+    curNum = 1;
+
+    if(globalGame.my_role === globalGame.playerRoleNames.role1) {
+      $("#commonground").html("Your message goes here.");
+    }
 
 
-
-    // switch roles
-  //   console.log("I was... ",globalGame.my_role)
-  //   if (globalGame.my_role === globalGame.playerRoleNames.role2 ){
-  //     globalGame.my_role = globalGame.playerRoleNames.role1
-  //   } else{
-  //     globalGame.my_role = globalGame.playerRoleNames.role2
-  //   };
-  //   globalGame.get_player(globalGame.my_id).role = globalGame.my_role
-  //   console.log("But am now... ",globalGame.my_role)
-
-  //   // Update with switched roles instructions
-  // $('#roleLabel').replaceWith("You are the " + globalGame.my_role + '.');
-  // if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-  //   txt = "target";
-  //   $('#instructs').html("<p>You have a limited amount of 'ink' to indicate on the sketchpad which image is the target (purple) so that your partner can tell which it is. You will receive " +
-  //     "a bonus ONLY if the Viewer selects the correct object. DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
-  //     if (globalGame.useSubmitButton) {
-  //       $("#submitbutton").show();
-  //     }
-  //   // set up stroke / ink bar
-  //   $('.ink-bar').attr('aria-valuemax',globalGame.inkLimit);
-  //   $('.ink').show();
-  //   $('.ink-bar').show();
-  //   $('#inklabel').show();
-    
-  // } else if (globalGame.my_role === globalGame.playerRoleNames.role2) {
-  //   $('.ink').hide();
-  //   $('.ink-bar').hide();
-  //   $('#inklabel').hide();
-  //   $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
-  //     "you think they mean. If you are correct, you will both receive a bonus.</p>" +
-  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
-  //   if (globalGame.guessing_pictures == false){
-  //     $('#instructs').html("<p><b>Surprise! You actually only have to click written numbers (your partner doesn't know this).</b> </p> " +
-  //     "<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you see their sketch, " +
-  //     "click on the number you think they mean. If you are correct, you will both receive a bonus.</p>" +
-  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
-  //   };
-  //   if (globalGame.useSubmitButton) {
-  //     $("#loading").show();
-  //     $("#loading-message").html("");
-  //   }
-  // }
-
-  // if(globalGame.my_role === globalGame.playerRoleNames.role2) {
-  //   $('#submitbutton').hide();
-  //   // $('#confirmbutton').show();
-  //   // added and put the rest inside click function
-  //   // send packet to server on button click
-  //   $('#confirmbutton').click(function start() {
-  //     if(globalGame.packet) {
-  //       if (globalGame.strokeMade || globalGame.doneDrawing) { // change
-  //         if (!globalGame.useSubmitButton || submitted) {
-  //           $('#confirmbutton').hide();
-  //           globalGame.socket.send(globalGame.packet.join('.'));
-  //         }
-  //       }
-  //     }
-  //   });
-  //   globalGame.viewport.addEventListener("click", responseListener, false);
-  //   globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
-  //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
-  // } else {
-  //   $('#confirmbutton').hide();
-  //   $('#submitbutton').show();
-  //   globalGame.sketchpad.setupTool();
-  // }
-
-  // // end of switch roles
-
-
-
-
-
-
-    
 
     // reset clicked obj flag
     objClicked = false;
     if(globalGame.my_role === globalGame.playerRoleNames.role2) {
       globalGame.viewport.addEventListener("click", responseListener, false); // added
       if (globalGame.useSubmitButton) {
-        $("#loading").show();
-        $("#loading-message").html("The Sketcher is still drawing...");
+        $("#commonground").html("The Sender is still writing...");
       }
     }
     // Reset stroke counter
@@ -484,7 +438,7 @@ var customSetup = function(game) {
       $('.progress-bar').attr('aria-valuemax',globalGame.timeLimit);
       $('.progress').show();
       if (globalGame.useSubmitButton) {
-        $("#loading-message").html("The Sketcher is still drawing...");
+        $("#commonground").html("The Sender is still writing...");
       }
   });
 
@@ -518,7 +472,7 @@ var client_onjoingame = function(num_players, role) {
   w = globalGame.sketchpadShape[0] + "px";
   h = globalGame.sketchpadShape[1] + "px";
   $("#sketchpad").css({"height": h,"width": w});
-  $("#loading").css({"height": h,"width": w});
+  $("#loading").css({"height": '300px',"width": '300px'});
   $('#roundnumber').html("Round 1 of " + globalGame.numRounds);
   
   if (globalGame.setSize == 4) {
@@ -543,26 +497,34 @@ var client_onjoingame = function(num_players, role) {
   });
 
   // Update w/ role
-  $('#roleLabel').append(role + '.');
+  roleDisplayName = role == 'viewer' ? 'receiver' : 'sender'
+  $('#roleLabel').append(roleDisplayName + '.');
   if (role === globalGame.playerRoleNames.role1) {
     txt = "target";
-    $('#instructs').html("<p>You have a limited amount of 'ink' to indicate on the sketchpad which image is the target (purple) so that your partner can tell which it is. You will receive " +
-      "a bonus ONLY if the Viewer selects the correct object. DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
+    $('#instructs').html("<p>You must use the symbol buttons below to indicate (in the empty field) which image is the target (blue) so that your partner can tell which it is. You will receive " +
+      "a bonus ONLY if the Receiver selects the correct object. Please do not resize browser window or change zoom during the game. </p>");
       if (globalGame.useSubmitButton) {
         $("#submitbutton").show();
       }
-    // set up stroke / ink bar
+    // set up stroke / ink bar // changed to get rid of it
     $('.ink-bar').attr('aria-valuemax',globalGame.inkLimit);
-    $('.ink').show();
-    $('.ink-bar').show();
-    $('#inklabel').show();
-    
-  } else if (role === globalGame.playerRoleNames.role2) {
     $('.ink').hide();
     $('.ink-bar').hide();
     $('#inklabel').hide();
-    $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
-      "you think they mean. If you are correct, you will both receive a bonus.</p>" +
+    $('#commonground').html("Your message goes here.");
+    
+    
+    
+  } else if (role === globalGame.playerRoleNames.role2) {
+    $('.clickable').hide();
+    $('#buttons').html("<p>Your partner's message will show up above when they are ready for you to make your guess.</p>");
+    $('#buttons').hide(); // overwriting previous line – just get rid of it!
+    $('#commonground').html("The Sender is still writing...");
+    $('.ink').hide();
+    $('.ink-bar').hide();
+    $('#inklabel').hide();
+    $('#instructs').html("<p>Your partner must use some symbols to indicate on the sketchpad which image is the target. When you are sure which it is, " +
+      "click on the image you think they mean. If you are correct, you will both receive a bonus.</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
     if (globalGame.guessing_pictures == false){
       $('#instructs').html("<p><b>Surprise! You actually only have to click written numbers (your partner doesn't know this).</b> </p> " +
@@ -570,8 +532,9 @@ var client_onjoingame = function(num_players, role) {
       "click on the number you think they mean. If you are correct, you will both receive a bonus.</p>" +
       "<p> Please do not resize browser window or change zoom during the game.</p>");
     };
+    
     if (globalGame.useSubmitButton) {
-      $("#loading").show();
+      // $("#loading").show();
       $("#loading-message").html("");
     }
   }
@@ -609,7 +572,7 @@ var client_onjoingame = function(num_players, role) {
       }
     });
     globalGame.viewport.addEventListener("click", responseListener, false);
-    globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
+    globalGame.get_player(globalGame.my_id).message = ('Waiting for the Sender to click begin.\nPlease do not refresh the page!\n ');
     drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
   } else {
     globalGame.sketchpad.setupTool();
@@ -621,20 +584,20 @@ var setupOverlay = function() { // added transition pop-up
     if (globalGame.get_player(globalGame.my_id).role == globalGame.playerRoleNames.role1) {
       $('#after_pre_button').click(function next() {
       globalGame.socket.send('sketcherReady');
-      $('#after_pre_text').text("Waiting for Viewer to click 'next'...");
+      $('#after_pre_text').text("Waiting for Receiver to click 'next'...");
     });
     $('#before_post_button').click(function next() {
       globalGame.socket.send('sketcherReady');
-      $('#before_post_text').text("Waiting for Viewer to click 'next'...");
+      $('#before_post_text').text("Waiting for Receiver to click 'next'...");
     });
   } else {
     $('#after_pre_button').click(function next() {
       globalGame.socket.send('viewerReady');
-      $('#after_pre_text').text("Waiting for Sketcher to click 'next'...");
+      $('#after_pre_text').text("Waiting for Sender to click 'next'...");
     });
     $('#before_post_button').click(function next() {
       globalGame.socket.send('viewerReady');
-      $('#before_post_text').text("Waiting for Sketcher to click 'next'...");
+      $('#before_post_text').text("Waiting for Sender to click 'next'...");
     });
   }
 };
@@ -673,7 +636,10 @@ function responseListener(evt) {
   		      globalGame.objects[0]['phase'],
   		      globalGame.objects[0]['repetition'],
             globalGame.data.subject_information.score,
-            (globalGame.data.subject_information.bonus_score.toString()).replace(/\./g,'~~~')
+            (globalGame.data.subject_information.bonus_score.toString()).replace(/\./g,'~~~'),
+            globalGame.prolificID,
+            globalGame.studyID,
+            globalGame.sessionID
           ];
       }
     });

@@ -58,7 +58,7 @@ xyhtml , body {
 	margin-left: 0;
 	margin-right: auto;
 	margin-bottom: auto;
-	left:auto; right:1%; top:35%; bottom: 0;
+	left:auto; right:1%; top:50vh; bottom: 0;
 	position: absolute;
 	font-size: 2.2vh;
 	font-weight:lighter;
@@ -71,7 +71,7 @@ xyhtml , body {
 	margin-left: 0;
 	margin-right: auto;
 	margin-bottom: auto;
-	left:auto; right:1%; top:30%; bottom: 0;
+	left:auto; left:1%; top:55vh; bottom: 0;
 	position: absolute;
 	font-size: 3vh;
 	font-weight:bolder;
@@ -84,7 +84,7 @@ xyhtml , body {
 	margin-left: 0;
 	margin-right: auto;
 	margin-bottom: auto;
-	left:auto; right:1%; top:25%; bottom: 0;
+	left:auto; right:1%; top:60vh; bottom: 0;
 	position: absolute;
 	font-size: 2.2vh;
 	font-weight:lighter;
@@ -98,7 +98,7 @@ xyhtml , body {
     margin-top: 1%;
     margin-right: auto;
     margin-bottom: auto;
-    left:auto; right:3vh; top:auto; bottom: 3vh;
+    left:auto; right:3vh; top:76vh; bottom: 3vh;
     position: absolute;
     font-size: 2.5vh;
     font-weight:lighter;
@@ -112,7 +112,7 @@ xyhtml , body {
     margin-top: 1%;
     margin-right: auto;
     margin-bottom: auto;
-    left: 0; right: auto; top:13vh; bottom: auto;
+    left: 0; right: auto; top:80vh; bottom: auto;
     position: absolute;
     font-size: 2vh;
     font-weight:lighter;
@@ -127,7 +127,7 @@ xyhtml , body {
   margin-top: 1%;
   margin-right: auto;
   margin-bottom: auto;
-  left: 0; right: auto; top:15.5vh; bottom: auto;
+  left: 0; right: auto; top:80vh; bottom: auto;
   position: absolute;
   font-size: 2vh;
   font-weight:lighter;
@@ -246,6 +246,11 @@ xyhtml , body {
     text-align: center;
 }
 
+.imageSign {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #000000;
+}
 
 #inklabel {
     float: middle;
@@ -263,6 +268,7 @@ xyhtml , body {
     bottom:0px; */
     font-size: 2vh;
     font-weight:lighter;
+    display: none;
 }/* 25% */
 
 .ink{
@@ -295,23 +301,28 @@ xyhtml , body {
 	margin-top: 1%;
 	margin-right: auto;
 	margin-bottom: auto ;
-	left:0; right:0; top:25%; bottom: 0;
+	left:0; right:0; top:76vh; bottom: 0;
 	position: absolute;
 	font-size: 2vh;
 	font-weight:lighter;
 }
 
 #startbutton {
+    /* height: 25vh;
+    width: 80vh; */
+    height: 100%;
+    width: 100%;
+    /* margin-top:2vh; */
     z-index: 40;
-    position: absolute;
-    margin: auto;
-    top: 76%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
+    /* position: absolute; */
+    /* margin: auto; */
+    /* top: 76vh;
+    left: 50%; */
+    /* transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); */
     background-color: white;
     color: black;
-    font-size: 38px;
+    font-size: 4vh;
     padding: 16px 30px;
     border-style: solid;
     border-width: 5px;
@@ -384,7 +395,7 @@ xyhtml , body {
   position: absolute;
   margin: auto;
   width: 12vh;
-  top: 95%;
+  top: 85vh;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -459,24 +470,25 @@ ALOT...don't understand how to adjust that.*/
 /* for set size 6, height 20, width 120, for set size 4, height 25, width 100 */
 #viewport {
     float: middle;
-    border: solid 4px;
+    border: solid 0px;
     height: 25vh;
-    width: 100vh;
+    width: 75vh !important;
     margin: auto;
-	  top: 56vh; bottom: auto; left:0; right: 0;
+	  top: 12vh; bottom: auto; left:0; right: 0;
     background: #383838;
     position: absolute;
 
 }
+
 
 /* for set size 6, height 20, width 120, for set size 4, height 25, width 100 */
 #occluder {
     float: middle;
     border:solid 1px #333;
     height: 25vh;
-    width: 100vh;
+    width: 75vh !important;
     margin: auto;
-    top: 56vh; bottom: auto; left:0; right: 0;
+    top: 12vh; bottom: auto; left:0; right: 0;
     background: #808080;
     position: absolute;
     z-index: 10;
@@ -486,7 +498,7 @@ ALOT...don't understand how to adjust that.*/
     height: 300px;
     width: 300px;
     position: absolute;
-    top: 12vh;
+    top: 40vh;
     right:0;left:0;
     float: top;
     margin: auto;
@@ -498,7 +510,7 @@ ALOT...don't understand how to adjust that.*/
     height: 300px;
     width: 300px;
     position: absolute;
-    top: 12vh;
+    top: 40vh;
     right:0;left:0;
     float: top;
     margin: auto;
@@ -507,7 +519,7 @@ ALOT...don't understand how to adjust that.*/
 }
 
 #loading-message {
-  margin-top: 12vh;
+  margin-top: 40vh;
   font-size: 3vh;
   display: inline-block;
   width: 80%;

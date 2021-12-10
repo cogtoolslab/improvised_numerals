@@ -26,16 +26,16 @@ if(argv.gameport) {
   gameport = argv.gameport;
   console.log('using port ' + gameport);
 } else {
-  gameport = 8890;
-  console.log('no gameport specified: using 8890\nUse the --gameport flag to change');
+  gameport = 8892;
+  console.log('no gameport specified: using 8892\nUse the --gameport flag to change');
 }
 
 if(argv.expname) {
   var exp = argv.expname.replace(/\/$/, "");
   var gameServer = new Server(exp);
 } else {
-  console.log('no expname specified; using the default expname, "draw_number2"')
-  var exp = 'draw_number2';
+  console.log('no expname specified; using the default expname, "draw_number3"')
+  var exp = 'draw_number3';
   var gameServer = new Server(exp);
 }
 
@@ -92,23 +92,32 @@ app.get( '/*' , function( req, res ) {
 io.on('connection', function (client) {
   // Recover query string information and set condition
   var hs = client.request;
-  var query = require('url').parse(hs.headers.referer, true).query;
-    var id;
-  if( !(query.workerId && query.workerId in global_player_set) ) {
-    if(!query.workerId || query.workerId === 'undefined') {
-      id = utils.UUID();
+  console.log("SURVEY: ",hs._query.survey);
+
+  if (hs._query.survey == 'true'){   // if we just need to complete the post-test survey
+    // we only need to store whatever they submit
+    client.on('message', function(m) {
+      gameServer.onSurveyMessage(client, m);
+    });
+  } else if (hs._query.survey == 'false') { // if the 'survey' variable in the query is anything else
+    var query = require('url').parse(hs.headers.referer, true).query;
+      var id;
+    if( !(query.workerId && query.workerId in global_player_set) ) {
+      if(!query.workerId || query.workerId === 'undefined') {
+        id = utils.UUID();
+      } else {
+        // useid from query string if exists
+        global_player_set[query.workerId] = true;
+        id = query.workerId;
+      }
+      if(valid_id(id)) {  // this includes situations when there was no ID, so we made one using UUID
+        initialize(query, client, id);
+      }  
     } else {
-      // useid from query string if exists
-      global_player_set[query.workerId] = true;
-      id = query.workerId;
+        console.log('redirecting');
+        client.emit('redirect', 'https://cogtoolslab.org:' + gameport.toString() +  '/utils/duplicate.html');
     }
-    if(valid_id(id)) {
-      initialize(query, client, id);
-    }  
-  } else {
-      console.log('redirecting');
-      client.emit('redirect', 'https://cogtoolslab.org:' + gameport.toString() +  '/utils/duplicate.html');
-  }
+  };
 });
 
 var valid_id = function(id) {
@@ -129,6 +138,12 @@ var initialize = function(query, client, id) {
       client.emit('reportingGameInfo', gameInfo );
     });
   };
+
+  // // we might want to reconnect to the socket in order to submit the post-test survey outside of MTurk (Prolific can't submit survey info in a 'submitTo' URL the way AMT can). This does not require both partners being online, and we don't want one person disconnecting to affect the other
+  // survey = client.handshake.headers.referer.split('&')[client.handshake.headers.referer.split('&').length - 1] == 'survey';
+  // if (survey == true){
+  //   client.emit('onconnected');
+  // };
 
   // everything that actually handles the games being played:
   if (monitor != true) {

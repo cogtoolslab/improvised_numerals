@@ -1,4 +1,5 @@
 var utils = require(__base + 'utils/sharedUtils.js');
+var sendPostRequest = require('request').post;
 
 global.window = global.document = global;
 
@@ -56,6 +57,35 @@ class ReferenceGameServer {
 	     utils.writeDataToMongo(game, dataPoint);
     }
   }
+
+  onSurveyMessage (client, message) {
+    var message_parts = message.split('.');
+    this.customServer.onMessage(client, message);
+    var eventType = message_parts[0];
+    if (eventType == 'posttestSurvey'){
+      // a new version of writeData for the survey submission, because there's no client.game
+      var output = this.customServer.dataOutput;
+      if(_.has(output, eventType)) {
+        var dataPoint = _.extend(output[eventType](client, message_parts), {eventType});
+        var postData = _.extend({
+          dbname: 'iterated_number',
+          colname: 'dots1',
+          iterationName: 'sandbox'
+        }, dataPoint);
+        sendPostRequest(
+          'http://localhost:8980/db/insert',
+          { json: postData },
+          (error, res, body) => {
+            if (!error && res.statusCode === 200) {
+              console.log(`sent data to store`);
+            } else {
+               console.log(`error sending data to store: ${error} ${body}`);
+            }
+          }
+        );
+      }
+    };
+  };
 
   onMessage (client, message) {
     var message_parts = message.split('.');

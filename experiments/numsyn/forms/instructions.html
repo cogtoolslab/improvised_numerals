@@ -11,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../favicon.ico">
 
     <title>Symbols</title>
 
@@ -47,25 +46,14 @@
 
 	<p>
 
-    In this experiment you will be shown 65 hand-drawn symbols and asked what they mean.
-    On each trial, one of these symbols will appear in the top part of the screen, and several options will appear below it.
-    Your task is to click the option that best matches the symbol. For example, you might be asked which <b>number</b> best matches the symbol:
-</p>
-    <p>
-      <center><img src="images/number_rate.png" alt="Example number" style="width:400px;height:200px"></center>
-    </p>
-
-  <p>
-    Or you might be asked which <b>animal</b> best matches the symbol:
+    In this experiment you will be learning a new number system. Your task is to practise and name numbers as quickly and accurately as possible.
 </p>
   <p>
-    <center><img src="images/animal_rate.png" alt="Example shape" style="width:400px;height:240px"></center>
+    <!-- <center><img src="images/IMAGE_NAME.png" alt="Example shape" style="width:400px;height:240px"></center> -->
   </p>
   <p>
-    <!-- You will only be presented with one set of buttons (numbers or animals) for the entire task – meaning that either you will only ever interpret the number conveyed by every drawing, or only ever interpret the animal. -->
     It may not always be clear what the symbol means. In any case, give your best guess!
   </p>
-
 
     <!-- <p>
       <b>Bonus: </b> You will receive a bonus for accuracy ($0.03 per correct guess).
@@ -76,7 +64,7 @@
   Finally, please DO NOT refresh the page at any point once you start
   the game. If you refresh, you will not
   be able to get back to the session you were in and you may not be able to
-  submit the HIT. <br> Thank you!
+  submit the task. <br> Thank you!
 </p>
 
 <h4>
@@ -99,11 +87,11 @@
     <input type="radio" name="dgoal" value="yes"> True
     </br>
   </br>
-  You can exit the page any time and return later to continue the task.
+  If the number word has hyphens, you will have to type the hyphens in your response.
       </br>
-      <input type="radio" name="mgoal" value="yes"> False
+      <input type="radio" name="hyphens" value="yes"> False
       </br>
-      <input type="radio" name="mgoal" value="no"> True
+      <input type="radio" name="hyphens" value="no"> True
       </br>
   </br>
     <input id="quiz_submit" type="submit" value="Submit">
@@ -128,7 +116,7 @@
       var counter = 0;
       document.getElementById("quiz_submit").onclick = function () {
         var ans1 = $('input[name="dgoal"]:checked').val();
-        var ans2 = $('input[name="mgoal"]:checked').val();
+        var ans2 = $('input[name="hyphens"]:checked').val();
 
         if(ans1 == "yes" && ans2 == "yes" && urlParams.workerId != undefined) {
            var workerId = urlParams.workerId;

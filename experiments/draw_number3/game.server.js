@@ -25,13 +25,14 @@ var onMessage = function(client,message) {
 
   //The first is always the type of message
   var message_type = message_parts[0];
-
-  //Extract important variables
-  var gc = client.game;
-  var id = gc.id;
-  var all = gc.get_active_players();
-  var target = gc.get_player(client.userid);
-  var others = gc.get_others(client.userid);
+  if (message_type != 'posttestSurvey'){ // if we're not doing the survey, continue
+      //Extract important variables
+    var gc = client.game;
+    var id = gc.id;
+    var all = gc.get_active_players();
+    var target = gc.get_player(client.userid);
+    var others = gc.get_others(client.userid);
+  };
   switch(message_type) {
 
   case 'stroke' :
@@ -112,9 +113,15 @@ var onMessage = function(client,message) {
 
   case 'doneDrawing' : // sketcher has declared that drawing is finished
     drawing_status = message_parts[1];
+    imageMessageParts = message_parts.slice(2);
+    imageMessage = imageMessageParts[0];
+    for (var i=1;i<imageMessageParts.length;i++){
+      imageMessage = imageMessage + "." + imageMessageParts[i];
+    };
     console.log('drawing submitted: ', drawing_status);
       _.map(all, function(p){
-        p.player.instance.emit('mutualDoneDrawing', {user: client.userid} );
+        // p.player.instance.emit('mutualDoneDrawing', {user: client.userid} );
+        p.player.instance.emit('mutualDoneDrawing', imageMessage );
       });
       break;
 
@@ -133,6 +140,18 @@ var onMessage = function(client,message) {
 
    case 'newConfirmTime' : 
    gc.confirmTime = Date.now();
+   _.map(all, function(p){
+     p.player.instance.emit('confirmed');
+    });
+   break;
+
+   case 'newSymbols' : 
+  //  gc.curMessage = message_parts[1];
+  console.log("submitted message");
+   break;
+
+   case 'posttestSurvey' : 
+  console.log('posttest survey');
    break;
  }
 };
@@ -167,13 +186,21 @@ var dataOutput = function() {
     dis1_v_url = _.filter(objects, x => x.target_status == 'distr1')[0]['viewer_url'];
     dis2_s_url = _.filter(objects, x => x.target_status == 'distr2')[0]['sketcher_url'];
     dis2_v_url = _.filter(objects, x => x.target_status == 'distr2')[0]['viewer_url'];
-    dis3_s_url = _.filter(objects, x => x.target_status == 'distr3')[0]['sketcher_url'];
-    dis3_v_url = _.filter(objects, x => x.target_status == 'distr3')[0]['viewer_url'];
-    
     all_urls = {t_s_url: targ_s_url,
       t_v_url: targ_v_url,
-      dis_s_urls: [dis1_s_url, dis2_s_url, dis3_s_url],
-      dis_v_urls: [dis1_v_url, dis2_v_url, dis3_v_url]}
+      dis_s_urls: [dis1_s_url, dis2_s_url],
+      dis_v_urls: [dis1_v_url, dis2_v_url]}
+
+    if (this.setSize == 4){
+      dis3_s_url = _.filter(objects, x => x.target_status == 'distr3')[0]['sketcher_url'];
+      dis3_v_url = _.filter(objects, x => x.target_status == 'distr3')[0]['viewer_url'];
+      all_urls = {t_s_url: targ_s_url,
+        t_v_url: targ_v_url,
+        dis_s_urls: [dis1_s_url, dis2_s_url, dis3_s_url],
+        dis_v_urls: [dis1_v_url, dis2_v_url, dis3_v_url]}
+    };
+    
+    
     
     if (this.setSize == 6){
       dis4_s_url = _.filter(objects, x => x.target_status == 'distr4')[0]['sketcher_url'];
@@ -227,8 +254,8 @@ var dataOutput = function() {
       intendedName,
       clickedName: message_data[1],
       correct: intendedName === message_data[1],
-      pngString: message_data[2],
-      pose: parseInt(message_data[3]),
+      // pngString: message_data[2],
+      // pose: parseInt(message_data[3]),
       condition : message_data[4],
       phase : message_data[5],
       repetition : message_data[6],
@@ -241,7 +268,10 @@ var dataOutput = function() {
       dis_v_urls: getObjectUrls(objects)['dis_v_urls'],
       submitTime: client.game.submitTime,
       clickedTime: client.game.clickedTime,
-      confirmTime: client.game.confirmTime
+      confirmTime: client.game.confirmTime,
+      prolificID: message_data[9],
+      studyID: message_data[10],
+      sessionID: message_data[11],
       }
     );
     //console.log(JSON.stringify(_.pick(output, ['trialNum','intendedName','clickedName','correct','previous_score','previous_bonus_score','subset']), null, 3));
@@ -251,14 +281,14 @@ var dataOutput = function() {
 
   var strokeOutput = function(client, message_data) {
     var xmlDoc = new parser().parseFromString(message_data[2].replace(/~~~/g, '.'));
-    var svgData = xmlDoc.documentElement.getAttribute('d');
+    // var svgData = xmlDoc.documentElement.getAttribute('d');
     var objects = client.game.trialInfo.currStim;
     var intendedName = getIntendedTargetName(objects);
     //console.log("objects: " + objects)
     var output = _.extend(
       commonOutput(client, message_data), {
       intendedName,
-      svgData,
+      // svgData,
       currStrokeNum: message_data[1],
       shiftKeyUsed: message_data[4],
       previous_score: message_data[5],
@@ -276,9 +306,50 @@ var dataOutput = function() {
     return output;
   };
 
+  var symbolsOutput = function(client, message_data) {
+    var objects = client.game.trialInfo.currStim;
+    var intendedName = getIntendedTargetName(objects);
+    var output = _.extend(
+      commonOutput(client, message_data), {
+      intendedName,
+      submitTime: client.game.submitTime,
+      symbols: message_data[1], // client.game.curMessage,
+      symbolsProcess: message_data[2],
+      prolificID: message_data[3],
+      studyID: message_data[4],
+      sessionID: message_data[5],
+      game_condition: client.game.game_condition,
+      targ_s_url: getObjectUrls(objects)['t_s_url'],
+      targ_v_url: getObjectUrls(objects)['t_v_url'],
+      dis_s_urls: getObjectUrls(objects)['dis_s_urls'],
+      dis_v_urls: getObjectUrls(objects)['dis_v_urls']
+    });
+    //console.log(JSON.stringify(output, null, 3));
+    //console.log(output['game_condition']);
+    return output;
+  };
+
+  var posttestSurveyOutput = function(client, message_data) {
+    var message_parts = message_data;//.split('.');
+    var output = {
+        eventType: message_parts[0],
+        gameid: message_parts[1],
+        prolificID: message_data[2],
+        studyID: message_data[3],
+        sessionID: message_data[4],
+        iterationName: message_data[5],
+        previous_score: message_data[6],
+        surveyData: message_parts.slice(7,16),
+        comments: message_data.slice(16)
+      };
+    return output;
+  };
+
   return {
     'stroke' : strokeOutput,
-    'clickedObj' : clickedObjOutput
+    'clickedObj' : clickedObjOutput,
+    'newSymbols' : symbolsOutput,
+    'posttestSurvey' : posttestSurveyOutput
   };
 }();
 

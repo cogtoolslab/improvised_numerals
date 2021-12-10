@@ -1,6 +1,8 @@
-const { isUndefined } = require('lodash');
+// This is your app.js, the script that will handle requests to the experiments on your server
 
-global.__base = __dirname + '/';
+
+// first, let's load all the dependencies we need
+const { isUndefined } = require('lodash');
 
 var
     use_https     = true,
@@ -15,21 +17,7 @@ var
     // cors          = require('cors')
     ;
 
-////////// EXPERIMENT GLOBAL PARAMS //////////
-
-var gameport;
-// cogtoolsrequester is: 'A9AHPCS83TFFE'
-var researchers = ['A4SSYO0HDVD4E', 'A1BOIDKD33QSDK', 'A1MMCS8S8CTWKU','A16YTLSNG7UROR','ATHO7Y5CT91O3'];
-var blockResearcher = false;
-
-if(argv.gameport) {
-  gameport = argv.gameport;
-  console.log('using port ' + gameport);
-} else {
-  gameport = 8867;
-  console.log('no gameport specified: using 8867\nUse the --gameport flag to change');
-}
-
+// security related things
 try {
   var privateKey  = fs.readFileSync('/etc/letsencrypt/live/cogtoolslab.org/privkey.pem'),
       certificate = fs.readFileSync('/etc/letsencrypt/live/cogtoolslab.org/cert.pem'),
@@ -43,11 +31,29 @@ try {
       io          = require('socket.io')(server);
 }
 
-// serve stuff that the client requests
+// this is our default directory - when giving a file location, we assume this string unless instructed otherwise
+global.__base = __dirname + '/';
+
+////////// EXPERIMENT GLOBAL PARAMS //////////
+
+// you have to use a port if you want to connect to a server
+var gameport;
+
+// what port will it be?
+if(argv.gameport) {  // either they will specify a port
+  gameport = argv.gameport;
+  console.log('using port ' + gameport);
+} else {             // or else we will
+  gameport = 8890;
+  console.log('no gameport specified: using 8890\nUse the --gameport flag to change');
+}
+
+// serve stuff that the client requests. This is always running when this script is on
 app.get('/*', (req, res) => {
   serveFile(req, res);
 });
 
+// there will be something in their client-side code that makes this connection
 io.on('connection', function (socket) {
 
   // Recover query string information and set condition

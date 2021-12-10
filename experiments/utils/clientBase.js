@@ -36,6 +36,17 @@ var ondisconnect = function(data) {
     $('#exit_survey').prepend(failMsg);
   }
 
+  // this all is in an effort to make the survey submittable after socket has closed (by reopening socket and passing app.js a special '&survey' parameter so it will send the data to mongodb)
+  // location.replace(window.location.href.toString() + "&survey=True");
+  globalGame.socket = io.connect({ query: "survey=true" });
+  // console.log("Trying it now")
+  // globalGame.socket.on('onConnected', function() {
+  //     globalGame.socket.emit('surveyTime');
+  //     console.log("reconnecting for survey purposes")
+  //     globalGame.socket.removeListener('onConnected');
+  //   });
+  
+                         
   $('#exit_survey').show();
   $('#main').hide();
   $('#header').hide();
@@ -56,12 +67,22 @@ var onconnect = function(data) {
   this.players[0].id = this.my_id;
   this.urlParams = getURLParams();
   drawScreen(this, this.get_player(this.my_id));
+
+  // could get URL parameters right here (use jsPsych to query URL for MTurk / Prolific params)
+  // then save them here. So Prolific workerID
+  // capture info from Prolific
+  var queryString = window.location.search;
+  var prolificURLParams = new URLSearchParams(queryString);
+  this.prolificID = prolificURLParams.get('PROLIFIC_PID')    // ID unique to the participant
+  this.studyID = prolificURLParams.get('STUDY_ID')                 // ID unique to the study
+  this.sessionID = prolificURLParams.get('SESSION_ID')        // ID unique to the particular 
+
 };
 
 // Associates callback functions corresponding to different socket messages
 var sharedSetup = function(game) {
   //Store a local reference to our connection to the server
-  game.socket = io.connect({reconnection: false});
+  game.socket = io.connect({reconnection: false, query: "survey=false"});
 
   // Tell other player if someone is typing...
   $('#chatbox').on('input', function() {
@@ -103,6 +124,10 @@ var sharedSetup = function(game) {
     }
   });
 
+
+  
+
+
   // Update messages log when other players send chat
   game.socket.on('chatMessage', function(data){
 
@@ -134,7 +159,6 @@ var sharedSetup = function(game) {
   game.socket.on('disconnect', ondisconnect.bind(game));
   //Sent each tick of the server simulation. This is our authoritive update
   game.socket.on('onserverupdate', client_onserverupdate_received.bind(game));
-  // game.socket.on('onserverupdate', console.log('GAME',game)); // sebholt print statement
   //Handle when we connect to the server, showing state and storing id's.
   game.socket.on('onconnected', onconnect.bind(game));
   //On message from the server, we parse the commands and send it to the handlers
@@ -201,10 +225,46 @@ function dropdownTip(data){
 				    'totalLength' : Date.now() - globalGame.startTime});
     globalGame.submitted = true;
     console.log("data is...");
-    console.log(globalGame.data);
-    if(_.size(globalGame.urlParams) == 4) {
-      window.opener.turk.submit(globalGame.data, true);
-      window.close();
+    // console.log(globalGame.data);
+
+    if (typeof(PROLIFIC_PID) != undefined){
+      var queryString = window.location.search;
+      var prolificURLParams = new URLSearchParams(queryString);
+      var posttest = [
+        'posttestSurvey',
+        globalGame.data.subject_information.gameID,
+        prolificURLParams.get('PROLIFIC_PID'),
+        prolificURLParams.get('STUDY_ID'),
+        prolificURLParams.get('SESSION_ID'),
+        globalGame.iterationName,
+        globalGame.data.subject_information.score,
+
+        globalGame.projectName,
+        globalGame.experimentName,
+        globalGame.data.subject_information.thinksHuman,
+        globalGame.data.subject_information.gender,
+        globalGame.data.subject_information.age,
+        globalGame.data.subject_information.ratePartner,
+        globalGame.data.subject_information.role,
+        globalGame.data.subject_information.totalLength,
+        OS,
+        
+        globalGame.data.subject_information.comments
+      ] // JSON.stringify(globalGame.data)
+      globalGame.socket.emit('message',posttest.join('.'));
+
+
+      // if this is a Prolific study
+      prolificSubmitTo = "https://app.prolific.co/submissions/complete?cc=" // basic submit URL
+      ProlificCompletionCode = "42D18F2B" // add the completion code - manually specified after Prolific generates it for you via its own interface (while you set up the study)
+      prolificSubmitTo = prolificSubmitTo + ProlificCompletionCode;
+
+      window.open(prolificSubmitTo,"_self");
+    } else if (_.size(globalGame.urlParams) == 4) {
+      console.log("data: ",globalGame.data);
+      jsPsych.turk.submitToTurk(globalGame.data);
+      // window.opener.turk.submit(globalGame.data, true);
+      // window.close();
     } else {
       console.log("would have submitted the following :")
       console.log(globalGame.data);
@@ -264,7 +324,8 @@ function onchange (evt) {
   // console.log(document.body.className);
   // console.log(globalGame);
   visible = document.body.className;
-  globalGame.socket.send("h." + document.body.className);
+  // globalGame.socket.send("h." + document.body.className);
+  // we don't need to know if people are looking or not; it's not being recorded anyway
 
 };
 
