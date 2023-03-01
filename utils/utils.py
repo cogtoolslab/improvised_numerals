@@ -206,7 +206,7 @@ def render_sketch_gallery(gameids,
             plt.imshow(im)
             colour = 'white'
             if show_correct == True:
-                correct = df.loc[df['gameID']==gameid].loc[df['trialNum']==i+1]['outcome'].values[0]
+                correct = df.loc[df['gameID']==gameid].loc[df['trialNum']==i+1]['outcome'].values#[0]
                 title_colour = '#067D1A' if correct == 1 else '#AF180E'
                 
             sns.set_style(colour)
