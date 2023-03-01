@@ -256,7 +256,7 @@ function dropdownTip(data){
 
       // if this is a Prolific study
       prolificSubmitTo = "https://app.prolific.co/submissions/complete?cc=" // basic submit URL
-      ProlificCompletionCode = "42D18F2B" // add the completion code - manually specified after Prolific generates it for you via its own interface (while you set up the study)
+      ProlificCompletionCode = "609EFB5E" // add the completion code - manually specified after Prolific generates it for you via its own interface (while you set up the study)
       prolificSubmitTo = prolificSubmitTo + ProlificCompletionCode;
 
       window.open(prolificSubmitTo,"_self");
