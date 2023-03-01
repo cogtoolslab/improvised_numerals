@@ -29,7 +29,7 @@ var game_core = function(options){
   this.server = options.server ;
   this.projectName = 'iterated_number';
   this.experimentName = 'dots1';
-  this.iterationName = 'pilot4';  // 'sandbox', 'pilot1' was worthless, 'pilot2' has two games that took too long, 'pilot3' is when we reduced number of trials, 'pilot4' we reduced number of distractors because people thought the 1-to-1 correspondence between objects and symbols was leverageable
+  this.iterationName = 'sandbox';  // 'sandbox', 'pilot1' was worthless, 'pilot2' has two games that took too long, 'pilot3' is when we reduced number of trials, 'pilot4' we reduced number of distractors because people thought the 1-to-1 correspondence between objects and symbols was leverageable, 'run1' is the real experiment
   // 
   this.email = 'ladlab.ucsd@gmail.com';
 
