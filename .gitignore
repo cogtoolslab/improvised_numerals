@@ -7,6 +7,9 @@ auth.json
 __pycache__/
 node_modules/
 
+.bashrc
+.RData
+
 *.so
 *.py[cod]
 *$py.class
