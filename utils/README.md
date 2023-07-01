@@ -1,1 +1,1 @@
-This directory is meant to contain helper functions for this project.
+This directory contains stimulus helper functions for analyses of each experiment in this project.

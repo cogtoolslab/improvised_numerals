@@ -76,17 +76,6 @@ var client_onserverupdate_received = function(data){
       var imgObj = new Image(); //initialize object as an image (from HTML5)
       imgObj.src = globalGame.my_role == "sketcher" ? customObj.sketcher_url : customObj.viewer_url;; // tell client where to find it
       
-      // recommented the following, trying to put it into game.core.js
-      // // sebholt begin edit, rewriting the above line to randomly get different constellations depending on role of subject
-      // num_versions = 100
-      // v1 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      // v2 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      // var v = globalGame.my_role == "sketcher" ? v1 : v2;
-      // while (v.length < 3) v = "0" + v;
-      // imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
-      // // sebholt end edit
-      
-
       imgObj.onload = function(){ // Draw image as soon as it loads (this is a callback)
         globalGame.ctx.drawImage(imgObj, parseInt(customObj.trueX), parseInt(customObj.trueY),
 				  customObj.width, customObj.height);
@@ -109,7 +98,7 @@ var client_onserverupdate_received = function(data){
               drawGrid(globalGame);
               drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
               if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-                highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
+                highlightCell(globalGame, '#a711c2', function(x) {return x.target_status == 'target';});
               }
               globalGame.drawingAllowed = true;
             },750);
@@ -309,83 +298,6 @@ var customSetup = function(game) {
     submitted = false;
 
 
-
-
-    // switch roles
-  //   console.log("I was... ",globalGame.my_role)
-  //   if (globalGame.my_role === globalGame.playerRoleNames.role2 ){
-  //     globalGame.my_role = globalGame.playerRoleNames.role1
-  //   } else{
-  //     globalGame.my_role = globalGame.playerRoleNames.role2
-  //   };
-  //   globalGame.get_player(globalGame.my_id).role = globalGame.my_role
-  //   console.log("But am now... ",globalGame.my_role)
-
-  //   // Update with switched roles instructions
-  // $('#roleLabel').replaceWith("You are the " + globalGame.my_role + '.');
-  // if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-  //   txt = "target";
-  //   $('#instructs').html("<p>You have a limited amount of 'ink' to indicate on the sketchpad which image is the target (purple) so that your partner can tell which it is. You will receive " +
-  //     "a bonus ONLY if the Viewer selects the correct object. DO NOT draw words, arrows, or numbers. Please do not resize browser window or change zoom during the game. </p>");
-  //     if (globalGame.useSubmitButton) {
-  //       $("#submitbutton").show();
-  //     }
-  //   // set up stroke / ink bar
-  //   $('.ink-bar').attr('aria-valuemax',globalGame.inkLimit);
-  //   $('.ink').show();
-  //   $('.ink-bar').show();
-  //   $('#inklabel').show();
-    
-  // } else if (globalGame.my_role === globalGame.playerRoleNames.role2) {
-  //   $('.ink').hide();
-  //   $('.ink-bar').hide();
-  //   $('#inklabel').hide();
-  //   $('#instructs').html("<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you are sure which it is, click on the image " +
-  //     "you think they mean. If you are correct, you will both receive a bonus.</p>" +
-  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
-  //   if (globalGame.guessing_pictures == false){
-  //     $('#instructs').html("<p><b>Surprise! You actually only have to click written numbers (your partner doesn't know this).</b> </p> " +
-  //     "<p>Your partner has a limited amount of 'ink' to indicate on the sketchpad which image is the target. When you see their sketch, " +
-  //     "click on the number you think they mean. If you are correct, you will both receive a bonus.</p>" +
-  //     "<p> Please do not resize browser window or change zoom during the game.</p>");
-  //   };
-  //   if (globalGame.useSubmitButton) {
-  //     $("#loading").show();
-  //     $("#loading-message").html("");
-  //   }
-  // }
-
-  // if(globalGame.my_role === globalGame.playerRoleNames.role2) {
-  //   $('#submitbutton').hide();
-  //   // $('#confirmbutton').show();
-  //   // added and put the rest inside click function
-  //   // send packet to server on button click
-  //   $('#confirmbutton').click(function start() {
-  //     if(globalGame.packet) {
-  //       if (globalGame.strokeMade || globalGame.doneDrawing) { // change
-  //         if (!globalGame.useSubmitButton || submitted) {
-  //           $('#confirmbutton').hide();
-  //           globalGame.socket.send(globalGame.packet.join('.'));
-  //         }
-  //       }
-  //     }
-  //   });
-  //   globalGame.viewport.addEventListener("click", responseListener, false);
-  //   globalGame.get_player(globalGame.my_id).message = ('Waiting for the sketcher to click begin.\nPlease do not refresh the page!\n ');
-  //   drawScreen(globalGame, globalGame.get_player(globalGame.my_id));
-  // } else {
-  //   $('#confirmbutton').hide();
-  //   $('#submitbutton').show();
-  //   globalGame.sketchpad.setupTool();
-  // }
-
-  // // end of switch roles
-
-
-
-
-
-
     
 
     // reset clicked obj flag
@@ -425,10 +337,10 @@ var customSetup = function(game) {
       $('#instructs').html('Thanks for participating in our experiment! ' +
         "Before you submit your HIT, we'd like to ask you a few questions.");
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 1) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 1) + " of " + globalGame.numRounds);
     } else {
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 2) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 2) + " of " + globalGame.numRounds);
     }
     $('#score').empty().append(score / 3 + ' of ' + (game.roundNum + 1) + ' correct for a bonus of $'
 			       + displaytotal);
@@ -439,23 +351,6 @@ var customSetup = function(game) {
     // pop-ups in between phases
     var afterPreRound = globalGame.setSize * 2;
     var beforePostRound = globalGame.numRounds - globalGame.setSize * 2;
-
-    // sebholt begin comment, this used to be active code
-    // $("#main").hide();
-    // $("#header").hide();
-    // $("#dimScreen").show();
-
-    
-    // if (game.roundNum == afterPreRound - 1) {
-    //   $("#after_pre").show(); //or $("#before_post").show();
-    //   setupOverlay();
-
-    // } else {
-    //   $("#before_post").show(); //or $("#before_post").show();
-    //   setupOverlay();
-    // }
-    // sebholt end comment, this used to be active code
-
   });
 
 

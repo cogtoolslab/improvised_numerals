@@ -51,25 +51,11 @@ var onMessage = function(client,message) {
       setTimeout(function() {
         // if there should be a phase change, call phaseChange but not gc.newRound()
 
-        // sebholt commenting this out begin 
-        // if ((gc.roundNum == afterPreRound - 1) || (gc.roundNum == beforePostRound - 1)) {
-        //   _.map(all, function(p) {
-        //     p.player.instance.emit('phaseChange');
-        //   });
-        // } else {
-        //   _.map(all, function(p) {
-        //     p.player.instance.emit('newRoundUpdate');
-        //   });
-        //   gc.newRound();
-        // }
-        // sebholt commenting this out end
         
-        // sebholt copying this from the commented-out code above begin
         _.map(all, function(p) {
           p.player.instance.emit('newRoundUpdate');
         });
         gc.newRound();
-        // sebholt copying this from the commented-out code above end
       }, 2000);
     break;
 
@@ -147,7 +133,7 @@ var dataOutput = function() {
     return _.filter(objects, x => x.target_status == 'target')[0]['subordinate'];
   }
 
-  // sebholt edit, adding a mechanism for storing object urls (both sketcher and viewer urls)
+  // adding a mechanism for storing object urls (both sketcher and viewer urls)
   function getObjectUrls(objects) {
     targ_s_url = _.filter(objects, x => x.target_status == 'target')[0]['sketcher_url'];
     targ_v_url = _.filter(objects, x => x.target_status == 'target')[0]['viewer_url'];

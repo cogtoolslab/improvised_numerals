@@ -341,7 +341,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
   }
 }
 
-// sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
+// writing a function to return a random version image url from Amazon given the target's features
 game_core.prototype.fetchURL = function(item,the_role,versio) {
   // set it randomly for each trial
   v = versio.toString()
@@ -371,17 +371,9 @@ game_core.prototype.fetchURL = function(item,the_role,versio) {
   return the_url
   };
 
-// sebholt begin edit rewrite this function
 game_core.prototype.newsampleTrial = function(target,animals,cardinalities,versie) {
   var curTarg = target
   var numbers = cardinalities  // get a copy of all the numbers we might use
-  
-  // var discriminator = _.filter(_.without(stimlist,target), {'basic' : curTarg['basic']});
-  // var sampled_distr1 = _.sample(discriminator);
-  // var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
-  // var sampled_distr3 = _.sample(_.without(_.without(discriminator,sampled_distr1),sampled_distr2));
-  // var sampled_distr4 = _.sample(_.without(_.without(_.without(discriminator,sampled_distr1),sampled_distr2),sampled_distr3));
-  // var sampled_distr5 = _.sample(_.without(_.without(_.without(_.without(discriminator,sampled_distr1),sampled_distr2),sampled_distr3),sampled_distr4));
   
   
   var numbers = _.difference(cardinalities, [curTarg['object']]); // remove the target from consideration
@@ -465,7 +457,6 @@ game_core.prototype.newsampleTrial = function(target,animals,cardinalities,versi
   
   return newoutput ;
 };
-// sebholt end edit rewrite this function
 
 
 game_core.prototype.sampleStimulusLocs = function() {
@@ -483,7 +474,6 @@ game_core.prototype.sampleStimulusLocs = function() {
 };
 
 
-// sebholt adding a function to sort his super annoying list
 // 'binwidths' is a list containing the length, in increasing order, of the constituents you want shuffled
 game_core.prototype.hierarchical_shuffle = function(unshuffled,binwidths) {
   shuffled_list = unshuffled;
@@ -579,33 +569,9 @@ game_core.prototype.makeTrialList = function () {
     blocksRep2.push(new_targ);        
   };
 
-  // all_targs3 = all_targs;
-  // blocksRep3 = [];
-  // for (var c = 0; c < shuffledThirdCardinalities.length; c++){
-  //   same_number = _.filter(all_targs3, {'object': shuffledThirdCardinalities[c]});
-  //   animal = _.sample(same_number);
-  //   all_targs3 = _.without(all_targs3,animal);
-  //   animal = animal.basic;
-
-  //   sub = animal + '_' + shuffledThirdCardinalities[c]
-  //   new_targ = {
-  //     object: shuffledThirdCardinalities[c],
-  //     basic: animal,
-  //     subordinate: sub,
-  //     width: 256,
-  //     height: 256};
-  //   blocksRep3.push(new_targ);        
-  // };
 
   
-  // target_sequence = _.concat(block1,blocksRep,blockTest); // 12/Aug/2021
   target_sequence = _.concat(blocksRep1,blocksRep2); //blocksRep3
-  // target_sequence = this.hierarchical_shuffle(target_sequence,[shuffledTrainCardinalities.length,shuffledAnimals.length]);
-
-  // // See what the target list looks like:
-  // for (var i = 0; i < target_sequence.length; i++){
-  //   console.log(target_sequence[i].subordinate)
-  // };
 
   for (var i = 0; i < target_sequence.length; i++) {  
     // new improved target selection as of 21/April/2020

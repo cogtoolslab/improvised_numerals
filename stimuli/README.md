@@ -1,1 +1,1 @@
-Directory to contain stimulus preprocessing code for this project.
+This directory contains stimulus preprocessing code for each experiment in this project.

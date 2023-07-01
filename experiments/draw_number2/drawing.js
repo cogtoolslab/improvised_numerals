@@ -33,9 +33,7 @@ var drawGrid = function(game){
 
 // Loop through the object list and draw each one in its specified location
 var drawObjects = function(game, player) {
-    // console.log("globalGame.objects HERE:", globalGame.objects) // sebholt print statement
     _.map(globalGame.objects, function(obj) {
-      // console.log("GGobj HERE:", obj) // sebholt print statement
       // game.ctx.globalCompositeOperation='destination-over';  // draw under highlight
       var customCoords = globalGame.my_role == "sketcher" ? 'speakerCoords' : 'listenerCoords';
       var trueX = obj[customCoords]['trueX'];
@@ -43,10 +41,8 @@ var drawObjects = function(game, player) {
       var gridX = obj[customCoords]['gridX'];
       var gridY = obj[customCoords]['gridY'];
 
-      // sebholt begin edit
       var customImage = globalGame.my_role == "sketcher" ? obj.img : obj.img; // replace 2nd "obj.img" to alt version
       globalGame.ctx.drawImage(customImage, trueX, trueY,obj.width, obj.height);
-      // sebholt end edit (line above was here, I changed 'obj.img' to 'customImage')
     });
 
 };
@@ -235,7 +231,6 @@ function endStroke(event) {
     //console.log("endstroketime: " + globalGame.endStrokeTime);
     // Increment stroke num
     globalGame.currStrokeNum += 1;
-    console.log("Happening yo");
     
     // if they've reached the strokeLimit, disallow them from more
     // if (globalGame.currStrokeNum == globalGame.strokeLimit) {

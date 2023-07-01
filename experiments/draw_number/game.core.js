@@ -103,7 +103,7 @@ var game_core = function(options){
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 32; // sebholt edit; changed 40 to 24 to 32
+    this.numRounds = 32;
   } else {
     this.numRounds = 48;
   }
@@ -222,15 +222,6 @@ game_core.prototype.newRound = function() {
       p.player.instance.disconnect();});
   } 
   else {
-    // sebholt edit begin (to switch roles)
-    // _.map(this.get_active_players(), function(p){
-    //   if(p.player.instance.role === 'sketcher'){
-    //     p.player.instance.role = 'viewer'
-    //   } else if(p.player.instance.role === 'viewer'){
-    //     p.player.instance.role = 'sketcher'
-    //   }
-    //   console.log(p.player.instance.role);});
-    // sebholt edit end
         
     // console.log('got to newRound in game.core.js and not the final round');
     // Otherwise, get the preset list of objects for the new round
@@ -238,7 +229,6 @@ game_core.prototype.newRound = function() {
     this.trialInfo = {currStim: this.trialList[this.roundNum]};
     //console.log("this.trialList[this.roundNum]: " + this.trialList[this.roundNum]);
     this.objects = this.trialList[this.roundNum];
-    //console.log("objects HERE:", this.objects) // sebholt print statement DELETE SOON
     this.objClicked = false;
     active_players = this.get_active_players();
     this.setupTimer(this.timeLimit,active_players);
@@ -266,69 +256,6 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
   }
 }
 
-// game_core.prototype.getRandomizedConditions = function() {
-//   var numCats = 2;
-//   var numObjs = this.setSize * 2; // sebholt edit. What is now 3 was 2
-//   var setSize = this.setSize; // this is the number of objects that appear in a single menu // changed from 4
-//   //console.log("setsize in getRandomizedConditions: " + this.setSize);
-//   // make category array
-//   var repeatedColor = _.sample(["#ce0a04", "#4286f4"]); // randomly assign border color (red or blue) to repeated and control
-//   var repeatedCat = "bear";
-//   var controlCat = "deer";
-
-//   var shuffledObjs = _.shuffle(_.range(0,numObjs));
-//   var repeatedObjs = shuffledObjs.slice(0,setSize);
-//   var controlObjs = shuffledObjs.slice(setSize,setSize*2);
-
-//   // define common trialInfo for each condition (omits: targetID, phase, repetition -- these are 
-//   // added iteratively)
-//   commonRepeatedTrialInfo = {'objectIDs': repeatedObjs,
-//                             'category': repeatedCat,
-//                             'pose': 35,
-//                             'condition':'repeated',
-//                             'repeatedColor':repeatedColor
-//                             }
-
-//   commonControlTrialInfo = {'objectIDs': controlObjs,
-//                             'category': controlCat,
-//                             'pose': 35,
-//                             'condition':'control',
-//                             'repeatedColor':repeatedColor
-//                             }
-// // console.log("commonRepeatedTrialInfo: ", commonRepeatedTrialInfo ,"\n") // sebholt print statement
-// // console.log("commonControlTrialInfo: ", commonControlTrialInfo ,"\n") // sebholt print statement
-//   // pre phase 
-//   var pre = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
-//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
-//                     }), 
-//                                _.map(controlObjs, curObj => {
-//                     return _.extend({}, commonControlTrialInfo, {'phase':'pre','repetition':0, 'targetID': curObj});
-//                     })));
-// // console.log("pre: ", pre ,"\n") // sebholt print statement
-//   // repeated phase
-//   var repeated = _.flatMap(_.range(1,this.numReps+1), curRep => {
-//                   return _.map(_.shuffle(repeatedObjs), curObj => {
-//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'repeated','repetition':curRep, 'targetID': curObj});
-//                   })
-//                  });
-
-//   // post phase
-//   var post = _.shuffle(_.concat(_.map(repeatedObjs, curObj => {
-//                     return _.extend({}, commonRepeatedTrialInfo, {'phase':'post','repetition':this.numReps+1, 'targetID': curObj});
-//                     }), 
-//                                _.map(controlObjs, curObj => {
-//                     return _.extend({}, commonControlTrialInfo, {'phase':'post','repetition':1, 'targetID': curObj});
-//                     })));  
-
-//   // build session by concatenating pre, repeated, and post phases
-//   var session = _.concat(pre, repeated, post);
-
-//   // this is the design dictionary
-//   return session;
-
-// };
-
-// sebholt begin edit, rewriting getRandomizedConditions function
 game_core.prototype.getRandomizedConditions = function() {
   var reps = 1
 
@@ -339,9 +266,8 @@ game_core.prototype.getRandomizedConditions = function() {
   return session;
 
 };
-// sebholt end edit, rewriting getRandomizedConditions function
 
-// sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
+// writing a function to return a random version image url from Amazon given the target's features
 game_core.prototype.fetchURL = function(item) {
   num_versions = 100
   v = Math.floor(Math.random() * Math.floor(num_versions)).toString();
@@ -350,27 +276,6 @@ game_core.prototype.fetchURL = function(item) {
   }
 
 
-// // filter stimList according to numObjs (setSize * 2) 
-// // as of 12/31/18: as long as you're pulling from stimList_subord_v2.js, this doesn't do anything.
-// var filterStimList = function(stimList, numObjs) {
-//   // sebholt note: if you change numObjs in the next line to numObjs-2, it takes the first 6 of *each category*
-//   return _.filter(stimList, ({object}) => object < numObjs); 
-// }
-
-// game_core.prototype.sampleTrial = function(trialInfo, currentSetSize) {
-//   var filteredList = filterStimList(this.stimList, currentSetSize*2);
-//   var miniTrialInfo = _.pick(trialInfo, ['condition', 'phase', 'repetition', 'repeatedColor'])
-//   var distractorLabels = ['distr1', 'distr2', 'distr3']
-
-//   // Pull objects specified in trialInfo out of stimlist 
-//   return _.map(trialInfo.objectIDs, objID => {
-//     var objFromList = _.find(filteredList, {'basic' : trialInfo.category, 'object' : objID});
-//     var targetStatus = objID == trialInfo.targetID ? 'target' : distractorLabels.pop();
-//     return _.extend({}, objFromList, miniTrialInfo, {target_status: targetStatus});
-//   });
-// };
-
-// sebholt begin edit rewrite this function
 game_core.prototype.newsampleTrial = function(target,stimlist) {
   // stimlist = this.stimList // commenting this, so as to ignore the one imported from stimList.js
   var curTarg = target
@@ -407,7 +312,6 @@ game_core.prototype.newsampleTrial = function(target,stimlist) {
   var newoutput = [d1,d2,d3,tg]
   return newoutput ;
 };
-// sebholt end edit rewrite this function
 
 
 game_core.prototype.sampleStimulusLocs = function() {
@@ -421,7 +325,7 @@ game_core.prototype.sampleStimulusLocs = function() {
 };
 
 
-// sebholt adding a function to sort his super annoying list
+// adding a function to randomize on two levels: blocks of 8 (for numbers), and blocks of 4 (for shapes)
 // 'binwidths' is a list containing the length, in increasing order, of the constituents you want shuffled
 game_core.prototype.hierarchical_shuffle = function(unshuffled,binwidths) {
   shuffled_list = unshuffled;
@@ -454,14 +358,11 @@ game_core.prototype.makeTrialList = function () {
   var trialList = [];
   var currentSetSize = this.setSize;
 
-  var possible_targets = this.stimList;  // sebholt addition
-  var available_animals = ['bear','deer','owl','rabbit'] //,'rabbit','squirrel','wolf'];  // sebholt addition
-  var available_cardinalities = [0,1,2,3,4,5,6,7];  // sebholt addition
+  var possible_targets = this.stimList;
+  var available_animals = ['bear','deer','owl','rabbit'];
+  var available_cardinalities = [0,1,2,3,4,5,6,7];
 
 
-
-
-  // sebholt trying to make a better trial sequence 21/April/2020
   block1 = [];
   block1_cardinalities = _.shuffle(available_cardinalities);
   block1_animals = _.shuffle(available_animals);
@@ -471,7 +372,6 @@ game_core.prototype.makeTrialList = function () {
     cur_card = block1_cardinalities[i];
     cur_animal = i < block1_animals.length ? block1_animals[i] : block1_animals[i-block1_animals.length];
     cur_sub = cur_animal + '_' + cur_card
-    // console.log("try", cur_card, cur_sub)
     new_targ = {object: cur_card,
                 basic: cur_animal,
                 subordinate: cur_sub,
@@ -520,73 +420,13 @@ game_core.prototype.makeTrialList = function () {
   var target_sequence = _.concat(block1, block2, block3, block4);
   target_sequence = this.hierarchical_shuffle(target_sequence,[4,2,4])
 
-  // just checking to see that it has indeed produced all possible targets without replacement
-  // subs = []
-  // target_sequence.forEach(element => {
-  //   console.log(element.object, element.subordinate);
-  //   subs.push(element.subordinate)
-  // });
-  // unique_subs = [...new Set(subs)];
-  // console.log(unique_subs.length)
-
-  // test = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-  // new_test = _.concat(_.shuffle(test.slice(0,4)), _.shuffle(test.slice(4,8)), _.shuffle(test.slice(8,12)));
-  // new_test = this.hierarchical_shuffle(test,[3,2]);
-  // console.log(new_test,new_test.length);//, "length: ",new_test.length, typeof Array.from(new_test));
-
-  //console.log(new_test[1][1]);
 
 
 
-
-  // for (var i = 0; i < session.length; i++) {    // sebholt commented this
-  for (var i = 0; i < session.length; i++) {  // sebholt addition, to replace above
+  for (var i = 0; i < session.length; i++) {  
     var trialInfo = session[i]
-    // for (var i = 0; i < categoryList.length; i++) { // "i" indexes round number ---- commented out
-    // sample four object images that are unique and follow the condition constraints
-
-    // sebholt begin edit
-
-    // var current_animal = _.sample(available_animals)
-    // var same_animal = _.filter(possible_targets, {'basic': current_animal})
-
-    // // now we have the animal, find all remaining targets whose cardinality hasn't been used in this block
-    // var valid_targets = _.filter(same_animal, function(possible){
-    //   return available_cardinalities.includes(possible.object)
-    // })
-    // var target = _.sample(valid_targets)
-
-    // console.log(i)
-    // console.log("numbers",available_cardinalities)
-    // console.log("UH OH",current_cardinality,'\n')
-    // console.log("animals",available_animals)
-    // console.log("current_animal",current_animal,'\n')
-    // console.log("curtarg",target,'\n\n')
-    // console.log("CurTarg",target.subordinate,'\n')
-    // console.log("valid_targets",valid_targets,'\n')
-
-    // var current_cardinality = target.object
-    
-
-    // trying it a new way. Commented out on 22/April
-    // var ticker = 0
-    // while (ticker == 0){
-    //   var poss_targs = _.filter(possible_targets, function(candidate){
-    //     return available_cardinalities.includes(candidate.object) && available_animals.includes(candidate.basic)
-    //   })
-    //   if (poss_targs.length == 0){
-    //     console.log("numbers",available_cardinalities)
-    //     console.log("animals",available_animals)
-    //   }
-    //   var target = _.sample(poss_targs)
-    //   ticker = 1
-    // }
-
-    // new improved target selection as of 21/April/2020
     var target = target_sequence[i]
     
-    // console.log("poss_targs",poss_targs,'\n')
-    // console.log(target.subordinate)
     var current_cardinality = target.object
     var current_animal = target.basic
 
@@ -600,7 +440,6 @@ game_core.prototype.makeTrialList = function () {
     available_cardinalities = available_cardinalities.filter(function(item) {
       return item !== current_cardinality
     });
-    // console.log("IS THIS CONDITION BEING MET??", possible_targets.length)
     // if the sets from which we're sampling without replacement are empty, refill them:
     if (possible_targets.length == 0) {
       possible_targets = this.stimList
@@ -611,12 +450,9 @@ game_core.prototype.makeTrialList = function () {
     if (available_cardinalities.length == 0) {
       available_cardinalities = [0,1,2,3,4,5,6,7]; //,8,9,10,11];
     }
-    // sebholt end edit
 
-    // var objList = this.sampleTrial(trialInfo, currentSetSize); // sebholt edit, commented this
-    var objList = this.newsampleTrial(target,target_sequence); // sebholt edit (addition)    
+    var objList = this.newsampleTrial(target,target_sequence); 
 
-    // console.log('objList',objList);
 
     // sample locations for those objects
     var locs = this.sampleStimulusLocs();
@@ -626,7 +462,6 @@ game_core.prototype.makeTrialList = function () {
       object.width = local_this.cellDimensions.width;
       object.height = local_this.cellDimensions.height;
       var speakerGridCell = local_this.getPixelFromCell(tuple[1][0], tuple[1][1]);
-      // console.log("speakerGridCell: ",speakerGridCell,"\n") // sebholt print statement
       var listenerGridCell = local_this.getPixelFromCell(tuple[2][0], tuple[2][1]);
       object.speakerCoords = {
       	gridX : tuple[1][0],

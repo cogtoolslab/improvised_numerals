@@ -1,25 +1,29 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-.DS_Store
-# C extensions
-*.so
 
-analysis/targs
-analysis/datastructures
 auth.txt
 auth.json
 .DS_Store
-*.pdf
-*.jpg
-*.png
+
+__pycache__/
+node_modules/
+
+*.so
+*.py[cod]
+*$py.class
 *.json
-*.csv
 *.history
 *.Rhistory
-# ^ ignore csv for now so I don't have to delete test data manually
-node_modules/
+*.jpg
+# *.csv    # pushing CSV files now so they're available on the public repo
+# *.pdf    # ditto for PDFs
+# *.png    # many PNGs should be pushed so the experiment can be replicated quickly, but we'll keep sketch PNGs local because they take up a lot of space. Just post galleries
+results/bare_sketches/*.png
+results/bare_targets/*.png
+results/bare_sketches/*.png
+results/bare_targets/*.png
+results/sketch/**/*.png
+
+
 
 .DS_Store
 *.aux

@@ -1,1 +1,1 @@
-Directory to contain analysis notebooks/scripts for this project.
+This directory contains analyses of results from each experiment in this project.

@@ -61,7 +61,6 @@ io.on('connection', function (socket) {
   if (!id || isResearcher && !blockResearcher || id === 'undefined'){
     var turkerStatus = false;
     isLab = 1;
-    // initializeWithTrials(socket,turkerStatus,query,undefined,undefined)
     console.log("no ID or researcher")
   } else if (!valid_id(id)) {
     console.log('invalid id, blocked');

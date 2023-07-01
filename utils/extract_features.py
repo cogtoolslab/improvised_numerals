@@ -40,8 +40,9 @@ python extract_features.py --data='/home/jefan/collabdraw/sketches/quickdraw/png
 '''
 
 # retrieve sketch paths
-def list_files(path, ext='png'):
-    result = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.%s' % ext))]
+def list_sketches(sketch_path):
+    sketch_names = os.listdir(sketch_path)
+    result = [sketch_path + '/' + x for x in sketch_names]
     return result
 
 def check_invalid_sketch(filenames,invalids_path='drawings_to_exclude.txt'):    
@@ -91,7 +92,7 @@ def preprocess_features_for_pca(Features, Y, channel_norm=True):
     _Y = _Y.reset_index(drop=True) # reset pandas dataframe index
     return _Features, _Y    
 
-def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/repos/iterated_number/features', channel_norm=True):
+def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/repos/iterated_number/results/csv/features', channel_norm=True):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
     if channel_norm==True:
@@ -109,7 +110,7 @@ def save_features(Features, Y, layer_num, data_type,out_dir='/Users/alles/repos/
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
-def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/alles/repos/iterated_number/features', channel_norm=True):    
+def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/alles/repos/iterated_number/results/csv/features', channel_norm=True):    
     pca = PCA(n_components=num_pcs)
     pca.fit(F)
     print('Applying PCA and transforming data, using {} components'.format(num_pcs))
@@ -130,14 +131,14 @@ def apply_pca_and_save(F, layer_num, data_type, num_pcs = 512, out_dir='/Users/a
 if __name__ == "__main__":
     import argparse
     proj_dir = os.path.abspath('..')
-    sketch_dir = os.path.abspath(os.path.join(proj_dir,'sketches'))
+    sketch_dir = os.path.abspath(os.path.join(proj_dir,'results/bare_sketches'))
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, help='full path to images', \
                         default=sketch_dir)
     parser.add_argument('--layer_ind', help='fc6 = 5, fc7 = 6', default=5) # sebholt changed; should by default be 5
     parser.add_argument('--num_pcs', help='number of principal components', default=128)    
     parser.add_argument('--data_type', help='"images" or "sketch"', default='sketch')
-    parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/repos/iterated_number/features')    
+    parser.add_argument('--out_dir', help='path to save features to', default='/Users/alles/repos/iterated_number/results/csv/features')
     parser.add_argument('--spatial_avg', type=bool, help='collapse over spatial dimensions, preserving channel activation only if true', default=True) 
     parser.add_argument('--channel_norm', type=str2bool, help='apply channel-wise normalization?', default='True')    
     parser.add_argument('--crop_sketch', type=str2bool, help='do we crop sketches by default?', default='False')     
@@ -156,12 +157,13 @@ if __name__ == "__main__":
     print('Num principal components = {}'.format(args.num_pcs))
     
     
+    
     ## make out_dir if it does not already exist
     if not os.path.exists(args.out_dir):
         os.makedirs(args.out_dir)
     
     ## get list of all sketch paths
-    image_paths = sorted(list_files(args.data,args.ext))
+    image_paths = sorted(list_sketches(args.data))
     print('Length of image_paths before filtering: {}'.format(len(image_paths)))
     
     ## filter out invalid sketches

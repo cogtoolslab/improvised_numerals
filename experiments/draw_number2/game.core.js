@@ -151,9 +151,9 @@ var game_core = function(options){
 
   // How many rounds do we want people to complete?
   if (this.setSize == 4) {
-    this.numRounds = 36; // sebholt edit; changed 40 to 24 to 32 to 30
+    this.numRounds = 36;
   } else {
-    this.numRounds = 36; // sebholt edit; changed 48 to 36 to 42 to 18 to 30
+    this.numRounds = 36;
   }
 
   // how many blocks in total?
@@ -335,7 +335,7 @@ game_core.prototype.setupTimer = function(timeleft, active_players) {
   }
 }
 
-// sebholt begin edit, writing a function to return a random version image url from Amazon given the target's features
+//  writing a function to return a random version image url from Amazon given the target's features
 game_core.prototype.fetchURL = function(item,the_role) {
   // for arbitrary versions each time:
   // num_versions = 100
@@ -362,18 +362,9 @@ game_core.prototype.fetchURL = function(item,the_role) {
   return the_url
   };
 
-// sebholt begin edit rewrite this function
 game_core.prototype.newsampleTrial = function(target,animals,cardinalities) {
   var curTarg = target
-  var numbers = cardinalities
-  
-  // var discriminator = _.filter(_.without(stimlist,target), {'basic' : curTarg['basic']});
-  // var sampled_distr1 = _.sample(discriminator);
-  // var sampled_distr2 = _.sample(_.without(discriminator,sampled_distr1));
-  // var sampled_distr3 = _.sample(_.without(_.without(discriminator,sampled_distr1),sampled_distr2));
-  // var sampled_distr4 = _.sample(_.without(_.without(_.without(discriminator,sampled_distr1),sampled_distr2),sampled_distr3));
-  // var sampled_distr5 = _.sample(_.without(_.without(_.without(_.without(discriminator,sampled_distr1),sampled_distr2),sampled_distr3),sampled_distr4));
-  
+  var numbers = cardinalities  
   
   var numbers = _.difference(cardinalities, [curTarg['object']]);
   numbers = _.shuffle(numbers);
@@ -416,15 +407,6 @@ game_core.prototype.newsampleTrial = function(target,animals,cardinalities) {
   };
   
 
-
-  // console.log("Ds: ",curTarg.subordinate,sampled_distr1.subordinate,
-  // sampled_distr2.subordinate,sampled_distr3.subordinate,
-  // sampled_distr4.subordinate,sampled_distr5.subordinate);
-  // // console.log(stimlist.length)
-  // console.log(_.intersection(discriminator,[curTarg]));
-  // console.log(discriminator)
-  
-
   var d1 = _.extend({}, sampled_distr1, {target_status: 'distr1'}, {sketcher_url: this.fetchURL(sampled_distr1,'s')}, {viewer_url: this.fetchURL(sampled_distr1,'v')});
   var d2 = _.extend({}, sampled_distr2, {target_status: 'distr2'}, {sketcher_url: this.fetchURL(sampled_distr2,'s')}, {viewer_url: this.fetchURL(sampled_distr2,'v')});
   var d3 = _.extend({}, sampled_distr3, {target_status: 'distr3'}, {sketcher_url: this.fetchURL(sampled_distr3,'s')}, {viewer_url: this.fetchURL(sampled_distr3,'v')});
@@ -439,7 +421,6 @@ game_core.prototype.newsampleTrial = function(target,animals,cardinalities) {
   
   return newoutput ;
 };
-// sebholt end edit rewrite this function
 
 
 game_core.prototype.sampleStimulusLocs = function() {
@@ -453,7 +434,6 @@ game_core.prototype.sampleStimulusLocs = function() {
 };
 
 
-// sebholt adding a function to sort his super annoying list
 // 'binwidths' is a list containing the length, in increasing order, of the constituents you want shuffled
 game_core.prototype.hierarchical_shuffle = function(unshuffled,binwidths) {
   shuffled_list = unshuffled;
@@ -487,9 +467,6 @@ game_core.prototype.makeTrialList = function () {
   var training_cardinalities = this.game_condition == 'small' ? [0,1,2,3,4,5] : [14,15,16,17,18,19];
   var testing_cardinalities = this.game_condition == 'small' ? [0,1,2,3,4,5] : [14,15,16,17,18,19];
 
-  // console.log("TRAIN: ", training_cardinalities);
-  // console.log("TEST: ", testing_cardinalities);
-
   // designate one animal to be the first and last (test) block
   special_animal = _.sample(all_animals);
   // available_animals = _.without(all_animals,special_animal);
@@ -498,30 +475,6 @@ game_core.prototype.makeTrialList = function () {
   shuffledTrainCardinalities = _.shuffle(training_cardinalities);
   shuffledTestCardinalities = _.shuffle(testing_cardinalities);
   shuffledAnimals = _.shuffle(available_animals);
-
-  // block1 = [];
-  // for (var c = 0; c < shuffledTrainCardinalities.length; c++){
-  //   sub = special_animal + '_' + shuffledTrainCardinalities[c]
-  //   new_targ = {
-  //     object: shuffledTrainCardinalities[c],
-  //     basic: special_animal,
-  //     subordinate: sub,
-  //     width: 256,
-  //     height: 256};
-  //   block1.push(new_targ);
-  // };
-
-  // blockTest = [];
-  // for (var c = 0; c < shuffledTestCardinalities.length; c++){
-  //   sub = special_animal + '_' + shuffledTestCardinalities[c]
-  //   new_targ = {
-  //     object: shuffledTestCardinalities[c],
-  //     basic: special_animal,
-  //     subordinate: sub,
-  //     width: 256,
-  //     height: 256};
-  //   blockTest.push(new_targ);
-  // };
 
   all_targs = [];
   for (var a = 0; a < shuffledAnimals.length; a++){
@@ -538,16 +491,8 @@ game_core.prototype.makeTrialList = function () {
   
   all_targs1 = all_targs;
   blocksRep1 = [];
-  // tempAnimals = shuffledAnimals;
-  // tempCardinalities = shuffledCardinalities;
     for (var a = 0; a < shuffledAnimals.length; a++){
       for (var c = 0; c < shuffledTrainCardinalities.length; c++){
-        // animal = _.sample(tempAnimals);
-        // tempAnimals = _.without(tempAnimals,animal);
-        // cardinality = _.sample(tempCardinalities);
-        // tempCardinalities = _.without(tempCardinalities,cardinality);
-        // if (tempCardinalities.length == 0){tempCardinalities = shuffledCardinalities};
-        // if (tempAnimals.length == 0){tempAnimals = shuffledAnimals};
         same_number = _.filter(all_targs1, {'object': shuffledTrainCardinalities[c]});
         animal = _.sample(same_number);
         all_targs1 = _.without(all_targs1,animal);
@@ -566,16 +511,8 @@ game_core.prototype.makeTrialList = function () {
 
     all_targs2 = all_targs;
     blocksRep2 = [];
-    // tempAnimals = shuffledAnimals;
-    // tempCardinalities = shuffledCardinalities;
       for (var a = 0; a < shuffledAnimals.length; a++){
         for (var c = 0; c < shuffledTrainCardinalities.length; c++){
-          // animal = _.sample(tempAnimals);
-          // tempAnimals = _.without(tempAnimals,animal);
-          // cardinality = _.sample(tempCardinalities);
-          // tempCardinalities = _.without(tempCardinalities,cardinality);
-          // if (tempCardinalities.length == 0){tempCardinalities = shuffledCardinalities};
-          // if (tempAnimals.length == 0){tempAnimals = shuffledAnimals};
           same_number = _.filter(all_targs2, {'object': shuffledTrainCardinalities[c]});
           animal = _.sample(same_number);
           all_targs2 = _.without(all_targs2,animal);
@@ -592,43 +529,9 @@ game_core.prototype.makeTrialList = function () {
         };
       };
   
-
-  // // trying to rewrite it differently on 2021-Aug-17
-  // blocksRep = [];
-  // tempAnimals = shuffledAnimals;
-  //   for (var r = 0; r < this.numReps; r++){
-  //     for (var c = 0; c < shuffledTrainCardinalities.length; c++){
-  //       if (tempAnimals.length == 0){
-  //         tempAnimals = shuffledAnimals;
-  //       };
-  //       animal = _.sample(tempAnimals);
-  //       tempAnimals = _.without(tempAnimals,animal)
-  //       same_number = _.filter(all_targs, {'object': shuffledTrainCardinalities[c]});
-  //       same_both = _.filter(same_number, {'basic': animal});
-  //       all_targs = _.without(all_targs,same_both[0]);
-        
-
-  //       sub = animal + '_' + shuffledTrainCardinalities[c]
-  //       new_targ = {
-  //         object: shuffledTrainCardinalities[c],
-  //         basic: animal,
-  //         subordinate: sub,
-  //         width: 256,
-  //         height: 256};
-  //       blocksRep.push(new_targ);        
-  //     };
-  //   };
-  // Now shuffle all the blocks:
-  // blocksRep = this.hierarchical_shuffle(blocksRep,[shuffledTrainCardinalities.length,shuffledAnimals.length])
-
-  // target_sequence = _.concat(block1,blocksRep,blockTest); // 12/Aug/2021
   target_sequence = _.concat(blocksRep1,blocksRep2);
   target_sequence = this.hierarchical_shuffle(target_sequence,[shuffledTrainCardinalities.length,shuffledAnimals.length]);
 
-  // // See what the target list looks like:
-  // for (var i = 0; i < target_sequence.length; i++){
-  //   console.log(target_sequence[i].subordinate)
-  // };
 
   for (var i = 0; i < target_sequence.length; i++) {  
     // new improved target selection as of 21/April/2020

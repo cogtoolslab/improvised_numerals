@@ -75,17 +75,7 @@ var client_onserverupdate_received = function(data){
 
       var imgObj = new Image(); //initialize object as an image (from HTML5)
       imgObj.src = globalGame.my_role == "sketcher" ? customObj.sketcher_url : customObj.viewer_url;; // tell client where to find it
-      
-      // recommented the following, trying to put it into game.core.js
-      // // sebholt begin edit, rewriting the above line to randomly get different constellations depending on role of subject
-      // num_versions = 100
-      // v1 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      // v2 = Math.floor(Math.random() * Math.floor(num_versions)).toString();
-      // var v = globalGame.my_role == "sketcher" ? v1 : v2;
-      // while (v.length < 3) v = "0" + v;
-      // imgObj.src = "https://iternum.s3.amazonaws.com/" + customObj['basic'] + '_' + (customObj['object']+1)+ '_' + v.toString() + ".png";
-      // // sebholt end edit
-      
+            
 
       imgObj.onload = function(){ // Draw image as soon as it loads (this is a callback)
         globalGame.ctx.drawImage(imgObj, parseInt(customObj.trueX), parseInt(customObj.trueY),
@@ -109,7 +99,7 @@ var client_onserverupdate_received = function(data){
               drawGrid(globalGame);
               drawObjects(globalGame, globalGame.get_player(globalGame.my_id));
               if (globalGame.my_role === globalGame.playerRoleNames.role1) {
-                highlightCell(globalGame, 'blue', function(x) {return x.target_status == 'target';}); // sebholt copied from above b/c highlight not showing
+                highlightCell(globalGame, 'blue', function(x) {return x.target_status == 'target';});
               }
               globalGame.drawingAllowed = true;
             },750);
@@ -311,14 +301,6 @@ var customSetup = function(game) {
     }
   });
 
-  // // clear the commonground once the trial is over
-  // game.socket.on('confirmed',function(){
-  //   setTimeout(function(){
-  //     $("#commonground").html("");
-  //     $( "#commonground" ).css( "max-width","300px");
-  //     curNum = 1;
-  // },globalGame.feedbackDelay)
-  // });
 
   // Set up new round on client's browsers after submit round button is pressed.
   // This means clear the canvas, update round number, and update score on screen
@@ -379,10 +361,10 @@ var customSetup = function(game) {
       $('#instructs').html('Thanks for participating in our experiment! ' +
         "Before you submit your HIT, we'd like to ask you a few questions.");
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 1) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 1) + " of " + globalGame.numRounds);
     } else {
       $('#roundnumber').empty()
-        .append("Round\n" + (game.roundNum + 2) + " of " + globalGame.numRounds); // sebholt edit; changed 'game.numRounds' to '32'
+        .append("Round\n" + (game.roundNum + 2) + " of " + globalGame.numRounds);
     }
     $('#score').empty().append(score / 3 + ' of ' + (game.roundNum + 1) + ' correct for a bonus of $'
 			       + displaytotal);
@@ -393,22 +375,6 @@ var customSetup = function(game) {
     // pop-ups in between phases
     var afterPreRound = globalGame.setSize * 2;
     var beforePostRound = globalGame.numRounds - globalGame.setSize * 2;
-
-    // sebholt begin comment, this used to be active code
-    // $("#main").hide();
-    // $("#header").hide();
-    // $("#dimScreen").show();
-
-    
-    // if (game.roundNum == afterPreRound - 1) {
-    //   $("#after_pre").show(); //or $("#before_post").show();
-    //   setupOverlay();
-
-    // } else {
-    //   $("#before_post").show(); //or $("#before_post").show();
-    //   setupOverlay();
-    // }
-    // sebholt end comment, this used to be active code
 
   });
 

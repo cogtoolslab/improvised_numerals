@@ -72,8 +72,6 @@ app.get( '/*' , function( req, res ) {
     var isResearcher = _.includes(researchers, id);
   if(!id || id === 'undefined' || (isResearcher && !blockResearcher))  {
     // If no worker id supplied (e.g. for demo), allow to continue
-    // console.log("req.params: ",req.params,"\n") // sebholt print    
-    // console.log("req.params[0]: ",req.params[0],"\n") // sebholt print
     return serveFile(req, res);
   } else if(!valid_id(id)) {
     // If invalid id, block them
