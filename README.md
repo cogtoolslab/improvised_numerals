@@ -3,21 +3,16 @@
 
 # How do people invent numerals?
 
-Numerals are among the first forms of writing in human history. How did they emerge, and take on the diverse forms that they do?
+Numerals are among the first forms of writing in human history. How did they emerge, and take on the diverse forms that they do? This repo contains experiments that investigate the emergence of graphical conventions for representing number, using simple communication games.
 
-<p align="center" style="font-size: smaller">
-  <img align="left" width="30%" src="https://lh6.googleusercontent.com/7AxnmzE5oATz1UKOJsFW4gURhbAAk_Lr52hJ8ik5CGKHlyeZg_bMNCR6CO0jWw2FJKEpxtbJYVGT3KYBH05y4Jsy42GgTP75CnfqVAai2m8DxF8HCSSW4Bk-4hAnE3xsZgYvI18E"></img>
-  WWII airforce pilot, representing a 1-to-1 tally using marks that correspond to each type of event. ([source](https://www.aircorpsart.com/blog/aircraft-victory-mission-markings-of-wwii/))
+<p float="left" align="center" style="font-size: smaller">
+  <img align="left" width="40%" overflow="hidden" src="stimuli/repo_displays/wwii.png"/>
   
-  <img align="center" width="30%" src="https://collectionapi.metmuseum.org/api/collection/v1/iiif/327385/1315111/main-image"></img>
-  Mesopotamian administrative tablet representing object-types (barley) and quantities in separate graphical forms, ca. 5,000 yBP. ([source](https://www.metmuseum.org/art/collection/search/327385))
+  <img align="center" width="40%" overflow="hidden" src="stimuli/repo_displays/sumer.png"/>
+
+  <img align="right" width="20%" overflow="hidden" src="stimuli/repo_displays/kaktovik.png"/>
   
-  <img align="right" width="30%" src="https://upload.wikimedia.org/wikipedia/commons/d/de/Kaktovik_digit_table.svg"></img>
-  Kaktovik numerals, invented by Iñupiaq students in the 1990s to intuitively represent a base-20 system. ([source](https://en.wikipedia.org/wiki/Kaktovik_numerals))
 </p>
-
-This repo contains experiments that investigate the emergence of graphical conventions for representing number, using simple communication games.
-
 
 
 ## Experiments
@@ -26,6 +21,10 @@ Partners played a reference game in which one person used graphical tools to com
 - In **Experiment 2**, we asked whether objects arranged in predictable, regular arrays made it easier to develop graphical conventions about number that transcended the use of 1-to-1 correspondence.
 - In **Experiment 3**, we asked how the presence of existing symbols might be used to create representations of number in a left-to-right communicative medium.
 
+<p align="center" style="font-size: smaller">
+  <img align="center" width="100%" src="stimuli/repo_displays/tasks_display.gif"></img>
+  Cartoon of the methods used in each experiment.
+</p>
 
 
 ## This Repo
