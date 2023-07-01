@@ -1,18 +1,21 @@
 
 
 
-# How do people invent numerals?
+# Ad Hoc Numerals
 
-Numerals are among the first forms of writing in human history. How did they emerge, and take on the diverse forms that they do? This repo contains experiments that investigate the emergence of graphical conventions for representing number, using simple communication games.
+Graphical representations of number (i.e. numerals) come in many diverse forms, historically predate written language, and are a powerful cognitive tool for transmitting abstract concepts about number. How did they emerge? This repo contains 3 experiments investigating how people create graphical representations of number within communicative contexts.
 
-<p float="left" align="center" style="font-size: smaller">
-  <img align="left" width="40%" overflow="hidden" src="stimuli/repo_displays/wwii.png"/>
-  
-  <img align="center" width="40%" overflow="hidden" src="stimuli/repo_displays/sumer.png"/>
-
-  <img align="right" width="20%" overflow="hidden" src="stimuli/repo_displays/kaktovik.png"/>
-  
-</p>
+<table>
+  <tr> <p align="center"> Some examples of different numerals: </p> </tr>
+  <tr>
+    <td valign="top" width="395px">
+      <img width="395px" src="stimuli/repo_displays/wwii.png"/> <br> <p align="center"> WWII airforce pilot, representing a 1-to-1 tally using marks that correspond to each type of event. (<a href="https://www.aircorpsart.com/blog/aircraft-victory-mission-markings-of-wwii/">source</a>)</p></td>
+    <td valign="top"  width="400px">
+      <img width="400px" src="stimuli/repo_displays/sumer.png"/> <br> <p align="center"> Mesopotamian administrative tablet representing object-types (barley) and quantities in separate graphical forms, ca. 5,000 yBP. (<a href="https://www.metmuseum.org/art/collection/search/327385">source</a>) </p></td>
+    <td valign="top" width="240px">
+      <img width="240px" src="stimuli/repo_displays/kaktovik.png"/> <br> <p align="center"> Numerals invented by Iñupiaq students in the 1990s to represent a base-20 system. (<a href="https://en.wikipedia.org/wiki/Kaktovik_numerals">source</a>) </p> </td>
+  </tr>
+</table>
 
 
 ## Experiments
