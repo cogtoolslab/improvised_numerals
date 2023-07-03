@@ -7,8 +7,8 @@ auth.json
 __pycache__/
 node_modules/
 
-# .bashrc
-# .RData
+.bashrc
+.RData
 
 *.so
 *.py[cod]
