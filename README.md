@@ -53,9 +53,18 @@ Partners played a reference game in which one person used graphical tools to com
 - `/analysis/results/bare_sketches/` contains sketch results from each experiment, to be processed in our supplementary analysis.
 - `/analysis/results/bare_targets/` contains target images for the above sketches.
 - `/analysis/results/sketch/` contains sketches annotated with correct / incorrect viewer response, and the corresponding target image.
-- `/analysis/results/sketch_galleries/` contains all of the above sketches, arranged into galleries that show all trials from a given game.
+- `/analysis/results/sketch_galleries/` contains all of the above sketches, arranged into galleries that show all trials from a given game. Below are two examples of sketch galleries from Experiments 1 and 2, with a key for how to read them.
 
 
+<p align="center" style="font-size: smaller">
+  <img align="center" width="100%" src="stimuli/repo_displays/front_page_gallery1.png"></img>
+  Qualitative data from a game in Experiment 1. Trials progress from left to right, 32 trials per game. Target images are rendered below and Sketchers' sketches rendered above. The bar in between targets and sketches is green if the Viewer guessed correctly, or red otherwise.
+</p>
+
+<p align="center" style="font-size: smaller">
+  <img align="center" width="100%" src="stimuli/repo_displays/front_page_gallery2.png"></img>
+  Qualitative data from a game in Experiment 2. Trials are NOT in order, but arranged according to trial blocks (early-game above, late-game below), the cardinality of sets (6 trials for each cardinality over the whole game), and the animal quantified by each set (3 animals per cardinality x 2 trial blocks).
+</p>
 
 
 
